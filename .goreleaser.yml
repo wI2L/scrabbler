@@ -1,0 +1,39 @@
+project_name: scrabbler
+release:
+  github:
+    owner: wI2L
+    name: scrabbler
+  draft: true
+  prerelease: auto
+env_files:
+  github_token: ~/.goreleaser_github_token
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+builds:
+  - binary: scrabbler
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    ldflags:
+      - -s
+      - -w
+archives:
+  - name_template: "{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    files:
+      - README.md
+      - LICENSE
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+  algorithm: sha256
+snapshot:
+  name_template: "{{ .Tag }}-snapshot"
+changelog:
+  use: github
