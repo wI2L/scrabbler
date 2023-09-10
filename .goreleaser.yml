@@ -22,11 +22,13 @@ builds:
     env:
       - CGO_ENABLED=0
       - GO111MODULE=on
+    flags:
+      - trimpath
     ldflags:
-      - -s
-      - -w
+      - -s # disable symbol table
+      - -w # disable DWARF generation
 archives:
-  - name_template: "{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+  - name_template: "{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
     files:
       - README.md
       - LICENSE

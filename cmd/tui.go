@@ -26,18 +26,19 @@ type tui struct {
 	confirm  confirm.Model
 	width    int
 	height   int
-	insights bool
+	insights int
 }
 
 var _ tea.Model = &tui{}
 
-func newTUI(d distribution, width, height int, dict indexedDict) *tui {
+func newTUI(d distribution, width, height int, dict indexedDict, wl uint8) *tui {
 	return &tui{
 		game: &game{
 			bag:     newBag(french),
 			draw:    &splitTiles{},
 			distrib: d,
 			dict:    dict,
+			wordLen: wl,
 		},
 		width:  width,
 		height: height,
@@ -46,7 +47,7 @@ func newTUI(d distribution, width, height int, dict indexedDict) *tui {
 }
 
 func (ui *tui) Init() tea.Cmd {
-	if err := ui.game.drawTiles(3); err != nil {
+	if err := ui.game.drawWithRequirements(3); err != nil {
 		return tea.Quit
 	}
 	log.Printf("Initial draw is: %s\n", ui.game.draw)
@@ -54,7 +55,7 @@ func (ui *tui) Init() tea.Cmd {
 	ui.input = textinput.New()
 	ui.input.Prompt = "Enter tiles played: "
 	ui.input.Placeholder = "word"
-	ui.input.CharLimit = 7
+	ui.input.CharLimit = 0
 	ui.input.Validate = func(w string) error {
 		return ui.game.playWord(w, true)
 	}
@@ -71,8 +72,7 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.Width == 0 && m.Height == 0 {
 			return ui, nil
 		}
-		ui.width = m.Width
-		ui.height = m.Height
+		ui.width, ui.height = m.Width, m.Height
 	case tea.KeyMsg:
 		switch m.Type {
 		case tea.KeyCtrlC, tea.KeyEsc:
@@ -87,8 +87,8 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					ui.input.Focus()
 					ui.state = playing
 				} else {
-					ui.insights = false
-					if err := ui.game.drawTiles(3); err != nil {
+					ui.insights = 0
+					if err := ui.game.drawWithRequirements(3); err != nil {
 						return nil, tea.Quit
 					}
 					log.Printf("draw rejected, new draw: %s\n", ui.game.draw)
@@ -107,17 +107,17 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					ui.game.draw.length(),
 				)
 				// Draw new tiles.
-				if err := ui.game.drawTiles(3); err != nil {
+				if err := ui.game.drawWithRequirements(3); err != nil {
 					return nil, tea.Quit
 				}
 				log.Printf("new draw: %s\n", ui.game.draw)
 
-				ui.insights = false
+				ui.insights = 0
 				ui.state = drawing
 				ui.input.Reset()
 			}
 		case tea.KeyCtrlG:
-			ui.insights = !ui.insights
+			ui.insights++
 		}
 	}
 	var cmd tea.Cmd
@@ -133,7 +133,6 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (ui *tui) View() string {
-	termWidth, termHeight := ui.width, ui.height
 	sb := strings.Builder{}
 
 	if ui.game.bag.isEmpty() && ui.game.draw.isEmpty() {
@@ -151,27 +150,31 @@ func (ui *tui) View() string {
 	sb.WriteByte('\n')
 
 	if ui.game.dict != nil {
-		scrabbles := ui.game.dict.findWords(ui.game.draw.tiles())
-
-		for i, s := range scrabbles {
-			scrabbles[i] = strings.ToLower(s)
+		for i, s := range ui.game.scrabbles {
+			ui.game.scrabbles[i] = strings.ToLower(s)
 		}
-		if len(scrabbles) == 0 {
-			sb.WriteString(italicText.Render("no scrabble found"))
+		if ui.insights >= 1 {
+			if len(ui.game.scrabbles) == 0 {
+				sb.WriteString(italicText.Render("no scrabble found"))
+			} else {
+				var plural string
+				if len(ui.game.scrabbles) > 1 {
+					plural = "s"
+				}
+				sb.WriteString(
+					fmt.Sprintf("found %d scrabble%s", len(ui.game.scrabbles), plural),
+				)
+				if ui.insights >= 2 {
+					width := ui.width / 3
+
+					sb.WriteByte('\n')
+					sb.WriteString(lipgloss.NewStyle().Width(width).Align(lipgloss.Center).Render(
+						scrabbleListView(ui.game.scrabbles, width),
+					))
+				}
+			}
 		} else {
-			var plural string
-			if len(scrabbles) > 1 {
-				plural = "s"
-			}
-			sb.WriteString(italicText.Render(
-				fmt.Sprintf("found %d scrabble%s", len(scrabbles), plural),
-			))
-			if ui.insights {
-				sb.WriteByte('\n')
-				sb.WriteString(faintText.Render(
-					strings.Join(scrabbles, " • "),
-				))
-			}
+			sb.WriteString(faintText.Render("(ctrl+g to show insight)"))
 		}
 		sb.WriteString(strings.Repeat("\n", 3))
 	}
@@ -181,11 +184,51 @@ func (ui *tui) View() string {
 	case playing:
 		sb.WriteString(ui.input.View())
 	}
-
 render:
 	return lipgloss.Place(
-		termWidth, termHeight,
+		ui.width, ui.height,
 		lipgloss.Center, lipgloss.Center,
 		sb.String(),
 	)
+}
+
+const wordSep = " ■ "
+
+func scrabbleListView(words []string, maxWidth int) string {
+	var (
+		lines     []string
+		lineWidth int
+		builder   strings.Builder
+	)
+	for _, w := range words {
+		width := 0
+
+		// Compute the rendered width of the word
+		// plus separator if needed.
+		if lineWidth != 0 {
+			width += lipgloss.Width(wordSep)
+		}
+		width += lipgloss.Width(w)
+
+		// If the length plus the current line width
+		// exceed the maximum width, wrap to a new line.
+		if maxWidth > 0 && lineWidth+width > maxWidth {
+			lines = append(lines, scrabbleList.Render(strings.Clone(builder.String())))
+			builder.Reset()
+			lineWidth = lipgloss.Width(w)
+		} else {
+			lineWidth += width
+		}
+		// After a line wrap, the buffer is empty and
+		// a new line shouldn't start with a separator.
+		if builder.Len() != 0 {
+			builder.WriteString(wordSep)
+		}
+		builder.WriteString(w)
+	}
+	// Flush the remaining buffer as the last line.
+	if builder.Len() > 0 {
+		lines = append(lines, scrabbleList.Render(strings.Clone(builder.String())))
+	}
+	return lipgloss.JoinVertical(lipgloss.Top, lines...)
 }

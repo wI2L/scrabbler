@@ -3,19 +3,21 @@ package cmd
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
-	"sort"
+	"reflect"
 	"strings"
 	"testing"
 )
 
-func Test_readDictFile(t *testing.T) {
-	const base = "../dictionaries/"
+const dictDir = "dictionaries/"
 
-	entries, err := os.ReadDir(base)
+func Test_readDictFile(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+	entries, err := os.ReadDir(dictDir)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,13 +25,12 @@ func Test_readDictFile(t *testing.T) {
 
 	for _, e := range entries {
 		if e.IsDir() {
-			files, err := os.ReadDir(filepath.Join(base, e.Name()))
+			files, err := os.ReadDir(filepath.Join(dictDir, e.Name()))
 			if err != nil {
 				t.Fatal(err)
 			}
 			for _, f := range files {
-				fp := filepath.Join(base, e.Name(), f.Name())
-				fmt.Println(fp)
+				fp := filepath.Join(dictDir, e.Name(), f.Name())
 				if filepath.Ext(fp) == ".txt" {
 					paths = append(paths, fp)
 				}
@@ -49,7 +50,7 @@ func Test_readDictFile(t *testing.T) {
 					t.Error(err)
 				}
 			})
-			dict, err := readDictFile(f)
+			dict, err := parseDictionary(f)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -71,48 +72,39 @@ func Test_readDictFile(t *testing.T) {
 	}
 }
 
+//goland:noinspection SpellCheckingInspection
 func Test_indexedDict_findWords_french(t *testing.T) {
-	const path = "../dictionaries/french/ods8.txt"
+	dict := frenchDict(t)
 
-	f, err := os.Open(path)
-	if err != nil {
-		t.Fatal(err)
-	}
-	dict, err := readDictFile(f)
-	if err != nil {
-		t.Fatal(err)
-	}
 	for _, tt := range []struct {
 		draw  string
 		words []string
 	}{
 		{
-			draw: "ocbwyo",
+			draw: "OCBWYO",
 			words: []string{
-				"cowboy",
+				"COWBOY",
 			},
 		},
 		{
-			draw: "uosersp",
+			draw: "UOSERSP",
 			words: []string{
-				"pousser",
-				"poseurs",
-				"soupers",
+				"POSEURS",
+				"POUSSER",
+				"SOUPERS",
 			},
 		},
 		{
-			draw:  "xyzabcd",
+			draw:  "XYZABCD",
 			words: nil,
 		},
 	} {
 		tiles := tilesFromWord(tt.draw, french)
-		words := dict.findWords(tiles)
+		words := dict.findWords(tiles, french)
 
 		if want, got := len(tt.words), len(words); want != got {
 			t.Errorf("expected %d words, got %d", want, got)
 		}
-		sort.Strings(words)
-		sort.Strings(tt.words)
 
 		for i, w := range tt.words {
 			if !strings.EqualFold(w, words[i]) {
@@ -122,12 +114,184 @@ func Test_indexedDict_findWords_french(t *testing.T) {
 	}
 }
 
+//goland:noinspection SpellCheckingInspection
+func Test_indexedDict_findWordsWithBlanks_french(t *testing.T) {
+	d := frenchDict(t)
+
+	for _, tt := range []struct {
+		letters    []string
+		blankCount int // count of blanks
+		words      []string
+	}{
+		{
+			[]string{"P", "A", "T", "T", "E", "S"},
+			1,
+			[]string{
+				"OPTATES",
+				"PANTETS",
+				"PATATES",
+				"PATENTS",
+				"PATITES",
+				"PATTEES",
+				"PATTUES",
+				"PESTAIT",
+				"PESTANT",
+				"PETANTS",
+				"PETATES",
+				"POTATES",
+				"PRESTAT",
+				"TAPATES",
+				"TAPITES",
+				"TAPOTES",
+				"TIPATES",
+				"TOPATES",
+				"TYPATES",
+			},
+		},
+		{
+			[]string{"P", "T", "T", "E", "S"},
+			2,
+			[]string{
+				"OPTATES",
+				"PANTETS",
+				"PATATES",
+				"PATENTS",
+				"PATITES",
+				"PATTEES",
+				"PATTUES",
+				"PEOTTES",
+				"PESETTE",
+				"PESTAIT",
+				"PESTANT",
+				"PESTENT",
+				"PETANTS",
+				"PETATES",
+				"PETIOTS",
+				"PETITES",
+				"PISTENT",
+				"PONTETS",
+				"POSTENT",
+				"POTATES",
+				"PRESTAT",
+				"PRETEST",
+				"PROTETS",
+				"PUTIETS",
+				"PUTTEES",
+				"PUTTERS",
+				"SEPTETS",
+				"SPITENT",
+				"SPITTEE",
+				"SPITTER",
+				"SPITTES",
+				"SPITTEZ",
+				"STIPITE",
+				"TAPATES",
+				"TAPITES",
+				"TAPOTES",
+				"TIPATES",
+				"TOPATES",
+				"TOUPETS",
+				"TYPATES",
+				"TYPOTES",
+			},
+		},
+	} {
+		words := d.findWordsWithBlanks(tt.letters, french, tt.blankCount)
+
+		if got, want := len(words), len(tt.words); want != got {
+			t.Errorf("got %d words, want %d", got, want)
+		}
+		if !reflect.DeepEqual(words, tt.words) {
+			t.Error("word lists mismatch")
+		}
+	}
+}
+
+func Test_combinationsWithReplacement(t *testing.T) {
+	for _, tt := range []struct {
+		letters []string
+		r       int
+		combs   [][]string
+	}{
+		{
+			[]string{"A", "B", "C", "D", "E", "F"},
+			1,
+			[][]string{
+				{"A"},
+				{"B"},
+				{"C"},
+				{"D"},
+				{"E"},
+				{"F"},
+			},
+		},
+		{
+			[]string{"A", "B", "C", "D", "E", "F"},
+			2,
+			[][]string{
+				{"A", "A"},
+				{"A", "B"},
+				{"A", "C"},
+				{"A", "D"},
+				{"A", "E"},
+				{"A", "F"},
+				{"B", "B"},
+				{"B", "C"},
+				{"B", "D"},
+				{"B", "E"},
+				{"B", "F"},
+				{"C", "C"},
+				{"C", "D"},
+				{"C", "E"},
+				{"C", "F"},
+				{"D", "D"},
+				{"D", "E"},
+				{"D", "F"},
+				{"E", "E"},
+				{"E", "F"},
+				{"F", "F"},
+			},
+		},
+	} {
+		combs := combinationsWithReplacement(tt.letters, tt.r)
+		if got, want := len(combs), len(tt.combs); want != got {
+			t.Errorf("got %d combinations, want %d", got, want)
+		}
+		if !reflect.DeepEqual(combs, tt.combs) {
+			t.Error("combinations mismatch")
+		}
+	}
+}
+
+var cachedDict indexedDict
+
+func frenchDict(t *testing.T) indexedDict {
+	if cachedDict != nil {
+		return cachedDict
+	}
+	dictPath := filepath.Join(dictDir, "french/ods8.txt")
+
+	f, err := os.Open(dictPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	dict, err := parseDictionary(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cachedDict = dict
+
+	return dict
+}
+
 func tilesFromWord(word string, d distribution) tiles {
 	tiles := make(tiles, 0, len(word))
 
-	for _, r := range []rune(strings.ToUpper(word)) {
-		if v, ok := d[r]; ok {
-			tiles = append(tiles, tile{L: r, letterProps: v})
+	for _, r := range []rune(word) {
+		for _, v := range d.letters {
+			if v.L == string(r) {
+				tiles = append(tiles, tile{letter: v})
+			}
 		}
 	}
 	return tiles

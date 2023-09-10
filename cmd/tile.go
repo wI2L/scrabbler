@@ -3,7 +3,6 @@ package cmd
 import (
 	"math/rand"
 	"strings"
-	"unicode"
 
 	"github.com/charmbracelet/lipgloss"
 )
@@ -15,22 +14,16 @@ const (
 	kindConsonant
 )
 
-type letterProps struct {
-	frequency uint
-	points    uint
-}
-
 // tile represents a Scrabble tile.
 type tile struct {
-	L rune
-	letterProps
+	letter
 	leftover bool
 }
 
 // kind returns the kind of the tile's letter.
 func (t tile) kind() letterKind {
-	switch unicode.ToUpper(t.L) {
-	case 'A', 'E', 'I', 'O', 'U', 'Y':
+	switch strings.ToUpper(t.L) {
+	case "A", "E", "I", "O", "U", "Y":
 		return kindVowel
 	default:
 		return kindConsonant
@@ -46,19 +39,11 @@ func (s *tiles) add(tiles ...tile) {
 	}
 }
 
-// fill adds n times the same tile to the slice.
+// fill adds blankCount times the same tile to the slice.
 func (s *tiles) fill(t tile, n uint) {
 	for i := uint(0); i < n; i++ {
 		*s = append(*s, t)
 	}
-}
-
-// truncate truncates the tiles up to n elements.
-func (s *tiles) truncate(n int) {
-	if n > len(*s) {
-		panic("truncate: n exceed slice len")
-	}
-	*s = (*s)[:n]
 }
 
 // shuffle randomizes the order of the tiles.
@@ -78,7 +63,7 @@ func (s *tiles) pickAt(idx int) tile {
 
 // findTiles returns the index of the first tile
 // with the given letter,
-func (s tiles) findTile(letter rune) int {
+func (s tiles) findTile(letter string) int {
 	for i, t := range s {
 		if t.L == letter {
 			return i
@@ -103,9 +88,21 @@ func (s tiles) splitByKind() (vowels, consonants tiles) {
 func (s tiles) String() string {
 	r := make([]string, 0, len(s))
 	for _, t := range s {
-		r = append(r, string(t.L))
+		r = append(r, t.L)
 	}
 	return strings.Join(r, " ")
+}
+
+func (s tiles) view() string {
+	var strs []string
+	for _, t := range s {
+		if t.leftover {
+			strs = append(strs, leftoverTileStyle.Render(t.L))
+		} else {
+			strs = append(strs, tileStyle.Render(t.L))
+		}
+	}
+	return lipgloss.JoinHorizontal(lipgloss.Top, strs...)
 }
 
 func (k letterKind) String() string {
@@ -117,16 +114,4 @@ func (k letterKind) String() string {
 	default:
 		return "<unknown>"
 	}
-}
-
-func (s tiles) view() string {
-	var strs []string
-	for _, t := range s {
-		if t.leftover {
-			strs = append(strs, leftoverTileStyle.Render(string(t.L)))
-		} else {
-			strs = append(strs, tileStyle.Render(string(t.L)))
-		}
-	}
-	return lipgloss.JoinHorizontal(lipgloss.Top, strs...)
 }

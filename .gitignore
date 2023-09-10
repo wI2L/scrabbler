@@ -49,5 +49,5 @@ Godeps/
 debug.log
 
 # Bin
-scrabbler
 dist/
+scrabbler

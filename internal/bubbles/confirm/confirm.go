@@ -9,20 +9,27 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+const arrowRight = "▸"
+
+var (
+	selectionStyle = lipgloss.NewStyle().Bold(true)
+)
+
 type Model struct {
 	value  bool
+	prompt string
 	keys   keyMap
 	help   help.Model
-	prompt string
 }
 
 func New(prompt string) Model {
 	m := Model{
 		value:  true,
+		prompt: prompt,
 		keys:   keys,
 		help:   help.New(),
-		prompt: prompt,
 	}
+	m.help.FullSeparator = strings.Repeat(" ", 3)
 	return m
 }
 
@@ -57,12 +64,6 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	return m, nil
 }
 
-var (
-	selectionStyle = lipgloss.NewStyle().Bold(true)
-)
-
-const arrowRight = "▸"
-
 func (m Model) View() string {
 	sb := strings.Builder{}
 
@@ -90,7 +91,7 @@ func (m Model) View() string {
 		st := lipgloss.NewStyle().MarginLeft(hw)
 		hv = st.Render(m.help.FullHelpView(m.keys.FullHelp()))
 	}
-	sb.WriteString(strings.Repeat("\n", 2))
+	sb.WriteString(strings.Repeat("\n", 3))
 	sb.WriteString(hv)
 
 	return sb.String()

@@ -20,7 +20,8 @@ var (
 )
 
 var (
-	boldText   = lipgloss.NewStyle().Bold(true)
-	italicText = lipgloss.NewStyle().Italic(true)
-	faintText  = lipgloss.NewStyle().Faint(true)
+	boldText     = lipgloss.NewStyle().Bold(true)
+	italicText   = lipgloss.NewStyle().Italic(true)
+	faintText    = lipgloss.NewStyle().Faint(true)
+	scrabbleList = lipgloss.NewStyle().Faint(true).Italic(true)
 )

@@ -25,7 +25,7 @@ func Test_newBag(t *testing.T) {
 			var (
 				bag   = newBag(tt.distrib)
 				total = len(bag.vowels) + len(bag.consonants)
-				freqs = make(map[rune]uint)
+				freqs = make(map[string]uint)
 			)
 			if total != tt.count {
 				t.Errorf("expected %d tiles, got %d", tt.count, total)
@@ -36,17 +36,17 @@ func Test_newBag(t *testing.T) {
 			for _, t := range bag.consonants {
 				freqs[t.L]++
 			}
-			for letter, v := range tt.distrib {
-				f := freqs[letter]
+			for _, v := range tt.distrib.letters {
+				f := freqs[v.L]
 				if f != v.frequency {
-					t.Errorf("expected frequency of %d for letter %q, got %d", v.frequency, letter, f)
+					t.Errorf("expected frequency of %d for letter %q, got %d", v.frequency, v.L, f)
 				}
 			}
 		})
 	}
 }
 
-func Test_bag_draw_full(t *testing.T) {
+func Test_splitTiles_draw_full(t *testing.T) {
 	b := newBag(french)
 
 	for !b.isEmpty() {
@@ -61,38 +61,14 @@ func Test_bag_draw_full(t *testing.T) {
 		t.Log(vowels, consonants)
 	}
 	if len(b.vowels) != 0 {
-		t.Errorf("expected splitTiles to contain no vowels")
+		t.Errorf("expected bag to contain no vowels")
 	}
 	if len(b.consonants) != 0 {
-		t.Errorf("expected splitTiles to contain no consonants")
+		t.Errorf("expected bag to contain no consonants")
 	}
 }
 
-func Test_bag_draw_single(t *testing.T) {
-	b := newBag(french)
-
-	// A new splitTiles is automatically shuffled at creation.
-	// Snapshot the tiles order and compare it with another
-	// shuffle, several times, to ensure proper shuffling.
-	var (
-		n    = 100
-		prev = b.tiles().String()
-		next = ""
-	)
-	if testing.Short() {
-		n = 10
-	}
-	for i := 0; i < n; i++ {
-		b.shuffle()
-		next = b.tiles().String()
-		if prev == next {
-			t.Errorf("expected splitTiles to shuffled")
-		}
-		prev = next
-	}
-}
-
-func Test_bag_singleDraw(t *testing.T) {
+func Test_splitTiles_draw_byKind(t *testing.T) {
 	const dc = 5
 	b := newBag(french)
 
@@ -124,7 +100,7 @@ func Test_bag_singleDraw(t *testing.T) {
 				t.Errorf("expected draw to contain %d less or less %ss", dc, tt.kind)
 			}
 			if len(*tt.tiles) != tt.tilesLen-dc {
-				t.Errorf("expected splitTiles to contain %d less %ss", dc, tt.kind)
+				t.Errorf("expected split tiles to contain %d less %ss", dc, tt.kind)
 			}
 			t.Log(draw)
 
@@ -134,5 +110,29 @@ func Test_bag_singleDraw(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func Test_splitTiles_shuffle(t *testing.T) {
+	b := newBag(french)
+
+	// A new splitTiles is automatically shuffled at creation.
+	// Snapshot the tiles order and compare it with another
+	// shuffle, several times, to ensure proper shuffling.
+	var (
+		n    = 100
+		prev = b.tiles().String()
+		next = ""
+	)
+	if testing.Short() {
+		n = 10
+	}
+	for i := 0; i < n; i++ {
+		b.shuffle()
+		next = b.tiles().String()
+		if prev == next {
+			t.Errorf("expected splitTiles to shuffled")
+		}
+		prev = next
 	}
 }
