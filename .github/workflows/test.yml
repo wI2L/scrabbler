@@ -27,6 +27,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: stable
+          cache: false
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Run tests
