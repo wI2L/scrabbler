@@ -5,7 +5,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"strconv"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/muesli/termenv"
@@ -13,20 +12,21 @@ import (
 	"golang.org/x/term"
 )
 
-var wordLength uint8
-
-func init() {
-	setupFlags()
-}
-
-//nolint:gofumpt
 var (
+	debug      bool
+	wordLength uint8
+	showPoints bool
+
 	Root = &cobra.Command{
 		Use:  "scrabbler",
 		Long: "scrabbler — pick your tiles, but not yourself",
 		RunE: run,
 	}
 )
+
+func init() {
+	setupFlags()
+}
 
 func run(cmd *cobra.Command, _ []string) error {
 	cmd.SilenceUsage = true
@@ -62,15 +62,16 @@ func run(cmd *cobra.Command, _ []string) error {
 	out := termenv.NewOutput(os.Stdout)
 	out.SetWindowTitle("scrabbler")
 
-	tui := newTUI(dv, tw, th, dict, wordLength)
+	tui := newTUI(dv, tw, th, dict, options{
+		wordLength: wordLength,
+		showPoints: showPoints,
+	})
 	prg := tea.NewProgram(
 		tui,
 		tea.WithAltScreen(),
 		tea.WithOutput(out),
 	)
-	envDebug := cmd.Flag("debug").Value.String()
-
-	if ok, err := strconv.ParseBool(envDebug); err == nil && ok {
+	if debug {
 		f, err := tea.LogToFile("debug.log", "debug")
 		if err != nil {
 			return fmt.Errorf("cannot open log file: %s", err)
@@ -90,7 +91,8 @@ func run(cmd *cobra.Command, _ []string) error {
 func setupFlags() {
 	f := Root.Flags()
 
-	f.BoolP(
+	f.BoolVarP(
+		&debug,
 		"debug",
 		"v",
 		false,
@@ -114,5 +116,12 @@ func setupFlags() {
 		"l",
 		defaultDistrib,
 		"tiles distribution language",
+	)
+	f.BoolVarP(
+		&showPoints,
+		"show-points",
+		"p",
+		false,
+		"show tile points",
 	)
 }

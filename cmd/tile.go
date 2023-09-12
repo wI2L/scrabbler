@@ -30,6 +30,13 @@ func (t tile) kind() letterKind {
 	}
 }
 
+func (t tile) view(withPoints bool) string {
+	if withPoints {
+		return t.L + subscriptPoints(t.points)
+	}
+	return t.L
+}
+
 type tiles []tile
 
 // add appends the given tiles to the slice.
@@ -93,14 +100,20 @@ func (s tiles) String() string {
 	return strings.Join(r, " ")
 }
 
-func (s tiles) view() string {
-	var strs []string
+func (s tiles) view(withPoints bool) string {
+	strs := make([]string, 0, len(s))
+
 	for _, t := range s {
+		var style lipgloss.Style
 		if t.leftover {
-			strs = append(strs, leftoverTileStyle.Render(t.L))
+			style = leftoverTileStyle
 		} else {
-			strs = append(strs, tileStyle.Render(t.L))
+			style = tileStyle
 		}
+		if withPoints {
+			style = style.Align(lipgloss.Right)
+		}
+		strs = append(strs, style.Render(t.view(withPoints)))
 	}
 	return lipgloss.JoinHorizontal(lipgloss.Top, strs...)
 }
@@ -113,5 +126,17 @@ func (k letterKind) String() string {
 		return "consonant"
 	default:
 		return "<unknown>"
+	}
+}
+
+func subscriptPoints(i uint) string {
+	const zero = 0x00002080 // https://www.compart.com/en/unicode/U+2080
+	switch {
+	case i == 0:
+		return string(rune(zero))
+	case i == 10:
+		return "ₓ" // X for 10
+	default:
+		return string(rune(zero + i))
 	}
 }

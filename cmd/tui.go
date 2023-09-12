@@ -27,22 +27,29 @@ type tui struct {
 	width    int
 	height   int
 	insights int
+	opts     options
+}
+
+type options struct {
+	showPoints bool
+	wordLength uint8
 }
 
 var _ tea.Model = &tui{}
 
-func newTUI(d distribution, width, height int, dict indexedDict, wl uint8) *tui {
+func newTUI(d distribution, width, height int, dict indexedDict, opts options) *tui {
 	return &tui{
 		game: &game{
 			bag:     newBag(french),
 			draw:    &splitTiles{},
 			distrib: d,
 			dict:    dict,
-			wordLen: wl,
+			wordLen: opts.wordLength,
 		},
 		width:  width,
 		height: height,
 		state:  drawing,
+		opts:   opts,
 	}
 }
 
@@ -146,7 +153,7 @@ func (ui *tui) View() string {
 	sb.WriteString(strings.Repeat("\n", 2))
 
 	// Render the tiles of the draw.
-	sb.WriteString(ui.game.draw.view())
+	sb.WriteString(ui.game.draw.view(ui.opts.showPoints))
 	sb.WriteByte('\n')
 
 	if ui.game.dict != nil {

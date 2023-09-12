@@ -67,6 +67,7 @@ Flags:
   -d, --dictionary string     custom dictionary file path
   -l, --distribution string   tiles distribution language (default "french")
   -h, --help                  help for scrabbler
+  -p, --show-points           show tile points
   -w, --word-length uint8     the number of tiles to draw (default 7)
 ```
 
@@ -124,6 +125,13 @@ See the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/cmd/diction
 - 🇮🇹 [ZINGA](https://www.listediparole.it/tutteleparole.txt)
 - 🇩🇪 [hippler/german-wordlist](https://github.com/hippler/german-wordlist)
 - 🇮🇸 [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl)
+
+#### Show tile points
+
+The tiles of the draw can optionally show the points of each letter using the flags `-p`/`--show-points`. This option is disabled by default.
+
+> **Important**
+> The subscript characters [U+2080](https://www.compart.com/en/unicode/U+2080) to [U+2089](https://www.compart.com/en/unicode/U+2089) are used to represent the digits from 0 to 9. The number 10 is represented using the [U+2093](https://www.compart.com/en/unicode/U+2093) (*Latin Subscript Small Letter X*) to preserve equal spacing. Make sure you use a font that support those characters.
 
 ### Key bindings
 

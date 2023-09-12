@@ -83,12 +83,12 @@ func (s *splitTiles) shuffle() *splitTiles {
 	return s
 }
 
-func (s splitTiles) view() string {
+func (s splitTiles) view(withPoints bool) string {
 	sb := strings.Builder{}
 
 	sb.WriteString(lipgloss.JoinHorizontal(lipgloss.Top,
-		s.vowels.view(),
-		s.consonants.view(),
+		s.vowels.view(withPoints),
+		s.consonants.view(withPoints),
 	))
 	sb.WriteByte('\n')
 
