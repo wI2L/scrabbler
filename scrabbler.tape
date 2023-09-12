@@ -18,7 +18,7 @@ Enter
 Sleep 2
 
 Show
-Sleep 1
+Sleep 2
 Type "?"
 Sleep 2
 Type "?"

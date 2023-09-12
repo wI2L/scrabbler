@@ -3,14 +3,14 @@
 <p align=center><b>Pick your tiles, but not yourself!</b></p>
 <p align=center>Automatic draw TUI for your Scrabble <i>duplicate</i> games</p>
 <p align=center>
-    <img src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/FR.svg">
-    <img src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/US.svg">
-    <img src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/GB-NIR.svg">
-    <img src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/DE.svg">
-    <img src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IT.svg">
-    <img src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/NL.svg">
-    <img src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/CZ.svg">
-    <img src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IS.svg">
+    <img alt="French" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/FR.svg">
+    <img alt="English (US)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/US.svg">
+    <img alt="English (UK)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/GB-NIR.svg">
+    <img alt="German" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/DE.svg">
+    <img alt="Italian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IT.svg">
+    <img alt="Dutch" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/NL.svg">
+    <img alt="Czech" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/CZ.svg">
+    <img alt="Icelandic" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IS.svg">
 </p>
 <p align=center>
     <img alt="GitHub Release (latest SemVer)" src="https://img.shields.io/github/v/release/wI2L/scrabbler">
@@ -23,7 +23,7 @@
 ## Features
 
 - Automatic and retryable random draw
-- Custom word length (default to `7`)
+- Custom word length
 - Custom draw configuration (vowels and consonants requirements)
 - [Tiles distribution for 7 languages](#tiles-distribution)
 - [Word insights from dictionaries](#custom-dictionary)
@@ -72,7 +72,7 @@ Flags:
 
 #### Word length
 
-The official rule define a word of seven (`7`) letters, but you can change it using the `-w`/`--word-length` flag:
+The official rule define a word of seven (`7`) letters, but you can change it using the `-w`/`--word-length` flags:
 
 ```shell
 scrabbler --word-length=8
@@ -82,21 +82,25 @@ scrabbler --word-length=8
 
 By default, the application starts with the [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) tiles distribution.
 
-You can change it with the `-d`/`--distribution` flag:
+You can change it with the `-d`/`--distribution` flags:
 
 ```shell
 scrabbler --distribution=english
 ```
 
 The list of know distributions are:
-- [`french`](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French)
-- [`english`](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#English)
-- [`german`](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#German)
-- [`italian`](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Italian)
-- [`dutch`](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Dutch)
-- [`czech`](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Czech)
-- [`icelandic`](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Icelandic)
-  - `krafla`: independent, improved letter distribution for the Icelandic language
+
+- `french`
+- `english`
+- `german`
+- `italian`
+- `dutch`
+- `czech`
+- `icelandic`: The standard Icelandic distribution, from Tinderbox games under license from Mattel
+- `krafla`: Alternate Icelandic distribution, sanctioned by Iceland's Scrabble clubs for their tournaments and for the national championship
+
+> **Note**
+> All information are compiled from the [Scrabble letter distributions](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Indonesian) Wikipedia page.
 
 See the [distribution.go](https://github.com/wI2L/scrabbler/blob/master/cmd/distribution.go) file, which define the tiles distribution for each language.
 
@@ -104,7 +108,7 @@ See the [distribution.go](https://github.com/wI2L/scrabbler/blob/master/cmd/dist
 
 By default, the application loads the French *ODS8* dictionary, which is embedded into the binary with the Go `embed` package.
 
-You can specify the path of a dictionary of your choice with the `-w`/`--dictionary` flag:
+You can specify the path of a dictionary of your choice with the `-w`/`--dictionary` flags:
 
 ```shell
 scrabbler --dictionary=dictionaries/english/twl06.txt
@@ -123,15 +127,15 @@ See the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/cmd/diction
 
 ### Key bindings
 
-| Key binding                                           | Description                             |
-|-------------------------------------------------------|-----------------------------------------|
-| <kbd>Control</kbd> + <kbd>C</kbd> / <kbd>Escape</kbd> | Exit application                        |
-| <kbd>?</kbd>                                          | Toggle help                             |
-| <kbd>Enter</kbd>                                      | Validate selection/play word            |
-| <kbd>←</kbd> / <kbd>Y</kbd>                           | Select *Yes* option                     |
-| <kbd>→</kbd> / <kbd>N</kbd>                           | Select *No* option                      |
-| <kbd>Tab</kbd>                                        | Toggle selection                        |
-| <kbd>Control</kbd> + <kbd>G</kbd>                     | x1: Show insights<br>x2: Show scrabbles |
+| Keys                                                  | Description                                                  |
+|:------------------------------------------------------|:-------------------------------------------------------------|
+| <kbd>Control</kbd> + <kbd>C</kbd> / <kbd>Escape</kbd> | Exit application                                             |
+| <kbd>?</kbd>                                          | Toggle help                                                  |
+| <kbd>Enter</kbd>                                      | Validate selection/play word                                 |
+| <kbd>←</kbd> / <kbd>Y</kbd>                           | Select *Yes* option                                          |
+| <kbd>→</kbd> / <kbd>N</kbd>                           | Select *No* option                                           |
+| <kbd>Tab</kbd>                                        | Toggle selection                                             |
+| <kbd>Control</kbd> + <kbd>G</kbd>                     | *press once*: Show insights<br>*press twice*: Show scrabbles |
 
 ## License
 
