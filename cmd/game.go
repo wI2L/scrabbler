@@ -95,6 +95,7 @@ func (s splitTiles) view() string {
 	return sb.String()
 }
 
+//nolint:unparam
 func (s *splitTiles) draw(kind letterKind, n uint, predicates []drawPredicate) (tiles, error) {
 	var ts *tiles
 
@@ -160,7 +161,7 @@ func (g *game) drawWithRequirements(vowels int) error {
 // word from the slice, or return an error if the word cannot
 // be played, leaving the slice untouched.
 func (g *game) playWord(word string, check bool) error {
-	cpy := append(g.draw.vowels, g.draw.consonants...)
+	cpy := append(g.draw.vowels, g.draw.consonants...) //nolint:gocritic
 
 	for _, r := range word {
 		if idx := cpy.findTile(string(unicode.ToUpper(r))); idx != -1 {

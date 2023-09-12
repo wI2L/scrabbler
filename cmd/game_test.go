@@ -122,7 +122,7 @@ func Test_splitTiles_shuffle(t *testing.T) {
 	var (
 		n    = 100
 		prev = b.tiles().String()
-		next = ""
+		next string
 	)
 	if testing.Short() {
 		n = 10

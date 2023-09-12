@@ -11,9 +11,7 @@ import (
 
 const arrowRight = "▸"
 
-var (
-	selectionStyle = lipgloss.NewStyle().Bold(true)
-)
+var selectionStyle = lipgloss.NewStyle().Bold(true)
 
 type Model struct {
 	value  bool
@@ -68,7 +66,7 @@ func (m Model) View() string {
 	sb := strings.Builder{}
 
 	sb.WriteString(m.prompt)
-	sb.WriteString(" ") //spacer
+	sb.WriteString(" ") // spacer
 
 	if m.value {
 		sb.WriteString(arrowRight)

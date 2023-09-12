@@ -4,6 +4,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+//nolint:gofumpt
 var (
 	tileStyle = lipgloss.NewStyle().
 		Width(3).
@@ -14,6 +15,7 @@ var (
 		BorderForeground(lipgloss.Color("#DFC6A0"))
 )
 
+//nolint:gofumpt
 var (
 	leftoverTileStyle = tileStyle.Copy().
 		BorderForeground(lipgloss.Color("#FFFFFF"))

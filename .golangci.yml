@@ -1,0 +1,17 @@
+linters:
+  enable:
+    - dupl
+    - dupword
+    - gocritic
+    - gofumpt
+    - goimports
+    - misspell
+    - prealloc
+    - stylecheck
+    - thelper
+    - tparallel
+    - unconvert
+    - unparam
+    - unused
+    - wastedassign
+    - whitespace

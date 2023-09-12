@@ -266,6 +266,8 @@ func Test_combinationsWithReplacement(t *testing.T) {
 var cachedDict indexedDict
 
 func frenchDict(t *testing.T) indexedDict {
+	t.Helper()
+
 	if cachedDict != nil {
 		return cachedDict
 	}
@@ -287,7 +289,7 @@ func frenchDict(t *testing.T) indexedDict {
 func tilesFromWord(word string, d distribution) tiles {
 	tiles := make(tiles, 0, len(word))
 
-	for _, r := range []rune(word) {
+	for _, r := range word {
 		for _, v := range d.letters {
 			if v.L == string(r) {
 				tiles = append(tiles, tile{letter: v})

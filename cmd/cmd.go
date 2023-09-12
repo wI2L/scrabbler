@@ -13,14 +13,13 @@ import (
 	"golang.org/x/term"
 )
 
-var (
-	wordLength uint8
-)
+var wordLength uint8
 
 func init() {
 	setupFlags()
 }
 
+//nolint:gofumpt
 var (
 	Root = &cobra.Command{
 		Use:  "scrabbler",
