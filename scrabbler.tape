@@ -4,9 +4,9 @@ Set FontSize 34
 Set Width 1800
 Set Height 1000
 Set Padding 40
-Set Framerate 30
+Set Framerate 1
 Set CursorBlink false
-Set PlaybackSpeed 0.5
+Set PlaybackSpeed 1
 
 Set Theme { "name": "Challenger Deep", "background": "#1b182c" }
 
@@ -15,26 +15,26 @@ Type "go build -o scrabbler"
 Enter
 Type "./scrabbler"
 Enter
-Sleep 4
+Sleep 2
 
 Show
-Sleep 2
+Sleep 1
 Type "?"
 Sleep 2
 Type "?"
-Sleep 2
+Sleep 1
 Right
-Sleep 2
+Sleep 1
 Enter@2 2
-Sleep 2
+Sleep 1
 Left
-Sleep 2
+Sleep 1
 Enter
 Sleep 2
 Ctrl+G
 Sleep 2
 Ctrl+G
-Sleep 4
+Sleep 3
 
 Hide
 Ctrl+C
