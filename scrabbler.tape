@@ -1,15 +1,15 @@
 Output scrabbler.gif
 
-Set FontFamily "SFMono"
-Set FontSize 42
-Set Width 2400
-Set Height 1200
-Set Padding 40
+Set FontFamily "SF Mono"
+Set FontSize 28
+Set Width 1600
+Set Height 800
+Set Padding 20
 Set Framerate 1
 Set CursorBlink false
 Set PlaybackSpeed 1
 Set WindowBar Colorful
-Set WindowBarSize 80
+Set WindowBarSize 45
 Set LineHeight 1
 
 Set Theme { "name": "Challenger Deep", "background": "#1b182c" }
@@ -19,7 +19,7 @@ Type "go build -o scrabbler"
 Enter
 Type "./scrabbler"
 Enter
-Sleep 2
+Sleep 3
 
 Show
 Sleep 2
