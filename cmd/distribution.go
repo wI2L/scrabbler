@@ -468,6 +468,49 @@ var krafla = distribution{
 	},
 }
 
+// afrikaans represents the distribution of letters for the
+// standard Afrikaans edition. It contains 104 tiles.
+// +----+-----+---------+-----+----+-----------+-----+----+-----+
+// |    | ×1  | ×2      | ×3  | ×4 | ×6        | ×8  | ×9 | ×16 |
+// +----+-----+---------+-----+----+-----------+-----+----+-----+
+// | 0  |     | [blank] |     |    |           |     |    |     |
+// | 1  |     |         |     |    | D O R S T | I N | A  | E   |
+// | 2  |     |         | H L | G  |           |     |    |     |
+// | 3  |     |         | K W |    |           |     |    |     |
+// | 4  |     | M U Y   |     |    |           |     |    |     |
+// | 5  |     | P V     |     |    |           |     |    |     |
+// | 8  | B F |         |     |    |           |     |    |     |
+// | 10 | J   |         |     |    |           |     |    |     |
+// +----+-----+---------+-----+----+-----------+-----+----+-----+
+var afrikaans = distribution{
+	lang: language.Afrikaans,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 9, 1},
+		{"B", 1, 8},
+		{"D", 6, 1},
+		{"E", 16, 1},
+		{"F", 1, 8},
+		{"G", 4, 2},
+		{"H", 3, 2},
+		{"I", 8, 1},
+		{"J", 1, 10},
+		{"K", 3, 3},
+		{"L", 3, 2},
+		{"M", 2, 4},
+		{"N", 8, 1},
+		{"O", 6, 1},
+		{"P", 2, 5},
+		{"R", 6, 1},
+		{"S", 6, 1},
+		{"T", 6, 1},
+		{"U", 2, 4},
+		{"V", 2, 5},
+		{"W", 3, 3},
+		{"Y", 2, 4},
+	},
+}
+
 var distributions = map[string]distribution{
 	"french":    french,
 	"english":   english,
@@ -477,4 +520,5 @@ var distributions = map[string]distribution{
 	"czech":     czech,
 	"icelandic": icelandic,
 	"krafla":    krafla,
+	"afrikaans": afrikaans,
 }

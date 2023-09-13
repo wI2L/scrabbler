@@ -11,6 +11,7 @@
     <img alt="Dutch" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/NL.svg">
     <img alt="Czech" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/CZ.svg">
     <img alt="Icelandic" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IS.svg">
+    <img alt="Afrikaans" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/ZA.svg">
 </p>
 <p align=center>
     <img alt="GitHub Release (latest SemVer)" src="https://img.shields.io/github/v/release/wI2L/scrabbler">
@@ -25,7 +26,7 @@
 - Automatic and retryable random draw
 - Custom word length
 - Custom draw configuration (*vowels or consonants requirements*)
-- [Tile distributions for several languages](#tiles-distribution)
+- [Letter distributions for many languages](#letter-distributions)
 - [Word insights from dictionaries](#custom-dictionary)
 - Game timer
 
@@ -66,10 +67,10 @@ Usage:
 Flags:
   -v, --debug                 enable debug logging to a file
   -d, --dictionary string     custom dictionary file path
-  -l, --distribution string   tiles distribution language (default "french")
+  -l, --distribution string   letter distribution language (default "french")
   -h, --help                  help for scrabbler
   -p, --show-points           show tile points
-  -t, --timer duration[=5m]   enable game timer
+  -t, --timer duration[=5m]   enable play timer
   -w, --word-length uint8     the number of tiles to draw (default 7)
 ```
 
@@ -106,15 +107,19 @@ scrabbler --timer=3m
 
 > **Note**
 > The duration value must be expressed as a stringified Go `Duration`, as defined by the documentation of the [`time.ParseDuration`](https://pkg.go.dev/time#ParseDuration) function.
+>
 > Examples:
 >
 > - *20 seconds*: `20s`
 > - *1 minute*: `1m`
 > - *3 minutes and 20 seconds*: `3m20s`
 
-#### Tiles distribution
+#### Letter distributions
 
-By default, the application starts with the [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) tiles distribution.
+> Editions of the word board game Scrabble in different languages have differing letter distributions of the tiles, because the frequency of each letter of the alphabet is different for every language. As a general rule, the rarer the letter, the more points it is worth.
+> Most languages use sets of 100 tiles, since the original distribution of ninety-eight tiles was later augmented with two blank tiles.
+
+By default, the application starts with the [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) letter distribution.
 
 You can change it with the `-l`/`--distribution` flags:
 
@@ -122,21 +127,25 @@ You can change it with the `-l`/`--distribution` flags:
 scrabbler --distribution=english
 ```
 
-The list of know distributions are:
+Below is the list of official distributions that are supported:
 
-- `french`
-- `english`
-- `german`
-- `italian`
-- `dutch`
+- `afrikaans`
 - `czech`
-- `icelandic`: The standard Icelandic distribution, from Tinderbox games under license from Mattel
+- `dutch`
+- `english`
+- `french`
+- `german`
+- `icelandic`
+- `italian`
+
+Alternate distributions are also available:
+
 - `krafla`: Alternate Icelandic distribution, sanctioned by Iceland's Scrabble clubs for their tournaments and for the national championship
 
 > **Note**
 > All information are compiled from the [Scrabble letter distributions](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Indonesian) Wikipedia page.
 
-See the [distribution.go](https://github.com/wI2L/scrabbler/blob/master/cmd/distribution.go) file, which define the tiles distribution for each language.
+See the [distribution.go](https://github.com/wI2L/scrabbler/blob/master/cmd/distribution.go) file, which define the letter distribution for each language.
 
 #### Custom dictionary
 
@@ -148,7 +157,7 @@ Alternatively, you can specify the path of a dictionary of your choice with the 
 scrabbler --dictionary=cmd/dictionaries/english/twl06.txt.gz
 ```
 
-A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted)*. The file can optionally be gzipped*.
+A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted*). The file can optionally be *gzipped*.
 
 See the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/cmd/dictionaries) directory, which already contains some official and non-official dictionaries for several languages:
 

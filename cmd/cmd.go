@@ -104,7 +104,7 @@ func setupFlags() {
 		"distribution",
 		"l",
 		defaultDistrib,
-		"tiles distribution language",
+		"letter distribution language",
 	)
 	f.Uint8VarP(
 		&wordLength,
