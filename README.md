@@ -1,7 +1,7 @@
 <h1 align=center>scrabbler</h1>
 
 <p align=center><b>Pick your tiles, but not yourself!</b></p>
-<p align=center>Automatic draw TUI for your Scrabble <i>duplicate</i> games</p>
+<p align=center>Automatic draw TUI for <i>duplicate</i> Scrabble games</p>
 <p align=center>
     <img alt="French" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/FR.svg">
     <img alt="English (US)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/US.svg">
@@ -13,7 +13,9 @@
     <img alt="Icelandic" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IS.svg">
     <img alt="Afrikaans" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/ZA.svg">
     <img alt="Bulgarian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/BG.svg">
+    <img alt="Danish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/DK.svg">
 </p>
+<br/>
 <p align=center>
     <img alt="GitHub Release (latest SemVer)" src="https://img.shields.io/github/v/release/wI2L/scrabbler">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/wI2L/scrabbler/ci.yml">
@@ -133,6 +135,7 @@ Below is the list of official distributions that are supported:
 - `afrikaans`
 - `bulgarian`
 - `czech`
+- `danish`
 - `dutch`
 - `english`
 - `french`

@@ -562,6 +562,52 @@ var bulgarian = distribution{
 	},
 }
 
+// danish represents the distribution of letters for the
+// standard Danish edition. It contains 100 tiles.
+// +---+-----+---------------+-----------+-------+-----------+-----+----+----+
+// |   | ×1  | ×2            | ×3        | ×4    | ×5        | ×6  | ×7 | ×9 |
+// +---+-----+---------------+-----------+-------+-----------+-----+----+----+
+// | 0 |     | [blank]       |           |       |           |     |    |    |
+// | 1 |     |               |           |       |           | N R | A  | E  |
+// | 2 |     |               |           |       | D L O S T |     |    |    |
+// | 3 |     |               | F G M U V | B I K |           |     |    |    |
+// | 4 |     | H J P Y Æ Ø Å |           |       |           |     |    |    |
+// | 8 | X Z | C             |           |       |           |     |    |    |
+// +---+-----+---------------+-----------+-------+-----------+-----+----+----+
+var danish = distribution{
+	lang: language.Danish,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 7, 1},
+		{"B", 4, 3},
+		{"C", 2, 8},
+		{"D", 5, 2},
+		{"E", 9, 1},
+		{"F", 3, 3},
+		{"G", 3, 3},
+		{"H", 2, 4},
+		{"I", 4, 3},
+		{"J", 2, 4},
+		{"K", 4, 3},
+		{"L", 5, 2},
+		{"M", 3, 3},
+		{"N", 6, 1},
+		{"O", 5, 2},
+		{"P", 2, 4},
+		{"R", 6, 1},
+		{"S", 5, 2},
+		{"T", 5, 2},
+		{"U", 3, 3},
+		{"V", 3, 3},
+		{"X", 1, 8},
+		{"Y", 2, 4},
+		{"Z", 1, 8},
+		{"Å", 2, 4},
+		{"Æ", 2, 4},
+		{"Ø", 2, 4},
+	},
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":    french,
@@ -574,4 +620,5 @@ var distributions = map[string]distribution{
 	"krafla":    krafla,
 	"afrikaans": afrikaans,
 	"bulgarian": bulgarian,
+	"danish":    danish,
 }
