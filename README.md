@@ -68,6 +68,7 @@ Flags:
   -l, --distribution string   tiles distribution language (default "french")
   -h, --help                  help for scrabbler
   -p, --show-points           show tile points
+  -t, --timer duration[=5m]   enable play timer
   -w, --word-length uint8     the number of tiles to draw (default 7)
 ```
 
@@ -87,6 +88,28 @@ The tiles of the draw can optionally show the points of each letter using the fl
 > The subscript characters [U+2080](https://www.compart.com/en/unicode/U+2080) to [U+2089](https://www.compart.com/en/unicode/U+2089) are used to represent the digits from 0 to 9. The number 10 is represented using the [U+2093](https://www.compart.com/en/unicode/U+2093) (*Latin Subscript Small Letter X*) to preserve equal spacing.
 >
 > Make sure to use a font that support those characters, such as *SF Mono* on macOS.
+
+#### Play timer
+
+It is possible to show a timer during the *play* phase, once a draw have been accepted. To use the default timer duration of 5 minutes, simply use the `-t`/`--timer` flags without specifying a value:
+
+```shell
+scrabbler --timer
+```
+
+To change the duration, set the flag with a custom value:
+
+```shell
+scrabbler --timer=3m
+```
+
+> **Note**
+> The duration value must be expressed as a stringified Go `Duration`, as defined by the documentation of the [`time.ParseDuration`](https://pkg.go.dev/time#ParseDuration) function.
+> Examples:
+>
+> - *20 seconds*: `20s`
+> - *1 minute*: `1m`
+> - *3 minutes and 20 seconds*: `3m20s`
 
 #### Tiles distribution
 

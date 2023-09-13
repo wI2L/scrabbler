@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/muesli/termenv"
@@ -13,9 +14,10 @@ import (
 )
 
 var (
-	debug      bool
-	wordLength uint8
-	showPoints bool
+	debug         bool
+	wordLength    uint8
+	showPoints    bool
+	timerDuration time.Duration
 
 	Root = &cobra.Command{
 		Use:  "scrabbler",
@@ -62,9 +64,10 @@ func run(cmd *cobra.Command, _ []string) error {
 	out := termenv.NewOutput(os.Stdout)
 	out.SetWindowTitle("scrabbler")
 
-	tui := newTUI(dv, tw, th, dict, options{
-		wordLength: wordLength,
-		showPoints: showPoints,
+	tui := newTUI(dv, dict, tw, th, options{
+		wordLength:    wordLength,
+		showPoints:    showPoints,
+		timerDuration: timerDuration,
 	})
 	prg := tea.NewProgram(
 		tui,
@@ -91,20 +94,6 @@ func run(cmd *cobra.Command, _ []string) error {
 func setupFlags() {
 	f := Root.Flags()
 
-	f.BoolVarP(
-		&debug,
-		"debug",
-		"v",
-		false,
-		"enable debug logging to a file",
-	)
-	f.Uint8VarP(
-		&wordLength,
-		"word-length",
-		"w",
-		7,
-		"the number of tiles to draw",
-	)
 	f.StringP(
 		"dictionary",
 		"d",
@@ -117,6 +106,20 @@ func setupFlags() {
 		defaultDistrib,
 		"tiles distribution language",
 	)
+	f.Uint8VarP(
+		&wordLength,
+		"word-length",
+		"w",
+		7,
+		"the number of tiles to draw",
+	)
+	f.BoolVarP(
+		&debug,
+		"debug",
+		"v",
+		false,
+		"enable debug logging to a file",
+	)
 	f.BoolVarP(
 		&showPoints,
 		"show-points",
@@ -124,4 +127,14 @@ func setupFlags() {
 		false,
 		"show tile points",
 	)
+	f.DurationVarP(
+		&timerDuration,
+		"timer",
+		"t",
+		0,
+		"enable play timer",
+	)
+	// Set a default value for the timer duration
+	// if the flag is passed without a value.
+	f.Lookup("timer").NoOptDefVal = "5m"
 }

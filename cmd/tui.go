@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/charmbracelet/bubbles/textinput"
+	"github.com/charmbracelet/bubbles/timer"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
@@ -24,6 +26,7 @@ type tui struct {
 	state    state
 	input    textinput.Model
 	confirm  confirm.Model
+	timer    timer.Model
 	width    int
 	height   int
 	insights int
@@ -31,13 +34,14 @@ type tui struct {
 }
 
 type options struct {
-	showPoints bool
-	wordLength uint8
+	showPoints    bool
+	wordLength    uint8
+	timerDuration time.Duration
 }
 
 var _ tea.Model = &tui{}
 
-func newTUI(d distribution, width, height int, dict indexedDict, opts options) *tui {
+func newTUI(d distribution, dict indexedDict, width, height int, opts options) *tui {
 	return &tui{
 		game: &game{
 			bag:     newBag(french),
@@ -68,6 +72,9 @@ func (ui *tui) Init() tea.Cmd {
 	}
 	ui.confirm = confirm.New("Accept draw?")
 
+	if ui.opts.timerDuration != 0 {
+		ui.timer = timer.NewWithInterval(ui.opts.timerDuration, time.Second)
+	}
 	return tea.Batch(
 		ui.confirm.Init(),
 	)
@@ -80,6 +87,13 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return ui, nil
 		}
 		ui.width, ui.height = m.Width, m.Height
+	case timer.TickMsg, timer.StartStopMsg:
+		if ui.state == drawing {
+			return ui, nil
+		}
+		var cmd tea.Cmd
+		ui.timer, cmd = ui.timer.Update(msg)
+		return ui, cmd
 	case tea.KeyMsg:
 		switch m.Type {
 		case tea.KeyCtrlC, tea.KeyEsc:
@@ -93,6 +107,9 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 					ui.input.Focus()
 					ui.state = playing
+					if ui.opts.timerDuration != 0 {
+						return ui, ui.timer.Start()
+					}
 				} else {
 					ui.insights = 0
 					if err := ui.game.drawWithRequirements(3); err != nil {
@@ -122,6 +139,11 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				ui.insights = 0
 				ui.state = drawing
 				ui.input.Reset()
+				if ui.opts.timerDuration != 0 {
+					ui.timer.Stop()
+					ui.timer.Timeout = ui.opts.timerDuration
+				}
+				return ui, nil
 			}
 		case tea.KeyCtrlG:
 			ui.insights++
@@ -190,6 +212,16 @@ func (ui *tui) View() string {
 		sb.WriteString(ui.confirm.View())
 	case playing:
 		sb.WriteString(ui.input.View())
+
+		if ui.state == playing && ui.opts.timerDuration != 0 {
+			sb.WriteString(strings.Repeat("\n", 2))
+
+			ts := formatDuration(ui.timer.Timeout)
+			if ui.timer.Timedout() {
+				ts = alertText.Render("Time elapsed")
+			}
+			sb.WriteString(ts)
+		}
 	}
 render:
 	return lipgloss.Place(
@@ -199,9 +231,23 @@ render:
 	)
 }
 
-const wordSep = " ■ "
+func formatDuration(d time.Duration) string {
+	d = d.Round(time.Second)
+	h := d / time.Hour
+	d -= h * time.Hour
+	m := d / time.Minute
+	d -= m * time.Minute
+	s := d / time.Second
+
+	if h > 0 {
+		return fmt.Sprintf("%02d:%02d:%02d", h, m, s)
+	}
+	return fmt.Sprintf("%02d:%02d", m, s)
+}
 
 func scrabbleListView(words []string, maxWidth int) string {
+	const wordSep = " ■ "
+
 	var (
 		lines     []string
 		lineWidth int
