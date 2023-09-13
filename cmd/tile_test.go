@@ -1,8 +1,6 @@
 package cmd
 
-import (
-	"testing"
-)
+import "testing"
 
 func Test_tiles_splitByKind(t *testing.T) {
 	for _, word := range []string{

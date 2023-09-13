@@ -1,8 +1,6 @@
 package cmd
 
-import (
-	"testing"
-)
+import "testing"
 
 func Test_newBag(t *testing.T) {
 	for _, tt := range []struct {
