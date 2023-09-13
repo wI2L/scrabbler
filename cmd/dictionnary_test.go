@@ -3,6 +3,7 @@ package cmd
 import (
 	"bufio"
 	"bytes"
+	"compress/gzip"
 	"io"
 	"os"
 	"path/filepath"
@@ -13,7 +14,7 @@ import (
 
 const dictDir = "dictionaries/"
 
-func Test_readDictFile(t *testing.T) {
+func Test_loadDictionaryFile(t *testing.T) {
 	if testing.Short() {
 		t.Skip()
 	}
@@ -31,7 +32,7 @@ func Test_readDictFile(t *testing.T) {
 			}
 			for _, f := range files {
 				fp := filepath.Join(dictDir, e.Name(), f.Name())
-				if filepath.Ext(fp) == ".txt" {
+				if filepath.Ext(fp) == ".gz" {
 					paths = append(paths, fp)
 				}
 			}
@@ -41,6 +42,10 @@ func Test_readDictFile(t *testing.T) {
 		filename := filepath.Base(path)
 
 		t.Run(filename, func(t *testing.T) {
+			dict, err := loadDictionaryFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
 			f, err := os.Open(path)
 			if err != nil {
 				t.Fatal(err)
@@ -50,14 +55,11 @@ func Test_readDictFile(t *testing.T) {
 					t.Error(err)
 				}
 			})
-			dict, err := parseDictionary(f)
+			r, err := gzip.NewReader(f)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if _, err := f.Seek(0, io.SeekStart); err != nil {
-				t.Fatal(err)
-			}
-			linesCount, err := wc(f)
+			linesCount, err := wc(r)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -271,13 +273,9 @@ func frenchDict(t *testing.T) indexedDict {
 	if cachedDict != nil {
 		return cachedDict
 	}
-	dictPath := filepath.Join(dictDir, "french/ods8.txt")
+	path := filepath.Join(dictDir, "french/ods8.txt.gz")
 
-	f, err := os.Open(dictPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	dict, err := parseDictionary(f)
+	dict, err := loadDictionaryFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}

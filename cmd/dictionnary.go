@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"bufio"
+	"compress/gzip"
 	_ "embed"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"slices"
 	"sort"
@@ -67,20 +69,26 @@ func loadDictionaryFile(path string) (indexedDict, error) {
 	defer func() {
 		_ = f.Close()
 	}()
-	d, err := parseDictionary(f)
+	gzipped, err := isGzipCompressed(f)
+	if err != nil {
+		return nil, err
+	}
+	if _, err := f.Seek(0, 0); err != nil {
+		return nil, err
+	}
+	var reader io.ReadCloser = f
+
+	if gzipped {
+		reader, err = gzip.NewReader(f)
+		if err != nil {
+			return nil, err
+		}
+	}
+	d, err := parseDictionary(reader)
 	if err != nil {
 		return nil, err
 	}
 	return d, nil
-}
-
-func checkWord(w string) error {
-	for _, r := range w {
-		if !unicode.IsLetter(r) {
-			return fmt.Errorf("'%c' is not a letter", r)
-		}
-	}
-	return nil
 }
 
 func parseDictionary(r io.ReadCloser) (indexedDict, error) {
@@ -106,6 +114,28 @@ func parseDictionary(r io.ReadCloser) (indexedDict, error) {
 		return nil, err
 	}
 	return dict, nil
+}
+
+func isGzipCompressed(r io.ReadCloser) (bool, error) {
+	buf := make([]byte, 512)
+
+	if _, err := r.Read(buf); err != nil {
+		return false, err
+	}
+	fileType := http.DetectContentType(buf)
+	if fileType == "application/x-gzip" {
+		return true, nil
+	}
+	return false, nil
+}
+
+func checkWord(w string) error {
+	for _, r := range w {
+		if !unicode.IsLetter(r) {
+			return fmt.Errorf("'%c' is not a letter", r)
+		}
+	}
+	return nil
 }
 
 // Port of Python3 eponymous function from itertools package.

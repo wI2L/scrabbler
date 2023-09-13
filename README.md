@@ -79,6 +79,15 @@ The official rule define a word of seven (`7`) letters, but you can change it us
 scrabbler --word-length=8
 ```
 
+#### Show tile points
+
+The tiles of the draw can optionally show the points of each letter using the flags `-p`/`--show-points`. This option is disabled by default.
+
+> **Important**
+> The subscript characters [U+2080](https://www.compart.com/en/unicode/U+2080) to [U+2089](https://www.compart.com/en/unicode/U+2089) are used to represent the digits from 0 to 9. The number 10 is represented using the [U+2093](https://www.compart.com/en/unicode/U+2093) (*Latin Subscript Small Letter X*) to preserve equal spacing.
+>
+> Make sure to use a font that support those characters, such as *SF Mono* on macOS.
+
 #### Tiles distribution
 
 By default, the application starts with the [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) tiles distribution.
@@ -109,13 +118,13 @@ See the [distribution.go](https://github.com/wI2L/scrabbler/blob/master/cmd/dist
 
 By default, the application loads the French *ODS8* dictionary, which is embedded into the binary with the Go `embed` package.
 
-You can specify the path of a dictionary of your choice with the `-w`/`--dictionary` flags:
+Alternatively, you can specify the path of a dictionary of your choice with the `-w`/`--dictionary` flags:
 
 ```shell
-scrabbler --dictionary=dictionaries/english/twl06.txt
+scrabbler --dictionary=dictionaries/english/twl06.txt.gz
 ```
 
-A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted)*.
+A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted)*. The file can optionally be gzipped (*.txt.gz*)
 
 See the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/cmd/dictionaries) directory, which already contains some official and non-official dictionaries for several languages:
 
@@ -125,13 +134,6 @@ See the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/cmd/diction
 - 🇮🇹 [ZINGA](https://www.listediparole.it/tutteleparole.txt)
 - 🇩🇪 [hippler/german-wordlist](https://github.com/hippler/german-wordlist)
 - 🇮🇸 [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl)
-
-#### Show tile points
-
-The tiles of the draw can optionally show the points of each letter using the flags `-p`/`--show-points`. This option is disabled by default.
-
-> **Important**
-> The subscript characters [U+2080](https://www.compart.com/en/unicode/U+2080) to [U+2089](https://www.compart.com/en/unicode/U+2089) are used to represent the digits from 0 to 9. The number 10 is represented using the [U+2093](https://www.compart.com/en/unicode/U+2093) (*Latin Subscript Small Letter X*) to preserve equal spacing. Make sure you use a font that support those characters.
 
 ### Key bindings
 
