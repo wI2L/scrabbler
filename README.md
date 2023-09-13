@@ -24,9 +24,10 @@
 
 - Automatic and retryable random draw
 - Custom word length
-- Custom draw configuration (vowels and consonants requirements)
-- [Tiles distribution for 7 languages](#tiles-distribution)
+- Custom draw configuration (*vowels or consonants requirements*)
+- [Tile distributions for several languages](#tiles-distribution)
 - [Word insights from dictionaries](#custom-dictionary)
+- Game timer
 
 ## Installation
 
@@ -51,8 +52,8 @@ Download pre-compiled binaries from the [Releases](https://github.com/wI2L/scrab
 
 The application presents itself as a terminal user-interface with two *views*:
 
-- **draw view**: displays the tiles that are randomly drawn from the selected distribution. You can either accept the draw or refuse it to generate a new one. *Note that tiles that were not played in the previous round are kept and are not drawn again.*
-- **play view**: allows you to enter the tiles that were played (the order you type them in doesn't matter). You cannot enter unavailable tiles.
+- **Draw view**: displays the tiles that are randomly drawn from the selected distribution. You can either accept the draw or refuse it to generate a new one. *Note that tiles that were not played in the previous round are kept and are not drawn again.*
+- **Play view**: allows you to enter the tiles that were played (the order you type them in doesn't matter). You cannot enter unavailable tiles.
 
 ### Options
 
@@ -68,7 +69,7 @@ Flags:
   -l, --distribution string   tiles distribution language (default "french")
   -h, --help                  help for scrabbler
   -p, --show-points           show tile points
-  -t, --timer duration[=5m]   enable play timer
+  -t, --timer duration[=5m]   enable game timer
   -w, --word-length uint8     the number of tiles to draw (default 7)
 ```
 
@@ -80,7 +81,7 @@ The official rule define a word of seven (`7`) letters, but you can change it us
 scrabbler --word-length=8
 ```
 
-#### Show tile points
+#### Tile points
 
 The tiles of the draw can optionally show the points of each letter using the flags `-p`/`--show-points`. This option is disabled by default.
 
@@ -89,7 +90,7 @@ The tiles of the draw can optionally show the points of each letter using the fl
 >
 > Make sure to use a font that support those characters, such as *SF Mono* on macOS.
 
-#### Play timer
+#### Game timer
 
 It is possible to show a timer during the *play* phase, once a draw have been accepted. To use the default timer duration of 5 minutes, simply use the `-t`/`--timer` flags without specifying a value:
 
@@ -115,7 +116,7 @@ scrabbler --timer=3m
 
 By default, the application starts with the [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) tiles distribution.
 
-You can change it with the `-d`/`--distribution` flags:
+You can change it with the `-l`/`--distribution` flags:
 
 ```shell
 scrabbler --distribution=english
@@ -139,36 +140,36 @@ See the [distribution.go](https://github.com/wI2L/scrabbler/blob/master/cmd/dist
 
 #### Custom dictionary
 
-By default, the application loads the French *ODS8* dictionary, which is embedded into the binary with the Go `embed` package.
+By default, the application loads the official French Scrabble dictionary (ODS8), which is embedded into the binary with the Go `embed` package.
 
-Alternatively, you can specify the path of a dictionary of your choice with the `-w`/`--dictionary` flags:
+Alternatively, you can specify the path of a dictionary of your choice with the `-d`/`--dictionary` flags:
 
 ```shell
-scrabbler --dictionary=dictionaries/english/twl06.txt.gz
+scrabbler --dictionary=cmd/dictionaries/english/twl06.txt.gz
 ```
 
-A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted)*. The file can optionally be gzipped (*.txt.gz*)
+A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted)*. The file can optionally be gzipped*.
 
 See the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/cmd/dictionaries) directory, which already contains some official and non-official dictionaries for several languages:
 
-- 🇫🇷 [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble)
-- 🇬🇧 [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words)
-- 🇺🇸 [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List)
-- 🇮🇹 [ZINGA](https://www.listediparole.it/tutteleparole.txt)
-- 🇩🇪 [hippler/german-wordlist](https://github.com/hippler/german-wordlist)
-- 🇮🇸 [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl)
+- :fr: [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble)
+- :uk: [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words)
+- :us: [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List)
+- :it: [ZINGA](https://www.listediparole.it/tutteleparole.txt)
+- :de: [hippler/german-wordlist](https://github.com/hippler/german-wordlist)
+- :iceland: [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl)
 
 ### Key bindings
 
-| Keys                                                  | Description                                                  |
-|:------------------------------------------------------|:-------------------------------------------------------------|
-| <kbd>Control</kbd> + <kbd>C</kbd> / <kbd>Escape</kbd> | Exit application                                             |
-| <kbd>?</kbd>                                          | Toggle help                                                  |
-| <kbd>Enter</kbd>                                      | Validate selection/play word                                 |
-| <kbd>←</kbd> / <kbd>Y</kbd>                           | Select *Yes* option                                          |
-| <kbd>→</kbd> / <kbd>N</kbd>                           | Select *No* option                                           |
-| <kbd>Tab</kbd>                                        | Toggle selection                                             |
-| <kbd>Control</kbd> + <kbd>G</kbd>                     | *press once*: Show insights<br>*press twice*: Show scrabbles |
+| Keys                                       | Description                                                                                                                                          |
+|:-------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| <kbd>Control + C</kbd> / <kbd>Escape</kbd> | Exit the application (:warning: **no confirmation is requested**)                                                                                    |
+| <kbd>?</kbd>                               | Toggle help (switch between short and full views)                                                                                                    |
+| <kbd>Enter</kbd>                           | Validate selection or play word                                                                                                                      |
+| <kbd>←</kbd> / <kbd>Y</kbd>                | Select the *yes* option                                                                                                                              |
+| <kbd>→</kbd> / <kbd>N</kbd>                | Select the *no* option                                                                                                                               |
+| <kbd>Tab</kbd>                             | Toggle option selection                                                                                                                              |
+| <kbd>Control + G</kbd>                     | Press once to show word insights (whether one or more *scrabble(s)* have been found with the tiles of the draw), press twice to show the words found |
 
 ## License
 
