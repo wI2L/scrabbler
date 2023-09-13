@@ -1,12 +1,16 @@
 Output scrabbler.gif
 
-Set FontSize 34
-Set Width 1800
-Set Height 1000
+Set FontFamily "SFMono"
+Set FontSize 42
+Set Width 2400
+Set Height 1200
 Set Padding 40
 Set Framerate 1
 Set CursorBlink false
 Set PlaybackSpeed 1
+Set WindowBar Colorful
+Set WindowBarSize 80
+Set LineHeight 1
 
 Set Theme { "name": "Challenger Deep", "background": "#1b182c" }
 
@@ -22,10 +26,10 @@ Sleep 2
 Type "?"
 Sleep 2
 Type "?"
-Sleep 1
+Sleep 2
 Right
 Sleep 1
-Enter@2 2
+Enter@1.5 2
 Sleep 1
 Left
 Sleep 1
