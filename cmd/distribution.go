@@ -511,6 +511,58 @@ var afrikaans = distribution{
 	},
 }
 
+// bulgarian represents the distribution of letters for the
+// standard Bulgarian edition. It contains 102 tiles.
+// +----+-------+---------+-------+---------+----+-----+-----+
+// |    | ×1    | ×2      | ×3    | ×4      | ×5 | ×8  | ×9  |
+// +----+-------+---------+-------+---------+----+-----+-----+
+// | 0  |       | [blank] |       |         |    |     |     |
+// | 1  |       |         |       | Н П Р С | Т  | Е И | А О |
+// | 2  |       |         | Б К Л | В Д М   |    |     |     |
+// | 3  |       | Ъ       | Г     |         |    |     |     |
+// | 4  |       | Ж З     |       |         |    |     |     |
+// | 5  | Й Х   | Ч Я     | У     |         |    |     |     |
+// | 8  | Ц Ш Ю |         |       |         |    |     |     |
+// | 10 | Ф Щ Ь |         |       |         |    |     |     |
+// +----+-------+---------+-------+---------+----+-----+-----+
+var bulgarian = distribution{
+	lang: language.Bulgarian,
+	letters: []letter{
+		{blank, 2, 0},
+		{"А", 9, 1},
+		{"Б", 3, 2},
+		{"В", 4, 2},
+		{"Г", 3, 3},
+		{"Д", 4, 2},
+		{"Е", 8, 1},
+		{"Ж", 2, 4},
+		{"З", 2, 4},
+		{"И", 8, 1},
+		{"Й", 1, 5},
+		{"К", 3, 2},
+		{"Л", 3, 2},
+		{"М", 4, 2},
+		{"Н", 4, 1},
+		{"О", 9, 1},
+		{"П", 4, 1},
+		{"Р", 4, 1},
+		{"С", 4, 1},
+		{"Т", 5, 1},
+		{"У", 3, 5},
+		{"Ф", 1, 10},
+		{"Х", 1, 5},
+		{"Ц", 1, 8},
+		{"Ч", 2, 5},
+		{"Ш", 1, 8},
+		{"Щ", 1, 10},
+		{"Ъ", 2, 3},
+		{"Ь", 1, 10},
+		{"Ю", 1, 8},
+		{"Я", 2, 5},
+	},
+}
+
+// sorted by addition time
 var distributions = map[string]distribution{
 	"french":    french,
 	"english":   english,
@@ -521,4 +573,5 @@ var distributions = map[string]distribution{
 	"icelandic": icelandic,
 	"krafla":    krafla,
 	"afrikaans": afrikaans,
+	"bulgarian": bulgarian,
 }

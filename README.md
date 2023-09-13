@@ -12,6 +12,7 @@
     <img alt="Czech" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/CZ.svg">
     <img alt="Icelandic" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IS.svg">
     <img alt="Afrikaans" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/ZA.svg">
+    <img alt="Bulgarian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/BG.svg">
 </p>
 <p align=center>
     <img alt="GitHub Release (latest SemVer)" src="https://img.shields.io/github/v/release/wI2L/scrabbler">
@@ -130,6 +131,7 @@ scrabbler --distribution=english
 Below is the list of official distributions that are supported:
 
 - `afrikaans`
+- `bulgarian`
 - `czech`
 - `dutch`
 - `english`
