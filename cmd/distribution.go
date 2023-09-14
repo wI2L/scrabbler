@@ -901,6 +901,50 @@ var lithuanian = distribution{
 	},
 }
 
+// malay represents the distribution of letters for the
+// standard Malay edition. It contains 100 tiles.
+// +----+-----+---------+-----+-----+-------+-----+-----+----+-----+
+// |    | ×1  | ×2      | ×3  | ×4  | ×5    | ×6  | ×7  | ×8 | ×19 |
+// +----+-----+---------+-----+-----+-------+-----+-----+----+-----+
+// | 0  |     | [blank] |     |     |       |     |     |    |     |
+// | 1  |     |         |     |     | M R T | K U | E I | N  | A   |
+// | 2  |     |         |     | L S |       |     |     |    |     |
+// | 3  |     |         | B D | G   |       |     |     |    |     |
+// | 4  |     | H O P   |     |     |       |     |     |    |     |
+// | 5  | J Y |         |     |     |       |     |     |    |     |
+// | 8  | C W |         |     |     |       |     |     |    |     |
+// | 10 | F Z |         |     |     |       |     |     |    |     |
+// +----+-----+---------+-----+-----+-------+-----+-----+----+-----+
+var malay = distribution{
+	lang: language.Malay,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 19, 1},
+		{"B", 3, 3},
+		{"C", 1, 8},
+		{"D", 3, 3},
+		{"E", 7, 1},
+		{"F", 1, 10},
+		{"G", 4, 3},
+		{"H", 2, 4},
+		{"I", 7, 1},
+		{"J", 1, 5},
+		{"K", 6, 1},
+		{"L", 4, 2},
+		{"M", 5, 1},
+		{"N", 8, 1},
+		{"O", 2, 4},
+		{"P", 2, 4},
+		{"R", 5, 1},
+		{"S", 4, 2},
+		{"T", 5, 1},
+		{"U", 6, 1},
+		{"W", 1, 8},
+		{"Y", 1, 5},
+		{"Z", 1, 10},
+	},
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":     french,
@@ -920,4 +964,5 @@ var distributions = map[string]distribution{
 	"indonesian": indonesian,
 	"latvian":    latvian,
 	"lithuanian": lithuanian,
+	"malay":      malay,
 }
