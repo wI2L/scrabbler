@@ -3,19 +3,20 @@
 <p align=center><b>Pick your tiles, but not yourself!</b></p>
 <p align=center>Automatic draw TUI for <i>duplicate</i> Scrabble games</p>
 <p align=center>
-    <img alt="French" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/FR.svg">
-    <img alt="English (US)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/US.svg">
-    <img alt="English (UK)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/GB-NIR.svg">
-    <img alt="German" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/DE.svg">
-    <img alt="Italian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IT.svg">
-    <img alt="Dutch" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/NL.svg">
-    <img alt="Czech" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/CZ.svg">
-    <img alt="Icelandic" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IS.svg">
-    <img alt="Afrikaans" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/ZA.svg">
-    <img alt="Bulgarian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/BG.svg">
-    <img alt="Danish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/DK.svg">
-    <img alt="Estonian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/EE.svg">
-    <img alt="Finnish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/FI.svg">
+    <img alt="French" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/FR.svg">
+    <img alt="English (US)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/US.svg">
+    <img alt="English (UK)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/GB-NIR.svg">
+    <img alt="German" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/DE.svg">
+    <img alt="Italian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/IT.svg">
+    <img alt="Dutch" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/NL.svg">
+    <img alt="Czech" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/CZ.svg">
+    <img alt="Icelandic" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/IS.svg">
+    <img alt="Afrikaans" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/ZA.svg">
+    <img alt="Bulgarian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/BG.svg">
+    <img alt="Danish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/DK.svg">
+    <img alt="Estonian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/EE.svg">
+    <img alt="Finnish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/FI.svg">
+    <img alt="Greek" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/GR.svg">
 </p>
 <br/>
 <p align=center>
@@ -121,6 +122,7 @@ scrabbler --timer=3m
 #### Letter distributions
 
 > Editions of the word board game Scrabble in different languages have differing letter distributions of the tiles, because the frequency of each letter of the alphabet is different for every language. As a general rule, the rarer the letter, the more points it is worth.
+>
 > Most languages use sets of 100 tiles, since the original distribution of ninety-eight tiles was later augmented with two blank tiles.
 
 By default, the application starts with the [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) letter distribution.
@@ -143,6 +145,7 @@ Below is the list of official distributions that are supported:
 - `finnish`
 - `french`
 - `german`
+- `greek`
 - `icelandic`
 - `italian`
 
