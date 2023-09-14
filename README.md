@@ -23,6 +23,7 @@
     <img alt="Malay" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/MY.svg">
     <img alt="Norwegian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/NO.svg">
     <img alt="Polish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/PL.svg">
+    <img alt="Portuguese" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/PT.svg">
 </p>
 <br/>
 <p align=center>
@@ -160,6 +161,7 @@ Below is the list of official distributions that are supported:
 - `malay`
 - `norwegian`
 - `polish`
+- `portuguese`
 
 Alternate distributions are also available:
 

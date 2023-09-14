@@ -1066,6 +1066,52 @@ var polish = distribution{
 	tileCount: 100,
 }
 
+// portuguese represents the distribution of letters for the
+// standard Portuguese edition. It contains 120 tiles.
+// +---+-----+---------+---------+-----+-----+-----+----+----+-----+-----+-----+
+// |   | ×1  | ×2      | ×3      | ×4  | ×5  | ×6  | ×7 | ×8 | ×10 | ×11 | ×14 |
+// +---+-----+---------+---------+-----+-----+-----+----+----+-----+-----+-----+
+// | 0 |     |         | [blank] |     |     |     |    |    |     |     |     |
+// | 1 |     |         |         |     | T   | M R | U  | S  | I O | E   | A   |
+// | 2 |     |         |         | C P | D L |     |    |    |     |     |     |
+// | 3 |     | Ç       | B       | N   |     |     |    |    |     |     |     |
+// | 4 |     | F G H V |         |     |     |     |    |    |     |     |     |
+// | 5 |     | J       |         |     |     |     |    |    |     |     |     |
+// | 6 | Q   |         |         |     |     |     |    |    |     |     |     |
+// | 8 | X Z |         |         |     |     |     |    |    |     |     |     |
+// +---+-----+---------+---------+-----+-----+-----+----+----+-----+-----+-----+
+var portuguese = distribution{
+	lang: language.Portuguese,
+	letters: []letter{
+		{blank, 3, 0},
+		{"A", 14, 1},
+		{"B", 3, 3},
+		{"C", 4, 2},
+		{"D", 5, 2},
+		{"E", 11, 1},
+		{"F", 2, 4},
+		{"G", 2, 4},
+		{"H", 2, 4},
+		{"I", 10, 1},
+		{"J", 2, 5},
+		{"L", 5, 2},
+		{"M", 6, 1},
+		{"N", 4, 3},
+		{"O", 10, 1},
+		{"P", 4, 2},
+		{"Q", 1, 6},
+		{"R", 6, 1},
+		{"S", 8, 1},
+		{"T", 5, 1},
+		{"U", 7, 1},
+		{"V", 2, 4},
+		{"X", 1, 8},
+		{"Z", 1, 8},
+		{"Ç", 2, 3},
+	},
+	tileCount: 120,
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":     french,
@@ -1088,4 +1134,5 @@ var distributions = map[string]distribution{
 	"malay":      malay,
 	"norwegian":  norwegian,
 	"polish":     polish,
+	"portuguese": portuguese,
 }
