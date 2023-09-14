@@ -26,9 +26,10 @@ type letter struct {
 // distribution maps the letters of a Scrabble game for
 // a particular language to their frequency and points.
 type distribution struct {
-	lang    language.Tag
-	dict    []byte
-	letters []letter
+	lang      language.Tag
+	dict      []byte
+	letters   []letter
+	tileCount int
 }
 
 func (d distribution) dictionary() (indexedDict, error) {
@@ -101,6 +102,7 @@ var french = distribution{
 		{"Y", 1, 10},
 		{"Z", 1, 10},
 	},
+	tileCount: 102,
 }
 
 // english represents the distribution of letters for the
@@ -150,6 +152,7 @@ var english = distribution{
 		{"Y", 2, 4},
 		{"Z", 1, 10},
 	},
+	tileCount: 100,
 }
 
 // german represents the distribution of letters for the
@@ -201,6 +204,7 @@ var german = distribution{
 		{"Ö", 1, 8},
 		{"Ü", 1, 6},
 	},
+	tileCount: 102,
 }
 
 // italian represents the distribution of letters for the
@@ -243,6 +247,7 @@ var italian = distribution{
 		{"V", 3, 5},
 		{"Z", 2, 8},
 	},
+	tileCount: 120,
 }
 
 // dutch represents the distribution of letters for the
@@ -292,10 +297,11 @@ var dutch = distribution{
 		{"Y", 1, 8},
 		{"Z", 2, 4},
 	},
+	tileCount: 102,
 }
 
 // czech represents the distribution of letters for the
-// standard Czech edition. It contains 102 tiles.
+// standard Czech edition. It contains 100 tiles.
 // https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Czech
 // +----+-------+---------+-----------+---------+-------+----+
 // |    | ×1    | ×2      | ×3        | ×4      | ×5    | ×6 |
@@ -355,6 +361,7 @@ var czech = distribution{
 		{"Ů", 1, 4},
 		{"Ž", 1, 4},
 	},
+	tileCount: 100,
 }
 
 // icelandic represents the distribution of letters for the
@@ -411,6 +418,7 @@ var icelandic = distribution{
 		{"Ý", 1, 9},
 		{"Þ", 1, 5},
 	},
+	tileCount: 104,
 }
 
 // krafla represents the distribution of letters for the
@@ -466,6 +474,7 @@ var krafla = distribution{
 		{"Ý", 1, 5},
 		{"Þ", 1, 7},
 	},
+	tileCount: 100,
 }
 
 // afrikaans represents the distribution of letters for the
@@ -509,6 +518,7 @@ var afrikaans = distribution{
 		{"W", 3, 3},
 		{"Y", 2, 4},
 	},
+	tileCount: 102, // wikipedia says 104, but the total is 102
 }
 
 // bulgarian represents the distribution of letters for the
@@ -560,6 +570,7 @@ var bulgarian = distribution{
 		{"Ю", 1, 8},
 		{"Я", 2, 5},
 	},
+	tileCount: 102,
 }
 
 // danish represents the distribution of letters for the
@@ -606,6 +617,7 @@ var danish = distribution{
 		{"Æ", 2, 4},
 		{"Ø", 2, 4},
 	},
+	tileCount: 100,
 }
 
 // estonian represents the distribution of letters for the
@@ -655,6 +667,7 @@ var estonian = distribution{
 		{"Š", 1, 10},
 		{"Ž", 1, 10},
 	},
+	tileCount: 102,
 }
 
 // finnish represents the distribution of letters for the
@@ -701,6 +714,7 @@ var finnish = distribution{
 		{"Ä", 5, 2},
 		{"Ö", 1, 7},
 	},
+	tileCount: 101,
 }
 
 // greek represents the distribution of letters for the
@@ -745,6 +759,7 @@ var greek = distribution{
 		{"Ψ", 1, 10},
 		{"Ω", 3, 3},
 	},
+	tileCount: 104,
 }
 
 // indonesian represents the distribution of letters for the
@@ -790,6 +805,7 @@ var indonesian = distribution{
 		{"Y", 2, 5},
 		{"Z", 1, 10},
 	},
+	tileCount: 100,
 }
 
 // latvian represents the distribution of letters for the
@@ -845,6 +861,7 @@ var latvian = distribution{
 		{"Ū", 1, 6},
 		{"Ž", 1, 8},
 	},
+	tileCount: 104,
 }
 
 // lithuanian represents the distribution of letters for the
@@ -899,6 +916,7 @@ var lithuanian = distribution{
 		{"Ų", 1, 6},
 		{"Ž", 1, 6},
 	},
+	tileCount: 104,
 }
 
 // malay represents the distribution of letters for the
@@ -943,6 +961,7 @@ var malay = distribution{
 		{"Y", 1, 5},
 		{"Z", 1, 10},
 	},
+	tileCount: 100,
 }
 
 // sorted by addition time
