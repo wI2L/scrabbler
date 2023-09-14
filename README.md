@@ -14,13 +14,13 @@
     <img alt="Afrikaans" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/ZA.svg">
     <img alt="Bulgarian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/BG.svg">
     <img alt="Danish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/DK.svg">
+    <img alt="Estonian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/EE.svg">
 </p>
 <br/>
 <p align=center>
     <img alt="GitHub Release (latest SemVer)" src="https://img.shields.io/github/v/release/wI2L/scrabbler">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/wI2L/scrabbler/ci.yml">
 </p>
-<br/>
 
 ![](https://github.com/wI2L/scrabbler/blob/master/scrabbler.gif)
 
@@ -138,6 +138,7 @@ Below is the list of official distributions that are supported:
 - `danish`
 - `dutch`
 - `english`
+- `estonian`
 - `french`
 - `german`
 - `icelandic`

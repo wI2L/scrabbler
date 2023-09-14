@@ -608,6 +608,55 @@ var danish = distribution{
 	},
 }
 
+// estonian represents the distribution of letters for the
+// standard Estonian edition. It contains 102 tiles.
+// +----+-------+---------+-------+---------+----+----+-----+-----+
+// |    | ×1    | ×2      | ×4    | ×5      | ×7 | ×8 | ×9  | ×10 |
+// +----+-------+---------+-------+---------+----+----+-----+-----+
+// | 0  |       | [blank] |       |         |    |    |     |     |
+// | 1  |       |         |       | K L O U | T  | S  | E I | A   |
+// | 2  |       | R       | D M N |         |    |    |     |     |
+// | 3  |       | G V     |       |         |    |    |     |     |
+// | 4  | B     | H J P Õ |       |         |    |    |     |     |
+// | 5  |       | Ä Ü     |       |         |    |    |     |     |
+// | 6  |       | Ö       |       |         |    |    |     |     |
+// | 8  | F     |         |       |         |    |    |     |     |
+// | 10 | Š Z Ž |         |       |         |    |    |     |     |
+// +----+-------+---------+-------+---------+----+----+-----+-----+
+var estonian = distribution{
+	lang: language.Estonian,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 10, 1},
+		{"B", 1, 4},
+		{"D", 4, 2},
+		{"E", 9, 1},
+		{"F", 1, 8},
+		{"G", 2, 3},
+		{"H", 2, 4},
+		{"I", 9, 1},
+		{"J", 2, 4},
+		{"K", 5, 1},
+		{"L", 5, 1},
+		{"M", 4, 2},
+		{"N", 4, 2},
+		{"O", 5, 1},
+		{"P", 2, 4},
+		{"R", 2, 2},
+		{"S", 8, 1},
+		{"T", 7, 1},
+		{"U", 5, 1},
+		{"V", 2, 3},
+		{"Z", 1, 10},
+		{"Ä", 2, 5},
+		{"Õ", 2, 4},
+		{"Ö", 2, 6},
+		{"Ü", 2, 5},
+		{"Š", 1, 10},
+		{"Ž", 1, 10},
+	},
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":    french,
@@ -621,4 +670,5 @@ var distributions = map[string]distribution{
 	"afrikaans": afrikaans,
 	"bulgarian": bulgarian,
 	"danish":    danish,
+	"estonian":  estonian,
 }
