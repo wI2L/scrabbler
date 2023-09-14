@@ -964,6 +964,54 @@ var malay = distribution{
 	tileCount: 100,
 }
 
+// norwegian represents the distribution of letters for the
+// standard Norwegian edition. It contains 100 tiles.
+// +----+-----+---------+-------+---------+-------+---------+----+----+
+// |    | ×1  | ×2      | ×3    | ×4      | ×5    | ×6      | ×7 | ×9 |
+// +----+-----+---------+-------+---------+-------+---------+----+----+
+// | 0  |     | [blank] |       |         |       |         |    |    |
+// | 1  |     |         |       |         | D I L | N R S T | A  | E  |
+// | 2  |     |         | M     | F G K O |       |         |    |    |
+// | 3  |     |         | H     |         |       |         |    |    |
+// | 4  |     | J P Å   | B U V |         |       |         |    |    |
+// | 5  |     | Ø       |       |         |       |         |    |    |
+// | 6  | Y Æ |         |       |         |       |         |    |    |
+// | 8  | W   |         |       |         |       |         |    |    |
+// | 10 | C   |         |       |         |       |         |    |    |
+// +----+-----+---------+-------+---------+-------+---------+----+----+
+var norwegian = distribution{
+	lang: language.Norwegian,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 7, 1},
+		{"B", 3, 4},
+		{"C", 1, 10},
+		{"D", 5, 1},
+		{"E", 9, 1},
+		{"F", 4, 2},
+		{"G", 4, 2},
+		{"H", 3, 3},
+		{"I", 5, 1},
+		{"K", 4, 2},
+		{"L", 5, 1},
+		{"M", 3, 2},
+		{"N", 6, 1},
+		{"O", 4, 2},
+		{"P", 2, 4},
+		{"R", 6, 1},
+		{"S", 6, 1},
+		{"T", 6, 1},
+		{"U", 3, 4},
+		{"V", 3, 4},
+		{"W", 1, 10},
+		{"Y", 1, 6},
+		{"Å", 2, 4},
+		{"Æ", 1, 6},
+		{"Ø", 2, 5},
+	},
+	tileCount: 100,
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":     french,
@@ -984,4 +1032,5 @@ var distributions = map[string]distribution{
 	"latvian":    latvian,
 	"lithuanian": lithuanian,
 	"malay":      malay,
+	"norwegian":  norwegian,
 }
