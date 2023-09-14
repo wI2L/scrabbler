@@ -44,7 +44,7 @@ var _ tea.Model = &tui{}
 func newTUI(d distribution, dict indexedDict, width, height int, opts options) *tui {
 	return &tui{
 		game: &game{
-			bag:     newBag(french),
+			bag:     newBag(d),
 			draw:    &splitTiles{},
 			distrib: d,
 			dict:    dict,
