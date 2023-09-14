@@ -747,20 +747,66 @@ var greek = distribution{
 	},
 }
 
+// indonesian represents the distribution of letters for the
+// standard Indonesian edition. It contains 100 tiles.
+// +----+-----+---------+-----+----+-----+-----+----+-----+
+// |    | ×1  | ×2      | ×3  | ×4 | ×5  | ×8  | ×9 | ×19 |
+// +----+-----+---------+-----+----+-----+-----+----+-----+
+// | 0  |     | [blank] |     |    |     |     |    |     |
+// | 1  |     |         | O S | R  | T U | E I | N  | A   |
+// | 2  |     |         | K M |    |     |     |    |     |
+// | 3  |     |         | G   | D  |     |     |    |     |
+// | 4  |     | H P     | L   |    |     |     |    |     |
+// | 5  | F V | Y       |     | B  |     |     |    |     |
+// | 8  | W   |         | C   |    |     |     |    |     |
+// | 10 | J Z |         |     |    |     |     |    |     |
+// +----+-----+---------+-----+----+-----+-----+----+-----+
+var indonesian = distribution{
+	lang: language.Indonesian,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 19, 1},
+		{"B", 4, 5},
+		{"C", 3, 8},
+		{"D", 4, 3},
+		{"E", 8, 1},
+		{"F", 1, 5},
+		{"G", 3, 3},
+		{"H", 2, 4},
+		{"I", 8, 1},
+		{"J", 1, 10},
+		{"K", 3, 2},
+		{"L", 3, 4},
+		{"M", 3, 2},
+		{"N", 9, 1},
+		{"O", 3, 1},
+		{"P", 2, 4},
+		{"R", 4, 1},
+		{"S", 3, 1},
+		{"T", 5, 1},
+		{"U", 5, 1},
+		{"V", 1, 5},
+		{"W", 1, 8},
+		{"Y", 2, 5},
+		{"Z", 1, 10},
+	},
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
-	"french":    french,
-	"english":   english,
-	"german":    german,
-	"italian":   italian,
-	"dutch":     dutch,
-	"czech":     czech,
-	"icelandic": icelandic,
-	"krafla":    krafla,
-	"afrikaans": afrikaans,
-	"bulgarian": bulgarian,
-	"danish":    danish,
-	"estonian":  estonian,
-	"finnish":   finnish,
-	"greek":     greek,
+	"french":     french,
+	"english":    english,
+	"german":     german,
+	"italian":    italian,
+	"dutch":      dutch,
+	"czech":      czech,
+	"icelandic":  icelandic,
+	"krafla":     krafla,
+	"afrikaans":  afrikaans,
+	"bulgarian":  bulgarian,
+	"danish":     danish,
+	"estonian":   estonian,
+	"finnish":    finnish,
+	"greek":      greek,
+	"indonesian": indonesian,
 }
