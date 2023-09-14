@@ -1,12 +1,17 @@
+run:
+  go: 1.21
+  timeout: 5m
 linters:
   enable:
     - dupl
     - dupword
+    - forbidigo
     - gocritic
     - gofumpt
     - goimports
     - misspell
     - prealloc
+    - revive
     - stylecheck
     - thelper
     - tparallel
@@ -15,3 +20,12 @@ linters:
     - unused
     - wastedassign
     - whitespace
+linter-settings:
+  forbidigo:
+    forbid:
+      - 'ioutil\.*'
+issues:
+  exclude-rules:
+    - path: 'distribution\.go'
+      linters:
+        - dupl

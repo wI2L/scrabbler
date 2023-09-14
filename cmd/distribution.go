@@ -3,7 +3,6 @@ package cmd
 import (
 	"bytes"
 	"compress/gzip"
-	_ "embed"
 	"slices"
 
 	"golang.org/x/text/language"
