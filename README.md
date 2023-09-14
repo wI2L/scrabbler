@@ -19,6 +19,7 @@
     <img alt="Greek" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/GR.svg">
     <img alt="Indonesian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/ID.svg">
     <img alt="Latvian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/LV.svg">
+    <img alt="Lithuanian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/LT.svg">
 </p>
 <br/>
 <p align=center>
@@ -152,6 +153,7 @@ Below is the list of official distributions that are supported:
 - `indonesian`
 - `italian`
 - `latvian`
+- `lithuanian`
 
 Alternate distributions are also available:
 

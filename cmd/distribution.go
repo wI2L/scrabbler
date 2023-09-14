@@ -847,6 +847,60 @@ var latvian = distribution{
 	},
 }
 
+// lithuanian represents the distribution of letters for the
+// standard Lithuanian edition. It contains 104 tiles.
+// +----+-----------+---------+-------+-----+-------+-----+----+-----+-----+
+// |    | ×1        | ×2      | ×3    | ×4  | ×5    | ×6  | ×8 | ×12 | ×13 |
+// +----+-----------+---------+-------+-----+-------+-----+----+-----+-----+
+// | 0  |           | [blank] |       |     |       |     |    |     |     |
+// | 1  |           |         |       | K U | E N R | O T | S  | A   | I   |
+// | 2  | B         |         | D L M |     |       |     |    |     |     |
+// | 3  |           |         | P     |     |       |     |    |     |     |
+// | 4  |           | Ė G J V |       |     |       |     |    |     |     |
+// | 5  | Š Y       |         |       |     |       |     |    |     |     |
+// | 6  | Ų Ž       |         |       |     |       |     |    |     |     |
+// | 8  | Ą Č Į Ū   |         |       |     |       |     |    |     |     |
+// | 10 | C Ę F H Z |         |       |     |       |     |    |     |     |
+// +----+-----------+---------+-------+-----+-------+-----+----+-----+-----+
+var lithuanian = distribution{
+	lang: language.Lithuanian,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 12, 1},
+		{"B", 1, 2},
+		{"C", 1, 10},
+		{"D", 3, 2},
+		{"E", 5, 1},
+		{"F", 1, 10},
+		{"G", 2, 4},
+		{"H", 1, 10},
+		{"I", 13, 1},
+		{"J", 2, 4},
+		{"K", 4, 1},
+		{"L", 3, 2},
+		{"M", 3, 2},
+		{"N", 5, 1},
+		{"O", 6, 1},
+		{"P", 3, 3},
+		{"R", 5, 1},
+		{"S", 8, 1},
+		{"T", 6, 1},
+		{"U", 4, 1},
+		{"V", 2, 4},
+		{"Y", 1, 5},
+		{"Z", 1, 10},
+		{"Ą", 1, 8},
+		{"Č", 1, 8},
+		{"Ė", 2, 4},
+		{"Ę", 1, 10},
+		{"Į", 1, 8},
+		{"Š", 1, 5},
+		{"Ū", 1, 8},
+		{"Ų", 1, 6},
+		{"Ž", 1, 6},
+	},
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":     french,
@@ -865,4 +919,5 @@ var distributions = map[string]distribution{
 	"greek":      greek,
 	"indonesian": indonesian,
 	"latvian":    latvian,
+	"lithuanian": lithuanian,
 }
