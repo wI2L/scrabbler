@@ -15,6 +15,7 @@
     <img alt="Bulgarian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/BG.svg">
     <img alt="Danish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/DK.svg">
     <img alt="Estonian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/EE.svg">
+    <img alt="Finnish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/FI.svg">
 </p>
 <br/>
 <p align=center>
@@ -139,6 +140,7 @@ Below is the list of official distributions that are supported:
 - `dutch`
 - `english`
 - `estonian`
+- `finnish`
 - `french`
 - `german`
 - `icelandic`
