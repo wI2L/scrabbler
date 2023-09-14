@@ -792,6 +792,61 @@ var indonesian = distribution{
 	},
 }
 
+// latvian represents the distribution of letters for the
+// standard Latvian edition. It contains 104 tiles.
+// +----+-----------+---------+-------+---------+-----+-----+----+----+-----+
+// |    | ×1        | ×2      | ×3    | ×4      | ×5  | ×6  | ×8 | ×9 | ×11 |
+// +----+-----------+---------+-------+---------+-----+-----+----+----+-----+
+// | 0  |           | [blank] |       |         |     |     |    |    |     |
+// | 1  |           |         |       |         | R U | E T | S  | I  | A   |
+// | 2  |           |         | L P   | Ā K M N |     |     |    |    |     |
+// | 3  |           | Z       | D O V |         |     |     |    |    |     |
+// | 4  |           | Ē Ī J   |       |         |     |     |    |    |     |
+// | 5  | B C G     |         |       |         |     |     |    |    |     |
+// | 6  | Ņ Š Ū     |         |       |         |     |     |    |    |     |
+// | 8  | Ļ Ž       |         |       |         |     |     |    |    |     |
+// | 10 | Č F Ģ H Ķ |         |       |         |     |     |    |    |     |
+// +----+-----------+---------+-------+---------+-----+-----+----+----+-----+
+var latvian = distribution{
+	lang: language.Latvian,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 11, 1},
+		{"B", 1, 5},
+		{"C", 1, 5},
+		{"D", 3, 3},
+		{"E", 6, 1},
+		{"F", 1, 10},
+		{"G", 1, 5},
+		{"H", 1, 10},
+		{"I", 9, 1},
+		{"J", 2, 4},
+		{"K", 4, 2},
+		{"L", 3, 2},
+		{"M", 4, 2},
+		{"N", 4, 2},
+		{"O", 3, 3},
+		{"P", 3, 2},
+		{"R", 5, 1},
+		{"S", 8, 1},
+		{"T", 6, 1},
+		{"U", 5, 1},
+		{"V", 3, 3},
+		{"Z", 2, 3},
+		{"Ā", 4, 2},
+		{"Č", 1, 10},
+		{"Ē", 2, 4},
+		{"Ģ", 1, 10},
+		{"Ī", 2, 4},
+		{"Ķ", 1, 10},
+		{"Ļ", 1, 8},
+		{"Ņ", 1, 6},
+		{"Š", 1, 6},
+		{"Ū", 1, 6},
+		{"Ž", 1, 8},
+	},
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":     french,
@@ -809,4 +864,5 @@ var distributions = map[string]distribution{
 	"finnish":    finnish,
 	"greek":      greek,
 	"indonesian": indonesian,
+	"latvian":    latvian,
 }
