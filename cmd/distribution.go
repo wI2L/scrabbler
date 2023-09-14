@@ -1112,6 +1112,51 @@ var portuguese = distribution{
 	tileCount: 120,
 }
 
+// romanian represents the distribution of letters for the
+// standard Romanian edition. It contains 100 tiles.
+// +----+-----+---------+----+----+-------+-------+----+----+-----+-----+
+// |    | ×1  | ×2      | ×3 | ×4 | ×5    | ×6    | ×7 | ×9 | ×10 | ×11 |
+// +----+-----+---------+----+----+-------+-------+----+----+-----+-----+
+// | 0  |     | [blank] |    |    |       |       |    |    |     |     |
+// | 1  |     |         |    |    | C L U | N R S | T  | E  | A   | I   |
+// | 2  |     |         |    | P  | O     |       |    |    |     |     |
+// | 3  |     |         |    | D  |       |       |    |    |     |     |
+// | 4  |     | F V     | M  |    |       |       |    |    |     |     |
+// | 5  |     | B       |    |    |       |       |    |    |     |     |
+// | 6  |     | G       |    |    |       |       |    |    |     |     |
+// | 8  | H Z |         |    |    |       |       |    |    |     |     |
+// | 10 | J X |         |    |    |       |       |    |    |     |     |
+// +----+-----+---------+----+----+-------+-------+----+----+-----+-----+
+var romanian = distribution{
+	lang: language.Romanian,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 10, 1},
+		{"B", 2, 5},
+		{"C", 5, 1},
+		{"D", 4, 3},
+		{"E", 9, 1},
+		{"F", 2, 4},
+		{"G", 2, 6},
+		{"H", 1, 8},
+		{"I", 11, 1},
+		{"J", 1, 10},
+		{"L", 5, 1},
+		{"M", 3, 4},
+		{"N", 6, 1},
+		{"O", 5, 2},
+		{"P", 4, 2},
+		{"R", 6, 1},
+		{"S", 6, 1},
+		{"T", 7, 1},
+		{"U", 5, 1},
+		{"V", 2, 4},
+		{"X", 1, 10},
+		{"Z", 1, 8},
+	},
+	tileCount: 100,
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":     french,
@@ -1135,4 +1180,5 @@ var distributions = map[string]distribution{
 	"norwegian":  norwegian,
 	"polish":     polish,
 	"portuguese": portuguese,
+	"romanian":   romanian,
 }

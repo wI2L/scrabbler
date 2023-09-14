@@ -24,6 +24,7 @@
     <img alt="Norwegian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/NO.svg">
     <img alt="Polish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/PL.svg">
     <img alt="Portuguese" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/PT.svg">
+    <img alt="Romanian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/RO.svg">
 </p>
 <br/>
 <p align=center>
@@ -162,6 +163,7 @@ Below is the list of official distributions that are supported:
 - `norwegian`
 - `polish`
 - `portuguese`
+- `romanian`
 
 Alternate distributions are also available:
 
