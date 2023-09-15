@@ -59,7 +59,7 @@
 go install github.com/wI2L/scrabbler@latest
 ```
 
-> **Note**
+> [!NOTE]
 > This will install the `scrabbler` binary in `$GOBIN`, which defaults to `$GOPATH/bin` or `$HOME/go/bin` if the `GOPATH` environment variable is not set.
 
 #### Pre-compiled binaries
@@ -105,7 +105,7 @@ scrabbler --word-length=8
 
 The tiles of the draw can optionally show the points of each letter using the flags `-p`/`--show-points`. This option is disabled by default.
 
-> **Important**
+> [!IMPORTANT]
 > The subscript characters [U+2080](https://www.compart.com/en/unicode/U+2080) to [U+2089](https://www.compart.com/en/unicode/U+2089) are used to represent the digits from 0 to 9. The number 10 is represented using the [U+2093](https://www.compart.com/en/unicode/U+2093) (*Latin Subscript Small Letter X*) to preserve equal spacing.
 >
 > Make sure to use a font that support those characters, such as *SF Mono* on macOS.
@@ -124,7 +124,7 @@ To change the duration, set the flag with a custom value:
 scrabbler --timer=3m
 ```
 
-> **Note**
+> [!NOTE]
 > The duration value must be expressed as a stringified Go `Duration`, as defined by the documentation of the [`time.ParseDuration`](https://pkg.go.dev/time#ParseDuration) function.
 >
 > Examples:
@@ -181,12 +181,12 @@ Alternate distributions are also available:
 
 - `krafla`: Alternate Icelandic distribution, sanctioned by Iceland's Scrabble clubs for their tournaments and for the national championship
 
-> **Note**
+> [!NOTE]
 > All information are compiled from the [Scrabble letter distributions](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Indonesian) Wikipedia page.
 
 See the [distribution.go](https://github.com/wI2L/scrabbler/blob/master/cmd/distribution.go) file, which define the letter distribution for each language.
 
-> **Important** Missing letter distributions
+> [!IMPORTANT]
 > Several editions such as Spanish, Catalan, Hungarian or Welsh (to cite a few) are not included because they use [digraphs](https://en.wikipedia.org/wiki/Digraph_(orthography)), which are challenging to deal with in a text-based UI.
 >
 > *They might be added in the future, once I have figured out an intuitive way to handle them*.
