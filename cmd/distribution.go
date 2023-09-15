@@ -6,6 +6,9 @@ import (
 	"slices"
 
 	"golang.org/x/text/language"
+
+	en "github.com/wI2L/scrabbler/dictionaries/english"
+	fr "github.com/wI2L/scrabbler/dictionaries/french"
 )
 
 const (
@@ -71,7 +74,7 @@ func (d distribution) alphabet() []string {
 // +----+-----------+---------+-----+----+-------------+----+----+-----+
 var french = distribution{
 	lang: language.French,
-	dict: ods8,
+	dict: fr.ODS8,
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 9, 1},
@@ -121,7 +124,7 @@ var french = distribution{
 // +----+-----+-----------+----+-------+-------+----+-----+-----+
 var english = distribution{
 	lang: language.English,
-	dict: sowpods,
+	dict: en.SOWPODS,
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 9, 1},

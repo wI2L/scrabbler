@@ -2,33 +2,35 @@
 
 <p align=center><b>Pick your tiles, but not yourself!</b></p>
 <p align=center>Automatic draw TUI for <i>duplicate</i> Scrabble games</p>
+<br/>
 <p align=center>
-    <img alt="French" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/FR.svg">
-    <img alt="English (US)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/US.svg">
-    <img alt="English (UK)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/GB-NIR.svg">
-    <img alt="German" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/DE.svg">
-    <img alt="Italian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/IT.svg">
-    <img alt="Dutch" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/NL.svg">
-    <img alt="Czech" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/CZ.svg">
-    <img alt="Icelandic" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/IS.svg">
-    <img alt="Afrikaans" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/ZA.svg">
-    <img alt="Bulgarian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/BG.svg">
-    <img alt="Danish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/DK.svg">
-    <img alt="Estonian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/EE.svg">
-    <img alt="Finnish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/FI.svg">
-    <img alt="Greek" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/GR.svg">
-    <img alt="Indonesian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/ID.svg">
-    <img alt="Latvian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/LV.svg">
-    <img alt="Lithuanian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/LT.svg">
-    <img alt="Malay" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/MY.svg">
-    <img alt="Norwegian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/NO.svg">
-    <img alt="Polish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/PL.svg">
-    <img alt="Portuguese" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/PT.svg">
-    <img alt="Romanian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/RO.svg">
-    <img alt="Slovak" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/SK.svg">
-    <img alt="Slovenian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/SI.svg">
-    <img alt="Swedish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/SE.svg">
-    <img alt="Ukrainian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/UA.svg">
+    <img alt="French" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/FR.svg">
+    <img alt="English (US)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/US.svg">
+    <img alt="English (UK)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/GB-NIR.svg">
+    <img alt="German" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/DE.svg">
+    <img alt="Italian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IT.svg">
+    <img alt="Dutch" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/NL.svg">
+    <img alt="Czech" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/CZ.svg">
+    <img alt="Icelandic" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/IS.svg">
+    <img alt="Afrikaans" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/ZA.svg">
+    <img alt="Bulgarian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/BG.svg">
+    <img alt="Danish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/DK.svg">
+    <img alt="Estonian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/EE.svg">
+    <img alt="Finnish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/FI.svg">
+    <br/>
+    <img alt="Greek" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/GR.svg">
+    <img alt="Indonesian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/ID.svg">
+    <img alt="Latvian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/LV.svg">
+    <img alt="Lithuanian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/LT.svg">
+    <img alt="Malay" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/MY.svg">
+    <img alt="Norwegian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/NO.svg">
+    <img alt="Polish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/PL.svg">
+    <img alt="Portuguese" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/PT.svg">
+    <img alt="Romanian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/RO.svg">
+    <img alt="Slovak" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/SK.svg">
+    <img alt="Slovenian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/SI.svg">
+    <img alt="Swedish" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/SE.svg">
+    <img alt="Ukrainian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/UA.svg">
 </p>
 <br/>
 <p align=center>
@@ -189,12 +191,12 @@ By default, the application loads the official French Scrabble dictionary (ODS8)
 Alternatively, you can specify the path of a dictionary of your choice with the `-d`/`--dictionary` flags:
 
 ```shell
-scrabbler --dictionary=cmd/dictionaries/english/twl06.txt.gz
+scrabbler --dictionary=dictionaries/english/twl06.txt.gz
 ```
 
-A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted*). The file can optionally be *gzipped*.
+A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted*). The file can optionally be *gzipped* (the file extension doesn't matter, the detection is [header-based](https://pkg.go.dev/net/http#DetectContentType).
 
-See the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/cmd/dictionaries) directory, which already contains some official and non-official dictionaries for several languages:
+Browse the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/dictionaries) directory, which already contains some official and non-official dictionaries for several languages:
 
 - :fr: [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble)
 - :uk: [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words)
@@ -208,7 +210,7 @@ See the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/cmd/diction
 | Keys                                       | Description                                                                                                                                          |
 |:-------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | <kbd>Control + C</kbd> / <kbd>Escape</kbd> | Exit the application (:warning: **no confirmation is requested**)                                                                                    |
-| <kbd>?</kbd>                               | Toggle help (switch between short and full views)                                                                                                    |
+| <kbd>?</kbd>                               | Toggle help view (switch between short and extended)                                                                                                 |
 | <kbd>Enter</kbd>                           | Validate selection or play word                                                                                                                      |
 | <kbd>←</kbd> / <kbd>Y</kbd>                | Select the *yes* option                                                                                                                              |
 | <kbd>→</kbd> / <kbd>N</kbd>                | Select the *no* option                                                                                                                               |
@@ -217,4 +219,4 @@ See the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/cmd/diction
 
 ## License
 
-`scrabbler` is licensed under the **MIT** license. See the [LICENSE](LICENSE) file.
+The code is licensed under the **MIT** license. [Read this](https://www.tldrlegal.com/license/mit-license) or see the [LICENSE](LICENSE) file.

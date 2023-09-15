@@ -12,7 +12,7 @@ import (
 	"testing"
 )
 
-const dictDir = "dictionaries/"
+const dictDir = "../dictionaries/"
 
 func Test_loadDictionaryFile(t *testing.T) {
 	if testing.Short() {

@@ -3,7 +3,6 @@ package cmd
 import (
 	"bufio"
 	"compress/gzip"
-	_ "embed"
 	"fmt"
 	"io"
 	"net/http"
@@ -12,14 +11,6 @@ import (
 	"sort"
 	"strings"
 	"unicode"
-)
-
-var (
-	//go:embed dictionaries/french/ods8.txt.gz
-	ods8 []byte
-
-	//go:embed dictionaries/english/sowpods.txt.gz
-	sowpods []byte
 )
 
 type indexedDict map[string][]string
