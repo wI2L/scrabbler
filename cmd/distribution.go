@@ -1157,6 +1157,70 @@ var romanian = distribution{
 	tileCount: 100,
 }
 
+// slovak represents the distribution of letters for the
+// standard Slovak edition. It contains 100 tiles.
+// +----+-----------+---------+---------+---------+-----+----+-----+
+// |    | ×1        | ×2      | ×3      | ×4      | ×5  | ×8 | ×9  |
+// +----+-----------+---------+---------+---------+-----+----+-----+
+// | 0  |           | [blank] |         |         |     |    |     |
+// | 1  |           |         |         | R S T V | I N | E  | A O |
+// | 2  |           |         | D K L P | M       |     |    |     |
+// | 3  |           | J U     |         |         |     |    |     |
+// | 4  | Á C H Y Z | B       |         |         |     |    |     |
+// | 5  | Č Í Š Ý Ž |         |         |         |     |    |     |
+// | 7  | É Ľ Ť Ú   |         |         |         |     |    |     |
+// | 8  | Ď F G Ň Ô |         |         |         |     |    |     |
+// | 10 | Ä Ĺ Ó Ŕ X |         |         |         |     |    |     |
+// +----+-----------+---------+---------+---------+-----+----+-----+
+var slovak = distribution{
+	lang: language.Slovak,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 9, 1},
+		{"B", 2, 4},
+		{"C", 1, 4},
+		{"D", 3, 2},
+		{"E", 8, 1},
+		{"F", 1, 8},
+		{"G", 1, 8},
+		{"H", 1, 4},
+		{"I", 5, 1},
+		{"J", 2, 3},
+		{"K", 3, 2},
+		{"L", 3, 2},
+		{"M", 4, 2},
+		{"N", 5, 1},
+		{"O", 9, 1},
+		{"P", 3, 2},
+		{"R", 4, 1},
+		{"S", 4, 1},
+		{"T", 4, 1},
+		{"U", 2, 3},
+		{"V", 4, 1},
+		{"X", 1, 10},
+		{"Y", 1, 4},
+		{"Z", 1, 4},
+		{"Á", 1, 4},
+		{"Ä", 1, 10},
+		{"É", 1, 7},
+		{"Í", 1, 5},
+		{"Ó", 1, 10},
+		{"Ô", 1, 8},
+		{"Ú", 1, 7},
+		{"Ý", 1, 5},
+		{"Č", 1, 5},
+		{"Ď", 1, 8},
+		{"Ĺ", 1, 10},
+		{"Ľ", 1, 7},
+		{"Ň", 1, 8},
+		{"Ŕ", 1, 10},
+		{"Š", 1, 5},
+		{"Ť", 1, 7},
+		{"Ž", 1, 5},
+	},
+	tileCount: 100,
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":     french,
@@ -1181,4 +1245,5 @@ var distributions = map[string]distribution{
 	"polish":     polish,
 	"portuguese": portuguese,
 	"romanian":   romanian,
+	"slovak":     slovak,
 }
