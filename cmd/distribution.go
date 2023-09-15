@@ -1269,6 +1269,55 @@ var slovenian = distribution{
 	tileCount: 100,
 }
 
+// swedish represents the distribution of letters for the
+// standard Swedish edition. It contains 100 tiles.
+// +----+-----+---------+-------+-------+----+----+---------+
+// |    | ×1  | ×2      | ×3    | ×5    | ×6 | ×7 | ×8      |
+// +----+-----+---------+-------+-------+----+----+---------+
+// | 0  |     | [blank] |       |       |    |    |         |
+// | 1  |     |         |       | D I L | N  | E  | A R S T |
+// | 2  |     | H       | G K M | O     |    |    |         |
+// | 3  |     | F V Ä   |       |       |    |    |         |
+// | 4  |     | B P Ö Å | U     |       |    |    |         |
+// | 7  | J Y |         |       |       |    |    |         |
+// | 8  | C X |         |       |       |    |    |         |
+// | 10 | Z   |         |       |       |    |    |         |
+// +----+-----+---------+-------+-------+----+----+---------+
+var swedish = distribution{
+	lang: language.Swedish,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 8, 1},
+		{"B", 2, 4},
+		{"C", 1, 8},
+		{"D", 5, 1},
+		{"E", 7, 1},
+		{"F", 2, 3},
+		{"G", 3, 2},
+		{"H", 2, 2},
+		{"I", 5, 1},
+		{"J", 1, 7},
+		{"K", 3, 2},
+		{"L", 5, 1},
+		{"M", 3, 2},
+		{"N", 6, 1},
+		{"O", 5, 2},
+		{"P", 2, 4},
+		{"R", 8, 1},
+		{"S", 8, 1},
+		{"T", 8, 1},
+		{"U", 3, 4},
+		{"V", 2, 3},
+		{"X", 1, 8},
+		{"Y", 1, 7},
+		{"Z", 1, 10},
+		{"Ä", 2, 3},
+		{"Å", 2, 4},
+		{"Ö", 2, 4},
+	},
+	tileCount: 100,
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":     french,
@@ -1295,4 +1344,5 @@ var distributions = map[string]distribution{
 	"romanian":   romanian,
 	"slovak":     slovak,
 	"slovenian":  slovenian,
+	"swedish":    swedish,
 }
