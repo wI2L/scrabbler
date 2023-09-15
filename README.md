@@ -1,7 +1,7 @@
 <h1 align=center>scrabbler</h1>
 
-<p align=center><b>Pick your tiles, but not yourself!</b></p>
-<p align=center>Automatic draw TUI for <i>duplicate</i> Scrabble games</p>
+<h3 align=center>Pick tiles, but not yourself!</h3>
+<p align=center>Automatic draw TUI for your <i>duplicate</i> Scrabble games</p>
 <br/>
 <p align=center>
     <img alt="French" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/l/FR.svg">
@@ -185,6 +185,11 @@ Alternate distributions are also available:
 > All information are compiled from the [Scrabble letter distributions](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Indonesian) Wikipedia page.
 
 See the [distribution.go](https://github.com/wI2L/scrabbler/blob/master/cmd/distribution.go) file, which define the letter distribution for each language.
+
+> **Important** Missing letter distributions
+> Several editions such as Spanish, Catalan, Hungarian or Welsh (to cite a few) are not included because they use [digraphs](https://en.wikipedia.org/wiki/Digraph_(orthography)), which are challenging to deal with in a text-based UI.
+>
+> *They might be added in the future, once I have figured out an intuitive way to handle them*.
 
 #### Custom dictionary
 
