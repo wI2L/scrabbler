@@ -138,8 +138,10 @@ scrabbler --timer=3m
 > Editions of the word board game Scrabble in different languages have differing letter distributions of the tiles, because the frequency of each letter of the alphabet is different for every language. As a general rule, the rarer the letter, the more points it is worth.
 >
 > Most languages use sets of 100 tiles, since the original distribution of ninety-eight tiles was later augmented with two blank tiles.
+>
+> &mdash;&mdash; [Wikipedia](https://en.wikipedia.org/wiki/Scrabble_letter_distributions)
 
-By default, the application starts with the [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) letter distribution.
+By default, the application loads the official [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) letter distribution.
 
 You can change it with the `-l`/`--distribution` flags:
 
