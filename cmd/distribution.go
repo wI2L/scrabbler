@@ -1221,6 +1221,54 @@ var slovak = distribution{
 	tileCount: 100,
 }
 
+// slovenian represents the distribution of letters for the
+// standard Slovenian edition. It contains 100 tiles.
+// +----+-----+---------+----+-------+-----+----+----+----+-----+-----+
+// |    | ×1  | ×2      | ×3 | ×4    | ×6  | ×7 | ×8 | ×9 | ×10 | ×11 |
+// +----+-----+---------+----+-------+-----+----+----+----+-----+-----+
+// | 0  |     | [blank] |    |       |     |    |    |    |     |     |
+// | 1  |     |         |    | J L T | R S | N  | O  | I  | A   | E   |
+// | 2  |     |         |    | D V   |     |    |    |    |     |     |
+// | 3  |     | M P U   | K  |       |     |    |    |    |     |     |
+// | 4  |     | B G Z   |    |       |     |    |    |    |     |     |
+// | 5  | Č H |         |    |       |     |    |    |    |     |     |
+// | 6  | Š   |         |    |       |     |    |    |    |     |     |
+// | 8  | C   |         |    |       |     |    |    |    |     |     |
+// | 10 | F Ž |         |    |       |     |    |    |    |     |     |
+// +----+-----+---------+----+-------+-----+----+----+----+-----+-----+
+var slovenian = distribution{
+	lang: language.Slovenian,
+	letters: []letter{
+		{blank, 2, 0},
+		{"A", 10, 1},
+		{"B", 2, 4},
+		{"C", 1, 8},
+		{"D", 4, 2},
+		{"E", 11, 1},
+		{"F", 1, 10},
+		{"G", 2, 4},
+		{"H", 1, 5},
+		{"I", 9, 1},
+		{"J", 4, 1},
+		{"K", 3, 3},
+		{"L", 4, 1},
+		{"M", 2, 3},
+		{"N", 7, 1},
+		{"O", 8, 1},
+		{"P", 2, 3},
+		{"R", 6, 1},
+		{"S", 6, 1},
+		{"T", 4, 1},
+		{"U", 2, 3},
+		{"V", 4, 2},
+		{"Z", 2, 4},
+		{"Č", 1, 5},
+		{"Š", 1, 6},
+		{"Ž", 1, 10},
+	},
+	tileCount: 100,
+}
+
 // sorted by addition time
 var distributions = map[string]distribution{
 	"french":     french,
@@ -1246,4 +1294,5 @@ var distributions = map[string]distribution{
 	"portuguese": portuguese,
 	"romanian":   romanian,
 	"slovak":     slovak,
+	"slovenian":  slovenian,
 }

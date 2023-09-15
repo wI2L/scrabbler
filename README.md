@@ -26,6 +26,7 @@
     <img alt="Portuguese" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/PT.svg">
     <img alt="Romanian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/RO.svg">
     <img alt="Slovak" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/SK.svg">
+    <img alt="Slovenian" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/SI.svg">
 </p>
 <br/>
 <p align=center>
@@ -166,6 +167,7 @@ Below is the list of official distributions that are supported:
 - `portuguese`
 - `romanian`
 - `slovak`
+- `slovenian`
 
 Alternate distributions are also available:
 
