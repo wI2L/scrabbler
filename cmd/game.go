@@ -7,6 +7,8 @@ import (
 	"unicode"
 
 	"github.com/charmbracelet/lipgloss"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/unicode/norm"
 )
 
 type drawPredicate interface {
@@ -163,7 +165,14 @@ func (g *game) drawWithRequirements(vowels int) error {
 func (g *game) playWord(word string, check bool) error {
 	cpy := append(g.draw.vowels, g.draw.consonants...) //nolint:gocritic
 
-	for _, r := range word {
+	// Normalize word with NFC to combine base
+	// characters and modifiers into single runes.
+	normWord := norm.NFC.String(word)
+
+	// Transform the characters to uppercase.
+	upNormWord := cases.Upper(g.distrib.lang).String(normWord)
+
+	for _, r := range upNormWord {
 		if idx := cpy.findTile(string(unicode.ToUpper(r))); idx != -1 {
 			// Pop and drop.
 			_ = cpy.pickAt(idx)

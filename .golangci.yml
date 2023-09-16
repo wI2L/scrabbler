@@ -12,6 +12,7 @@ linters:
     - misspell
     - prealloc
     - revive
+    - revive
     - stylecheck
     - thelper
     - tparallel
