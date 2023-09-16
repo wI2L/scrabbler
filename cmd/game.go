@@ -2,13 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"math/rand"
-	"strings"
-	"unicode"
-
 	"github.com/charmbracelet/lipgloss"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/unicode/norm"
+	"math/rand"
+	"strings"
 )
 
 type drawPredicate interface {
@@ -39,12 +37,14 @@ func newBag(d distribution) *splitTiles {
 		vowels:     make(tiles, 0),
 		consonants: make(tiles, 0),
 	}
+	caser := cases.Upper(d.lang)
+
 	for _, v := range d.letters {
 		// Create a tile that represent the letter
 		// and add it as many times as its frequency.
 		t := tile{
 			letter: letter{
-				L:         strings.ToUpper(v.L),
+				L:         caser.String(v.L),
 				frequency: v.frequency,
 				points:    v.points,
 			},
@@ -173,7 +173,7 @@ func (g *game) playWord(word string, check bool) error {
 	upNormWord := cases.Upper(g.distrib.lang).String(normWord)
 
 	for _, r := range upNormWord {
-		if idx := cpy.findTile(string(unicode.ToUpper(r))); idx != -1 {
+		if idx := cpy.findTile(string(r)); idx != -1 {
 			// Pop and drop.
 			_ = cpy.pickAt(idx)
 		} else {

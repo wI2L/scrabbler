@@ -49,7 +49,7 @@ func run(cmd *cobra.Command, _ []string) error {
 			return fmt.Errorf("failed to load dictionary: %s", err)
 		}
 	} else {
-		dict, err = loadDictionaryFile(dp)
+		dict, err = loadDictionaryFile(dp, dv.lang)
 		if err != nil {
 			return fmt.Errorf("failed to read dictionary file %q: %s", dp, err)
 		}

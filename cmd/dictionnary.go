@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"compress/gzip"
 	"fmt"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"io"
 	"net/http"
 	"os"
@@ -23,7 +25,7 @@ func (id indexedDict) findWords(tiles tiles, d distribution) []string {
 		if t.L == blank {
 			blanks++
 		} else {
-			r = append(r, strings.ToUpper(t.L))
+			r = append(r, t.L)
 		}
 	}
 	if blanks > 0 {
@@ -52,7 +54,7 @@ func (id indexedDict) findWordsWithBlanks(r []string, d distribution, n int) []s
 	return words
 }
 
-func loadDictionaryFile(path string) (indexedDict, error) {
+func loadDictionaryFile(path string, tag language.Tag) (indexedDict, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -75,17 +77,18 @@ func loadDictionaryFile(path string) (indexedDict, error) {
 			return nil, err
 		}
 	}
-	d, err := parseDictionary(reader)
+	d, err := parseDictionary(reader, tag)
 	if err != nil {
 		return nil, err
 	}
 	return d, nil
 }
 
-func parseDictionary(r io.ReadCloser) (indexedDict, error) {
+func parseDictionary(r io.ReadCloser, tag language.Tag) (indexedDict, error) {
 	var (
-		dict = make(indexedDict)
-		scan = bufio.NewScanner(r)
+		dict  = make(indexedDict)
+		scan  = bufio.NewScanner(r)
+		caser = cases.Upper(tag)
 	)
 	scan.Split(bufio.ScanLines)
 
@@ -95,7 +98,7 @@ func parseDictionary(r io.ReadCloser) (indexedDict, error) {
 		if err := checkWord(line); err != nil {
 			return nil, fmt.Errorf("found invalid word %q at line %d: %s", line, i, err)
 		}
-		word := strings.ToUpper(line)
+		word := caser.String(line)
 		r := []rune(word)
 		slices.Sort(r)
 		s := string(r)
