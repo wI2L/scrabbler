@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"math/rand"
+	"strings"
+
 	"github.com/charmbracelet/lipgloss"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/unicode/norm"
-	"math/rand"
-	"strings"
 )
 
 type drawPredicate interface {

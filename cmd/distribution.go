@@ -42,7 +42,7 @@ func (d distribution) dictionary() (indexedDict, error) {
 	if err != nil {
 		return nil, err
 	}
-	return parseDictionary(r)
+	return parseDictionary(r, d.lang)
 }
 
 func (d distribution) alphabet() []string {

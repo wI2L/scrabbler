@@ -10,6 +10,8 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"golang.org/x/text/language"
 )
 
 const dictDir = "../dictionaries/"
@@ -42,7 +44,7 @@ func Test_loadDictionaryFile(t *testing.T) {
 		filename := filepath.Base(path)
 
 		t.Run(filename, func(t *testing.T) {
-			dict, err := loadDictionaryFile(path)
+			dict, err := loadDictionaryFile(path, language.Und)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -275,7 +277,7 @@ func frenchDict(t *testing.T) indexedDict {
 	}
 	path := filepath.Join(dictDir, "french/ods8.txt.gz")
 
-	dict, err := loadDictionaryFile(path)
+	dict, err := loadDictionaryFile(path, language.French)
 	if err != nil {
 		t.Fatal(err)
 	}

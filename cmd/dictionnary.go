@@ -4,8 +4,6 @@ import (
 	"bufio"
 	"compress/gzip"
 	"fmt"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"io"
 	"net/http"
 	"os"
@@ -13,6 +11,9 @@ import (
 	"sort"
 	"strings"
 	"unicode"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type indexedDict map[string][]string
