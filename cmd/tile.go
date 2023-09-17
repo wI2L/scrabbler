@@ -3,8 +3,14 @@ package cmd
 import (
 	"math/rand"
 	"strings"
+	"unicode"
 
 	"github.com/charmbracelet/lipgloss"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
+	"golang.org/x/text/runes"
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
 )
 
 type letterKind uint
@@ -22,7 +28,15 @@ type tile struct {
 
 // kind returns the kind of the tile's letter.
 func (t tile) kind() letterKind {
-	switch strings.ToUpper(t.L) {
+	tr := transform.Chain(
+		norm.NFD,                           // decompose
+		runes.Remove(runes.In(unicode.Mn)), // remove diacritics
+		norm.NFC,                           // recompose
+		cases.Upper(language.Und),          // uppercase
+	)
+	s, _, _ := transform.String(tr, t.L)
+
+	switch s {
 	case "A", "E", "I", "O", "U", "Y":
 		return kindVowel
 	default:
@@ -130,7 +144,7 @@ func (k letterKind) String() string {
 }
 
 func subscriptPoints(i uint) string {
-	const zero = 0x00002080 // https://www.compart.com/en/unicode/U+2080
+	const zero = 0x00002080 // U+2080
 	switch {
 	case i == 0:
 		return string(rune(zero))

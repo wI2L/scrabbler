@@ -139,7 +139,7 @@ func (g *game) drawWithRequirements(vowels int) error {
 	g.drawCount++
 
 	// Pick the required quantity of vowels,
-	// minus any leftover frm previous draw.
+	// minus any leftover from previous draw.
 	v, err := g.bag.draw(kindVowel, uint(vowels-len(g.draw.vowels)), nil)
 	if err != nil {
 		return err
