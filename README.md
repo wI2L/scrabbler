@@ -201,16 +201,18 @@ Alternatively, you can specify the path of a dictionary of your choice with the 
 scrabbler --dictionary=dictionaries/english/twl06.txt.gz
 ```
 
-A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted*). The file can optionally be *gzipped* (the file extension doesn't matter, the detection is [header-based](https://pkg.go.dev/net/http#DetectContentType).
+A valid dictionary is a text file which contain one word per line (*the words don't need to be sorted*).
+
+The file can optionally be *gzipped* (the file extension doesn't matter, the detection is [header-based](https://pkg.go.dev/net/http#DetectContentType)).
 
 Browse the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/dictionaries) directory, which already contains some official and non-official dictionaries for several languages:
 
-- :fr: [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble)
-- :uk: [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words)
-- :us: [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List)
-- :it: [ZINGA](https://www.listediparole.it/tutteleparole.txt)
-- :de: [hippler/german-wordlist](https://github.com/hippler/german-wordlist)
-- :iceland: [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl)
+- :fr: [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble): The 8th version of the official dictionary for Francophone Scrabble.
+- :uk: [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words): Official word list used in English-language tournament Scrabble in most countries except the US, Thailand and Canada.
+- :us: [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List): Official word authority for tournament Scrabble in the USA and Canada under the aegis of NASPA Games.
+- :it: [listediparole](https://www.listediparole.it/tutteleparole.txt): Unofficial word list extracted from the [listediparole.it](https://www.listediparole.it) website.
+- :de: [hippler/german-wordlist](https://github.com/hippler/german-wordlist): Unofficial word list compiled by [Stefan Hippler](https://github.com/hippler).
+- :iceland: [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl): Unofficial word list compiled by [Vilhjalmur Thorsteinsson](https://github.com/vthorsteinsson) from the *Database of Icelandic Morphology* (DIM, BÍN) for the Icelandic crossword game [Netskrafl](https://github.com/mideind/Netskrafl).
 
 ### Key bindings
 
