@@ -2,41 +2,36 @@ package cmd
 
 import (
 	"fmt"
-	"math/rand"
-	"strings"
 
-	"github.com/charmbracelet/lipgloss"
 	"golang.org/x/text/cases"
+	"golang.org/x/text/transform"
 	"golang.org/x/text/unicode/norm"
 )
+
+const maxPredicateRetries = 50
+
+// game represents a Scrabble game.
+type game struct {
+	bag       *tiles
+	draw      *tiles
+	distrib   distribution
+	dict      indexedDict
+	drawCount int
+	playCount int
+	wordLen   int
+	scrabbles []string
+}
 
 type drawPredicate interface {
 	Take(t tile, drawCount int) bool
 }
 
-type splitTiles struct {
-	vowels     tiles
-	consonants tiles
-}
-
-// game represents a Scrabble game.
-type game struct {
-	bag       *splitTiles
-	draw      *splitTiles
-	distrib   distribution
-	dict      indexedDict
-	drawCount int
-	playCount int
-	wordLen   uint8
-	scrabbles []string
-}
-
 // newBag returns a new full splitTiles filled with the
 // tiles represented by the given distribution.
-func newBag(d distribution) *splitTiles {
-	b := &splitTiles{
-		vowels:     make(tiles, 0),
-		consonants: make(tiles, 0),
+func newBag(d distribution) *tiles {
+	bag := &tiles{
+		vowels:     make(rack, 0),
+		consonants: make(rack, 0),
 	}
 	caser := cases.Upper(d.lang)
 
@@ -51,111 +46,42 @@ func newBag(d distribution) *splitTiles {
 			},
 		}
 		if t.kind() == kindVowel {
-			b.vowels.fill(t, v.frequency)
+			bag.vowels.fill(t, v.frequency)
 		} else {
-			b.consonants.fill(t, v.frequency)
+			bag.consonants.fill(t, v.frequency)
 		}
 	}
-	return b.shuffle()
+	return bag.shuffle()
 }
 
-func (s *splitTiles) isEmpty() bool {
-	return len(s.vowels) == 0 && len(s.consonants) == 0
-}
-
-func (s splitTiles) String() string {
-	return s.vowels.String() + " " + s.consonants.String()
-}
-
-func (s splitTiles) length() int {
-	return len(s.vowels) + len(s.consonants)
-}
-
-func (s *splitTiles) tiles() tiles {
-	tiles := make(tiles, 0, len(s.vowels)+len(s.consonants))
-	tiles = append(tiles, s.vowels...)
-	tiles = append(tiles, s.consonants...)
-
-	return tiles
-}
-
-func (s *splitTiles) shuffle() *splitTiles {
-	s.vowels.shuffle()
-	s.consonants.shuffle()
-
-	return s
-}
-
-func (s splitTiles) view(withPoints bool) string {
-	sb := strings.Builder{}
-
-	sb.WriteString(lipgloss.JoinHorizontal(lipgloss.Top,
-		s.vowels.view(withPoints),
-		s.consonants.view(withPoints),
-	))
-	sb.WriteByte('\n')
-
-	return sb.String()
-}
-
-//nolint:unparam
-func (s *splitTiles) draw(kind letterKind, n uint, predicates []drawPredicate) (tiles, error) {
-	var ts *tiles
-
-	switch kind {
-	case kindConsonant:
-		ts = &s.consonants
-	case kindVowel:
-		ts = &s.vowels
-	default:
-		return nil, fmt.Errorf("unknown kind %v", kind)
-	}
-	ts.shuffle()
-
-	n = min(n, uint(len(*ts)))
-	draw := make(tiles, 0, n)
-
-L:
-	for i := uint(0); i < n; i++ {
-		if len(*ts) == 0 {
-			// Collection exhausted, return
-			// what has been drawn so far.
-			return draw, nil
-		}
-		idx := rand.Intn(len(*ts))
-
-		for _, p := range predicates {
-			if !p.Take((*ts)[idx], int(i)) {
-				continue L
-			}
-		}
-		draw.add(ts.pickAt(idx))
-	}
-	return draw, nil
-}
-
-func (g *game) drawWithRequirements(vowels int) error {
+func (g *game) drawTiles(minVowels, minConsonants int) error {
 	g.resetDraw(false)
 	g.drawCount++
 
-	// Pick the required quantity of vowels,
-	// minus any leftover from previous draw.
-	v, err := g.bag.draw(kindVowel, uint(vowels-len(g.draw.vowels)), nil)
-	if err != nil {
-		return err
+	defer func() {
+		g.scrabbles = g.dict.findWords(g.draw.tiles(), g.distrib)
+	}()
+
+	// Pick first the desired quantity of vowels and
+	// consonants minus any unplayed tiles from the
+	// previous draw, and eventually complete with
+	// random tiles.
+	if minVowels > 0 {
+		v := g.bag.drawByKind(kindVowel, minVowels-len(g.draw.vowels), nil)
+		g.draw.vowels.add(v...)
 	}
+	if minConsonants > 0 {
+		c := g.bag.drawByKind(kindConsonant, minConsonants-len(g.draw.consonants), nil)
+		g.draw.consonants.add(c...)
+	}
+	if g.draw.length() == g.wordLen {
+		return nil
+	}
+	r := g.bag.drawRandom(g.wordLen-g.draw.length(), nil)
+	v, c := r.splitByKind()
+
 	g.draw.vowels.add(v...)
-
-	// Draw enough consonants to complete the word.
-	wantConsonants := int(g.wordLen) - len(g.draw.vowels) - len(g.draw.consonants)
-	c, err := g.bag.draw(kindConsonant, uint(wantConsonants), nil)
-	if err != nil {
-		return err
-	}
 	g.draw.consonants.add(c...)
-
-	// Find perfect words from draw.
-	g.scrabbles = g.dict.findWords(g.draw.tiles(), g.distrib)
 
 	return nil
 }
@@ -164,38 +90,38 @@ func (g *game) drawWithRequirements(vowels int) error {
 // word from the slice, or return an error if the word cannot
 // be played, leaving the slice untouched.
 func (g *game) playWord(word string, check bool) error {
-	cpy := append(g.draw.vowels, g.draw.consonants...) //nolint:gocritic
+	rack := mergeRacks(g.draw.vowels, g.draw.consonants)
 
 	// Normalize word with NFC to combine base
-	// characters and modifiers into single runes.
-	normWord := norm.NFC.String(word)
+	// characters and modifiers into single runes,
+	// and uppercase the result.
+	tr := transform.Chain(
+		norm.NFC,
+		cases.Upper(g.distrib.lang),
+	)
+	nw, _, _ := transform.String(tr, word)
 
-	// Transform the characters to uppercase.
-	upNormWord := cases.Upper(g.distrib.lang).String(normWord)
-
-	for _, r := range upNormWord {
-		if idx := cpy.findTile(string(r)); idx != -1 {
-			// Pop and drop.
-			_ = cpy.pickAt(idx)
+	for _, r := range nw {
+		if idx := rack.findTile(string(r)); idx != -1 {
+			_ = rack.pickAt(idx)
 		} else {
 			return fmt.Errorf("word contains unavailable letter '%c'", r)
 		}
 	}
 	if !check {
-		for i := range cpy {
-			cpy[i].leftover = true
+		for i := range rack {
+			rack[i].leftover = true
 		}
-		g.draw.vowels, g.draw.consonants = cpy.splitByKind()
+		g.draw.vowels, g.draw.consonants = rack.splitByKind()
 		g.playCount++
 		g.drawCount = 0
 	}
 	return nil
 }
 
-// resetDraw puts back all recently drawn tiles
-// to the bag. If full is true, all tiles are put
-// back to the bag, which imply that any tiles
-// from the previous draw are not kept.
+// resetDraw puts back all recently drawn tiles to the bag.
+// If full is true, all tiles are put back to the bag, which
+// imply that any tiles from the previous draw are not kept.
 func (g *game) resetDraw(full bool) {
 	for i := len(g.draw.vowels) - 1; i >= 0; i-- {
 		t := g.draw.vowels[i]
@@ -209,4 +135,28 @@ func (g *game) resetDraw(full bool) {
 			g.bag.consonants.add(g.draw.consonants.pickAt(i))
 		}
 	}
+}
+
+// repetitiveVowelsPredicate is a predicate that
+// prevent repetitive vowels during a draw.
+type repetitiveVowelsPredicate struct {
+	draw      []tile
+	threshold int
+}
+
+func (p *repetitiveVowelsPredicate) Take(t tile, _ int) bool {
+	if t.kind() == kindVowel {
+		n := 0
+		for _, v := range p.draw {
+			if v.L == t.L {
+				n++
+			}
+		}
+		if n > p.threshold {
+			return false
+		}
+	}
+	p.draw = append(p.draw, t)
+
+	return true
 }

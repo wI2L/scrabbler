@@ -481,6 +481,7 @@ var krafla = distribution{
 
 // afrikaans represents the distribution of letters for the
 // standard Afrikaans edition. It contains 104 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Afrikaans
 // +----+-----+---------+-----+----+-----------+-----+----+-----+
 // |    | ×1  | ×2      | ×3  | ×4 | ×6        | ×8  | ×9 | ×16 |
 // +----+-----+---------+-----+----+-----------+-----+----+-----+
@@ -525,6 +526,7 @@ var afrikaans = distribution{
 
 // bulgarian represents the distribution of letters for the
 // standard Bulgarian edition. It contains 102 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Bulgarian
 // +----+-------+---------+-------+---------+----+-----+-----+
 // |    | ×1    | ×2      | ×3    | ×4      | ×5 | ×8  | ×9  |
 // +----+-------+---------+-------+---------+----+-----+-----+
@@ -577,6 +579,7 @@ var bulgarian = distribution{
 
 // danish represents the distribution of letters for the
 // standard Danish edition. It contains 100 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Danish
 // +---+-----+---------------+-----------+-------+-----------+-----+----+----+
 // |   | ×1  | ×2            | ×3        | ×4    | ×5        | ×6  | ×7 | ×9 |
 // +---+-----+---------------+-----------+-------+-----------+-----+----+----+
@@ -624,6 +627,7 @@ var danish = distribution{
 
 // estonian represents the distribution of letters for the
 // standard Estonian edition. It contains 102 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Estonian
 // +----+-------+---------+-------+---------+----+----+-----+-----+
 // |    | ×1    | ×2      | ×4    | ×5      | ×7 | ×8 | ×9  | ×10 |
 // +----+-------+---------+-------+---------+----+----+-----+-----+
@@ -674,6 +678,7 @@ var estonian = distribution{
 
 // finnish represents the distribution of letters for the
 // standard Finnish edition. It contains 101 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Finnish
 // +----+---------+-------------+----+----+---------+----+----+-----+-----+
 // |    | ×1      | ×2          | ×3 | ×4 | ×5      | ×7 | ×8 | ×9  | ×10 |
 // +----+---------+-------------+----+----+---------+----+----+-----+-----+
@@ -721,6 +726,7 @@ var finnish = distribution{
 
 // greek represents the distribution of letters for the
 // standard Greek edition. It contains 104 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Greek
 // +----+---------+---------+-------+-------+----+----+-----+-------+----+-----+
 // |    | ×1      | ×2      | ×3    | ×4    | ×5 | ×6 | ×7  | ×8    | ×9 | ×12 |
 // +----+---------+---------+-------+-------+----+----+-----+-------+----+-----+
@@ -766,6 +772,7 @@ var greek = distribution{
 
 // indonesian represents the distribution of letters for the
 // standard Indonesian edition. It contains 100 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Indonesian
 // +----+-----+---------+-----+----+-----+-----+----+-----+
 // |    | ×1  | ×2      | ×3  | ×4 | ×5  | ×8  | ×9 | ×19 |
 // +----+-----+---------+-----+----+-----+-----+----+-----+
@@ -812,6 +819,7 @@ var indonesian = distribution{
 
 // latvian represents the distribution of letters for the
 // standard Latvian edition. It contains 104 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Latvian
 // +----+-----------+---------+-------+---------+-----+-----+----+----+-----+
 // |    | ×1        | ×2      | ×3    | ×4      | ×5  | ×6  | ×8 | ×9 | ×11 |
 // +----+-----------+---------+-------+---------+-----+-----+----+----+-----+
@@ -868,6 +876,7 @@ var latvian = distribution{
 
 // lithuanian represents the distribution of letters for the
 // standard Lithuanian edition. It contains 104 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Lithuanian
 // +----+-----------+---------+-------+-----+-------+-----+----+-----+-----+
 // |    | ×1        | ×2      | ×3    | ×4  | ×5    | ×6  | ×8 | ×12 | ×13 |
 // +----+-----------+---------+-------+-----+-------+-----+----+-----+-----+
@@ -923,6 +932,7 @@ var lithuanian = distribution{
 
 // malay represents the distribution of letters for the
 // standard Malay edition. It contains 100 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Malay
 // +----+-----+---------+-----+-----+-------+-----+-----+----+-----+
 // |    | ×1  | ×2      | ×3  | ×4  | ×5    | ×6  | ×7  | ×8 | ×19 |
 // +----+-----+---------+-----+-----+-------+-----+-----+----+-----+
@@ -968,6 +978,7 @@ var malay = distribution{
 
 // norwegian represents the distribution of letters for the
 // standard Norwegian edition. It contains 100 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Norwegian
 // +----+-----+---------+-------+---------+-------+---------+----+----+
 // |    | ×1  | ×2      | ×3    | ×4      | ×5    | ×6      | ×7 | ×9 |
 // +----+-----+---------+-------+---------+-------+---------+----+----+
@@ -1017,6 +1028,7 @@ var norwegian = distribution{
 
 // polish represents the distribution of letters for the
 // standard Polish edition. It contains 100 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Polish
 // +---+-------------+-------------+---------------+-------+-----+----+----+----+----+
 // |   | ×1          | ×2          | ×3            | ×4    | ×5  | ×6 | ×7 | ×8 | ×9 |
 // +---+-------------+-------------+---------------+-------+-----+----+----+----+----+
@@ -1071,6 +1083,7 @@ var polish = distribution{
 
 // portuguese represents the distribution of letters for the
 // standard Portuguese edition. It contains 120 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Portuguese
 // +---+-----+---------+---------+-----+-----+-----+----+----+-----+-----+-----+
 // |   | ×1  | ×2      | ×3      | ×4  | ×5  | ×6  | ×7 | ×8 | ×10 | ×11 | ×14 |
 // +---+-----+---------+---------+-----+-----+-----+----+----+-----+-----+-----+
@@ -1117,6 +1130,7 @@ var portuguese = distribution{
 
 // romanian represents the distribution of letters for the
 // standard Romanian edition. It contains 100 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Romanian
 // +----+-----+---------+----+----+-------+-------+----+----+-----+-----+
 // |    | ×1  | ×2      | ×3 | ×4 | ×5    | ×6    | ×7 | ×9 | ×10 | ×11 |
 // +----+-----+---------+----+----+-------+-------+----+----+-----+-----+
@@ -1162,6 +1176,7 @@ var romanian = distribution{
 
 // slovak represents the distribution of letters for the
 // standard Slovak edition. It contains 100 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Slovak
 // +----+-----------+---------+---------+---------+-----+----+-----+
 // |    | ×1        | ×2      | ×3      | ×4      | ×5  | ×8 | ×9  |
 // +----+-----------+---------+---------+---------+-----+----+-----+
@@ -1226,6 +1241,7 @@ var slovak = distribution{
 
 // slovenian represents the distribution of letters for the
 // standard Slovenian edition. It contains 100 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Slovenian
 // +----+-----+---------+----+-------+-----+----+----+----+-----+-----+
 // |    | ×1  | ×2      | ×3 | ×4    | ×6  | ×7 | ×8 | ×9 | ×10 | ×11 |
 // +----+-----+---------+----+-------+-----+----+----+----+-----+-----+
@@ -1274,6 +1290,7 @@ var slovenian = distribution{
 
 // swedish represents the distribution of letters for the
 // standard Swedish edition. It contains 100 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Swedish
 // +----+-----+---------+-------+-------+----+----+---------+
 // |    | ×1  | ×2      | ×3    | ×5    | ×6 | ×7 | ×8      |
 // +----+-----+---------+-------+-------+----+----+---------+
@@ -1323,6 +1340,7 @@ var swedish = distribution{
 
 // ukrainian represents the distribution of letters for the
 // standard Ukrainian edition. It contains 104 tiles.
+// https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Ukrainian
 // +----+---------+---------+-------+-------+---------+-----+----+-----+
 // |    | ×1      | ×2      | ×3    | ×4    | ×5      | ×7  | ×8 | ×10 |
 // +----+---------+---------+-------+-------+---------+-----+----+-----+

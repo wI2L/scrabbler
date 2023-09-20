@@ -18,7 +18,7 @@ import (
 
 type indexedDict map[string][]string
 
-func (id indexedDict) findWords(tiles tiles, d distribution) []string {
+func (id indexedDict) findWords(tiles rack, d distribution) []string {
 	r := make([]string, 0, len(tiles))
 
 	blanks := 0
@@ -111,28 +111,6 @@ func parseDictionary(r io.ReadCloser, tag language.Tag) (indexedDict, error) {
 	return dict, nil
 }
 
-func isGzipCompressed(r io.ReadCloser) (bool, error) {
-	buf := make([]byte, 512)
-
-	if _, err := r.Read(buf); err != nil {
-		return false, err
-	}
-	fileType := http.DetectContentType(buf)
-	if fileType == "application/x-gzip" {
-		return true, nil
-	}
-	return false, nil
-}
-
-func checkWord(w string) error {
-	for _, r := range w {
-		if !unicode.IsLetter(r) {
-			return fmt.Errorf("'%c' is not a letter", r)
-		}
-	}
-	return nil
-}
-
 // Port of Python3 eponymous function from itertools package.
 // https://docs.python.org/3/library/itertools.html#itertools.combinations_with_replacement
 func combinationsWithReplacement(s []string, r int) [][]string {
@@ -171,4 +149,26 @@ func combinationsWithReplacement(s []string, r int) [][]string {
 		}
 	}
 	return combs
+}
+
+func isGzipCompressed(r io.ReadCloser) (bool, error) {
+	buf := make([]byte, 512)
+
+	if _, err := r.Read(buf); err != nil {
+		return false, err
+	}
+	fileType := http.DetectContentType(buf)
+	if fileType == "application/x-gzip" {
+		return true, nil
+	}
+	return false, nil
+}
+
+func checkWord(w string) error {
+	for _, r := range w {
+		if !unicode.IsLetter(r) {
+			return fmt.Errorf("'%c' is not a letter", r)
+		}
+	}
+	return nil
 }

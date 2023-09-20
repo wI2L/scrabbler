@@ -16,6 +16,8 @@ import (
 
 const dictDir = "../dictionaries/"
 
+var cachedDict indexedDict
+
 func Test_loadDictionaryFile(t *testing.T) {
 	if testing.Short() {
 		t.Skip()
@@ -76,7 +78,6 @@ func Test_loadDictionaryFile(t *testing.T) {
 	}
 }
 
-//goland:noinspection SpellCheckingInspection
 func Test_indexedDict_findWords_french(t *testing.T) {
 	dict := frenchDict(t)
 
@@ -118,7 +119,6 @@ func Test_indexedDict_findWords_french(t *testing.T) {
 	}
 }
 
-//goland:noinspection SpellCheckingInspection
 func Test_indexedDict_findWordsWithBlanks_french(t *testing.T) {
 	d := frenchDict(t)
 
@@ -267,8 +267,6 @@ func Test_combinationsWithReplacement(t *testing.T) {
 	}
 }
 
-var cachedDict indexedDict
-
 func frenchDict(t *testing.T) indexedDict {
 	t.Helper()
 
@@ -286,8 +284,8 @@ func frenchDict(t *testing.T) indexedDict {
 	return dict
 }
 
-func tilesFromWord(word string, d distribution) tiles {
-	tiles := make(tiles, 0, len(word))
+func tilesFromWord(word string, d distribution) rack {
+	tiles := make(rack, 0, len(word))
 
 	for _, r := range word {
 		for _, v := range d.letters {

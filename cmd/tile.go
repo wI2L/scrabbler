@@ -26,6 +26,24 @@ type tile struct {
 	leftover bool
 }
 
+type rack []tile
+
+type tiles struct {
+	vowels     rack
+	consonants rack
+}
+
+func (k letterKind) String() string {
+	switch k {
+	case kindVowel:
+		return "vowel"
+	case kindConsonant:
+		return "consonant"
+	default:
+		return "<unknown>"
+	}
+}
+
 // kind returns the kind of the tile's letter.
 func (t tile) kind() letterKind {
 	tr := transform.Chain(
@@ -44,6 +62,14 @@ func (t tile) kind() letterKind {
 	}
 }
 
+func (r rack) String() string {
+	s := make([]string, 0, len(r))
+	for _, t := range r {
+		s = append(s, t.L)
+	}
+	return strings.Join(s, " ")
+}
+
 func (t tile) view(withPoints bool) string {
 	if withPoints {
 		return t.L + subscriptPoints(t.points)
@@ -51,41 +77,39 @@ func (t tile) view(withPoints bool) string {
 	return t.L
 }
 
-type tiles []tile
-
 // add appends the given tiles to the slice.
-func (s *tiles) add(tiles ...tile) {
+func (r *rack) add(tiles ...tile) {
 	for _, t := range tiles {
-		*s = append(*s, t)
+		*r = append(*r, t)
 	}
 }
 
 // fill adds blankCount times the same tile to the slice.
-func (s *tiles) fill(t tile, n uint) {
+func (r *rack) fill(t tile, n uint) {
 	for i := uint(0); i < n; i++ {
-		*s = append(*s, t)
+		*r = append(*r, t)
 	}
 }
 
 // shuffle randomizes the order of the tiles.
-func (s *tiles) shuffle() {
-	rand.Shuffle(len(*s), func(i, j int) {
-		(*s)[i], (*s)[j] = (*s)[j], (*s)[i]
+func (r *rack) shuffle() {
+	rand.Shuffle(len(*r), func(i, j int) {
+		(*r)[i], (*r)[j] = (*r)[j], (*r)[i]
 	})
 }
 
 // pickAt pops and return the tile at the given position.
 // The index must not exceed the length of the slice.
-func (s *tiles) pickAt(idx int) tile {
-	t := (*s)[idx]
-	*s = append((*s)[:idx], (*s)[idx+1:]...)
+func (r *rack) pickAt(idx int) tile {
+	t := (*r)[idx]
+	*r = append((*r)[:idx], (*r)[idx+1:]...)
 	return t
 }
 
 // findTiles returns the index of the first tile
 // with the given letter,
-func (s tiles) findTile(letter string) int {
-	for i, t := range s {
+func (r rack) findTile(letter string) int {
+	for i, t := range r {
 		if t.L == letter {
 			return i
 		}
@@ -94,8 +118,8 @@ func (s tiles) findTile(letter string) int {
 }
 
 // splitByKind splits the tiles of the slice by their letter's kind.
-func (s tiles) splitByKind() (vowels, consonants tiles) {
-	for _, t := range s {
+func (r rack) splitByKind() (vowels, consonants rack) {
+	for _, t := range r {
 		switch t.kind() {
 		case kindVowel:
 			vowels = append(vowels, t)
@@ -106,18 +130,10 @@ func (s tiles) splitByKind() (vowels, consonants tiles) {
 	return
 }
 
-func (s tiles) String() string {
-	r := make([]string, 0, len(s))
-	for _, t := range s {
-		r = append(r, t.L)
-	}
-	return strings.Join(r, " ")
-}
+func (r rack) view(withPoints bool) string {
+	strs := make([]string, 0, len(r))
 
-func (s tiles) view(withPoints bool) string {
-	strs := make([]string, 0, len(s))
-
-	for _, t := range s {
+	for _, t := range r {
 		var style lipgloss.Style
 		if t.leftover {
 			style = leftoverTileStyle
@@ -132,15 +148,129 @@ func (s tiles) view(withPoints bool) string {
 	return lipgloss.JoinHorizontal(lipgloss.Top, strs...)
 }
 
-func (k letterKind) String() string {
-	switch k {
-	case kindVowel:
-		return "vowel"
-	case kindConsonant:
-		return "consonant"
-	default:
-		return "<unknown>"
+func mergeRacks(r1, r2 rack) rack {
+	r := make(rack, 0, len(r1)+len(r2))
+	r = append(r, r1...)
+	r = append(r, r2...)
+
+	return r
+}
+
+func (s tiles) String() string {
+	return s.vowels.String() + " " + s.consonants.String()
+}
+
+func (s tiles) length() int {
+	return len(s.vowels) + len(s.consonants)
+}
+
+func (s *tiles) isEmpty() bool {
+	return len(s.vowels) == 0 && len(s.consonants) == 0
+}
+
+func (s *tiles) tiles() rack {
+	r := make(rack, 0, len(s.vowels)+len(s.consonants))
+	r = append(r, s.vowels...)
+	r = append(r, s.consonants...)
+
+	return r
+}
+
+func (s *tiles) shuffle() *tiles {
+	s.vowels.shuffle()
+	s.consonants.shuffle()
+
+	return s
+}
+
+func (s tiles) view(withPoints bool) string {
+	sb := strings.Builder{}
+
+	sb.WriteString(lipgloss.JoinHorizontal(lipgloss.Top,
+		s.vowels.view(withPoints),
+		s.consonants.view(withPoints),
+	))
+	sb.WriteByte('\n')
+
+	return sb.String()
+}
+
+func (s *tiles) drawRandom(n int, predicates []drawPredicate) rack {
+	n = min(n, s.length())
+	if n == 0 {
+		return nil
 	}
+	draw := make(rack, 0, n)
+
+L:
+	for i, j := 0, 0; i < n; j++ {
+		if s.length() == 0 {
+			return draw
+		}
+		s.vowels.shuffle()
+		s.consonants.shuffle()
+
+		// Pick a random tile spanning both slices.
+		idx := rand.Intn(s.length())
+
+		var ts *rack
+		if idx < len(s.vowels) {
+			ts = &s.vowels
+		} else {
+			ts = &s.consonants
+			// Offset index for consonants slices.
+			idx -= len(s.vowels)
+		}
+		if j < maxPredicateRetries {
+			for _, p := range predicates {
+				if !p.Take((*ts)[idx], i) {
+					continue L
+				}
+			}
+		}
+		i++
+		j = 0
+		draw.add(ts.pickAt(idx))
+	}
+	return draw
+}
+
+func (s *tiles) drawByKind(kind letterKind, n int, predicates []drawPredicate) rack {
+	var ts *rack
+
+	switch kind {
+	case kindConsonant:
+		ts = &s.consonants
+	case kindVowel:
+		ts = &s.vowels
+	}
+	n = min(n, len(*ts))
+	if n == 0 {
+		return nil
+	}
+	draw := make(rack, 0, n)
+
+L:
+	for i, j := 0, 0; i < n; j++ {
+		if len(*ts) == 0 {
+			return draw
+		}
+		ts.shuffle()
+
+		idx := rand.Intn(len(*ts))
+
+		if j < maxPredicateRetries {
+			for _, p := range predicates {
+				if !p.Take((*ts)[idx], i) {
+					continue L
+				}
+			}
+		}
+		i++
+		j = 0
+		draw.add(ts.pickAt(idx))
+	}
+	return draw
 }
 
 func subscriptPoints(i uint) string {

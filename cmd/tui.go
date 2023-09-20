@@ -35,7 +35,9 @@ type tui struct {
 
 type options struct {
 	showPoints    bool
-	wordLength    uint8
+	wordLength    int
+	minVowels     int
+	minConsonants int
 	timerDuration time.Duration
 }
 
@@ -45,7 +47,7 @@ func newTUI(d distribution, dict indexedDict, width, height int, opts options) *
 	return &tui{
 		game: &game{
 			bag:     newBag(d),
-			draw:    &splitTiles{},
+			draw:    &tiles{},
 			distrib: d,
 			dict:    dict,
 			wordLen: opts.wordLength,
@@ -58,7 +60,7 @@ func newTUI(d distribution, dict indexedDict, width, height int, opts options) *
 }
 
 func (ui *tui) Init() tea.Cmd {
-	if err := ui.game.drawWithRequirements(3); err != nil {
+	if err := ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants); err != nil {
 		return tea.Quit
 	}
 	log.Printf("Initial draw is: %s\n", ui.game.draw)
@@ -112,7 +114,7 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					}
 				} else {
 					ui.insights = 0
-					if err := ui.game.drawWithRequirements(3); err != nil {
+					if err := ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants); err != nil {
 						return nil, tea.Quit
 					}
 					log.Printf("draw rejected, new draw: %s\n", ui.game.draw)
@@ -131,7 +133,7 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					ui.game.draw.length(),
 				)
 				// Draw new tiles.
-				if err := ui.game.drawWithRequirements(3); err != nil {
+				if err := ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants); err != nil {
 					return nil, tea.Quit
 				}
 				log.Printf("new draw: %s\n", ui.game.draw)
@@ -162,12 +164,23 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (ui *tui) View() string {
-	sb := strings.Builder{}
+	var s string
 
 	if ui.game.bag.isEmpty() && ui.game.draw.isEmpty() {
-		sb.WriteString(boldText.Render("Game finished"))
-		goto render
+		s = boldText.Render("Game finished")
+	} else {
+		s = ui.mainView()
 	}
+	return lipgloss.Place(
+		ui.width, ui.height,
+		lipgloss.Center, lipgloss.Center,
+		s,
+	)
+}
+
+func (ui *tui) mainView() string {
+	sb := strings.Builder{}
+
 	sb.WriteString(fmt.Sprintf(boldText.Render("Draw %d.%d"),
 		ui.game.playCount,
 		ui.game.drawCount),
@@ -223,12 +236,7 @@ func (ui *tui) View() string {
 			sb.WriteString(ts)
 		}
 	}
-render:
-	return lipgloss.Place(
-		ui.width, ui.height,
-		lipgloss.Center, lipgloss.Center,
-		sb.String(),
-	)
+	return sb.String()
 }
 
 func formatDuration(d time.Duration) string {

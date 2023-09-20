@@ -44,7 +44,7 @@
 
 - Automatic and retryable random draw
 - Custom word length
-- Custom draw configuration (*vowels or consonants requirements*)
+- Custom draw configuration (*minimum vowels requirement*)
 - [Letter distributions for many languages](#letter-distributions)
 - [Word insights from dictionaries](#custom-dictionary)
 - Game timer
@@ -78,18 +78,18 @@ The application presents itself as a terminal user-interface with two *views*:
 ### Options
 
 ```text
-scrabbler — pick your tiles, but not yourself
-
 Usage:
   scrabbler [flags]
 
 Flags:
-  -v, --debug                 enable debug logging to a file
+      --consonants uint8      number of required consonants tiles
+  -v, --debug                 enable debug logging
   -d, --dictionary string     custom dictionary file path
   -l, --distribution string   letter distribution language (default "french")
   -h, --help                  help for scrabbler
-  -p, --show-points           show tile points
-  -t, --timer duration[=5m]   enable play timer
+  -p, --show-points           show letter points
+  -t, --timer duration[=5m]   enable play timer (default 5m)
+      --vowels uint8          number of required vowel tiles
   -w, --word-length uint8     the number of tiles to draw (default 7)
 ```
 
@@ -100,6 +100,19 @@ The official rule define a word of seven (`7`) letters, but you can change it us
 ```shell
 scrabbler --word-length=8
 ```
+
+#### Draw requirements
+
+Official [duplicate scrabble rules](https://en.wikipedia.org/wiki/Duplicate_Scrabble#Rules) states that a draw must always contain one vowel and one consonant. You can use the `--min-vowels` and `--min-consonants` flags to configure this behavior (disabled by default, the draw is completely random).
+
+Unlike the official rules, the draws won't stop automatically once there are no more vowels or consonants to pick. However, you can choose to stop the game yourself.
+
+```shell
+scrabbler --min-vowels=1 --min-consonants=1
+```
+
+> [!IMPORTANT]
+> The sum of required vowels and consonants cannot exceed the word length.
 
 #### Tile points
 

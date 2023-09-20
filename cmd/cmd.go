@@ -16,12 +16,14 @@ import (
 var (
 	debug         bool
 	wordLength    uint8
+	vowels        uint8
+	consonants    uint8
 	showPoints    bool
 	timerDuration time.Duration
 
 	Root = &cobra.Command{
 		Use:  "scrabbler",
-		Long: "scrabbler — pick your tiles, but not yourself",
+		Long: "scrabbler — pick tiles, but not yourself!",
 		RunE: run,
 	}
 )
@@ -61,11 +63,16 @@ func run(cmd *cobra.Command, _ []string) error {
 	if wordLength < 7 || wordLength > 8 {
 		return fmt.Errorf("word length must be 7 or 8")
 	}
+	if vowels+consonants > wordLength {
+		return fmt.Errorf("required vowels and consonants exceed word length")
+	}
 	out := termenv.NewOutput(os.Stdout)
 	out.SetWindowTitle("scrabbler")
 
 	tui := newTUI(dv, dict, tw, th, options{
-		wordLength:    wordLength,
+		wordLength:    int(wordLength),
+		minVowels:     int(vowels),
+		minConsonants: int(consonants),
 		showPoints:    showPoints,
 		timerDuration: timerDuration,
 	})
@@ -113,26 +120,38 @@ func setupFlags() {
 		7,
 		"the number of tiles to draw",
 	)
+	f.Uint8Var(
+		&vowels,
+		"vowels",
+		0,
+		"number of required vowel tiles",
+	)
+	f.Uint8Var(
+		&consonants,
+		"consonants",
+		0,
+		"number of required consonants tiles",
+	)
 	f.BoolVarP(
 		&debug,
 		"debug",
 		"v",
 		false,
-		"enable debug logging to a file",
+		"enable debug logging",
 	)
 	f.BoolVarP(
 		&showPoints,
 		"show-points",
 		"p",
 		false,
-		"show tile points",
+		"show letter points",
 	)
 	f.DurationVarP(
 		&timerDuration,
 		"timer",
 		"t",
 		0,
-		"enable play timer",
+		"enable play timer (default 5m)",
 	)
 	// Set a default value for the timer duration
 	// if the flag is passed without a value.
