@@ -44,10 +44,10 @@
 
 - Automatic and retryable random draw
 - Custom word length
-- Custom draw configuration (*minimum vowels requirement*)
+- Custom draw configuration (*minimum vowels/consonants requirement*)
 - [Letter distributions for many languages](#letter-distributions)
 - [Word insights from dictionaries](#custom-dictionary)
-- Game timer
+- Game timer (*thinking time per play*)
 
 ## Installation
 
@@ -103,16 +103,16 @@ scrabbler --word-length=8
 
 #### Draw requirements
 
-Official [duplicate scrabble rules](https://en.wikipedia.org/wiki/Duplicate_Scrabble#Rules) states that a draw must always contain one vowel and one consonant. You can use the `--min-vowels` and `--min-consonants` flags to configure this behavior (disabled by default, the draw is completely random).
+The official [duplicate scrabble rules](https://en.wikipedia.org/wiki/Duplicate_Scrabble#Rules) states that a draw must always contain one vowel and one consonant. You can use the `--vowels` and `--consonants` flags to configure this behavior (disabled by default, the draw is completely random).
 
 Unlike the official rules, the draws won't stop automatically once there are no more vowels or consonants to pick. However, you can choose to stop the game yourself.
 
 ```shell
-scrabbler --min-vowels=1 --min-consonants=1
+scrabbler --vowels=1 --consonants=1
 ```
 
 > [!IMPORTANT]
-> The sum of required vowels and consonants cannot exceed the word length.
+> The sum of required vowels and consonants cannot exceed the configured word length.
 
 #### Tile points
 
@@ -154,7 +154,7 @@ scrabbler --timer=3m
 >
 > &mdash;&mdash; [Wikipedia](https://en.wikipedia.org/wiki/Scrabble_letter_distributions)
 
-By default, the application loads the official [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) letter distribution.
+By default, the application loads the [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) letter distribution.
 
 You can change it with the `-l`/`--distribution` flags:
 
@@ -222,7 +222,7 @@ Browse the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/dictiona
 
 - :fr: [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble): The 8th version of the official dictionary for Francophone Scrabble.
 - :uk: [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words): Official word list used in English-language tournament Scrabble in most countries except the US, Thailand and Canada.
-- :us: [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List): Official word authority for tournament Scrabble in the USA and Canada under the aegis of NASPA Games.
+- :us: [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List): Official word authority for tournament Scrabble in the USA and Canada.
 - :it: [listediparole](https://www.listediparole.it/tutteleparole.txt): Unofficial word list extracted from the [listediparole.it](https://www.listediparole.it) website.
 - :de: [hippler/german-wordlist](https://github.com/hippler/german-wordlist): Unofficial word list compiled by [Stefan Hippler](https://github.com/hippler).
 - :iceland: [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl): Unofficial word list compiled by [Vilhjalmur Thorsteinsson](https://github.com/vthorsteinsson) from the *Database of Icelandic Morphology* (DIM, BÍN) for the Icelandic crossword game [Netskrafl](https://github.com/mideind/Netskrafl).
