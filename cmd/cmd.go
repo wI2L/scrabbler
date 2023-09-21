@@ -124,13 +124,13 @@ func setupFlags() {
 		&vowels,
 		"vowels",
 		0,
-		"number of required vowel tiles",
+		"number of required vowel letters",
 	)
 	f.Uint8Var(
 		&consonants,
 		"consonants",
 		0,
-		"number of required consonants tiles",
+		"number of required consonant letters",
 	)
 	f.BoolVarP(
 		&debug,
