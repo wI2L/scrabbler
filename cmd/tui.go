@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"sort"
 	"strings"
 	"time"
 
@@ -12,13 +13,15 @@ import (
 	"github.com/charmbracelet/lipgloss"
 
 	"github.com/wI2L/scrabbler/internal/bubbles/confirm"
+	"github.com/wI2L/scrabbler/internal/bubbles/gridmenu"
 )
 
 type state int
 
 const (
-	drawing state = iota
-	playing
+	lang state = iota
+	draw
+	play
 )
 
 type tui struct {
@@ -26,6 +29,7 @@ type tui struct {
 	state    state
 	input    textinput.Model
 	confirm  confirm.Model
+	menu     gridmenu.Model
 	timer    timer.Model
 	width    int
 	height   int
@@ -34,6 +38,7 @@ type tui struct {
 }
 
 type options struct {
+	dictPath      string
 	showPoints    bool
 	wordLength    int
 	minVowels     int
@@ -43,42 +48,79 @@ type options struct {
 
 var _ tea.Model = &tui{}
 
-func newTUI(d distribution, dict indexedDict, width, height int, opts options) *tui {
-	return &tui{
-		game: &game{
-			bag:     newBag(d),
-			draw:    &tiles{},
-			distrib: d,
-			dict:    dict,
-			wordLen: opts.wordLength,
-		},
+func newTUI(distribName string, width, height int, opts options) (*tui, error) {
+	tui := tui{
+		state:  lang,
 		width:  width,
 		height: height,
-		state:  drawing,
 		opts:   opts,
 	}
+	if distribName != "" {
+		if err := tui.initGame(distribName); err != nil {
+			return nil, err
+		}
+	}
+	return &tui, nil
+}
+
+func (ui *tui) initGame(dn string) error {
+	distrib, ok := distributions[dn]
+	if !ok {
+		return fmt.Errorf("unknown distribution: %s", dn)
+	}
+	var (
+		err  error
+		dict indexedDict
+	)
+	if ui.opts.dictPath == "" {
+		dict, err = distrib.dictionary()
+		if err != nil {
+			return fmt.Errorf("failed to load dictionary: %s", err)
+		}
+	} else {
+		dict, err = loadDictionaryFile(ui.opts.dictPath, distrib.lang)
+		if err != nil {
+			return fmt.Errorf("failed to read dictionary file %q: %s", ui.opts.dictPath, err)
+		}
+	}
+	ui.game = &game{
+		bag:     newBag(distrib),
+		draw:    &tiles{},
+		distrib: distrib,
+		dict:    dict,
+		wordLen: ui.opts.wordLength,
+	}
+	ui.game.drawTiles(
+		ui.opts.minVowels,
+		ui.opts.minConsonants,
+	)
+	log.Printf("Starting new game with %q distribution...\n", dn)
+	log.Printf("Initial draw is: %s\n", ui.game.draw)
+
+	ui.state = draw
+
+	return nil
 }
 
 func (ui *tui) Init() tea.Cmd {
-	if err := ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants); err != nil {
-		return tea.Quit
-	}
-	log.Printf("Initial draw is: %s\n", ui.game.draw)
-
 	ui.input = textinput.New()
+	ui.input.CharLimit = 0
 	ui.input.Prompt = "Enter tiles played: "
 	ui.input.Placeholder = "word"
-	ui.input.CharLimit = 0
 	ui.input.Validate = func(w string) error {
 		return ui.game.playWord(w, true)
 	}
-	ui.confirm = confirm.New("Accept draw?")
+	ui.confirm = confirm.New("Accept draw?", true)
+
+	ui.menu = gridmenu.New(distribChoices(), 4)
+	ui.menu.Width = ui.width
+	ui.menu.Margin(6, 2)
 
 	if ui.opts.timerDuration != 0 {
 		ui.timer = timer.NewWithInterval(ui.opts.timerDuration, time.Second)
 	}
 	return tea.Batch(
-		ui.confirm.Init(),
+		ui.menu.Init(),
 	)
 }
 
@@ -89,37 +131,45 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return ui, nil
 		}
 		ui.width, ui.height = m.Width, m.Height
+
 	case timer.TickMsg, timer.StartStopMsg:
-		if ui.state == drawing {
+		if ui.state != play {
 			return ui, nil
 		}
 		var cmd tea.Cmd
 		ui.timer, cmd = ui.timer.Update(msg)
 		return ui, cmd
+
 	case tea.KeyMsg:
 		switch m.Type {
 		case tea.KeyCtrlC, tea.KeyEsc:
 			return ui, tea.Quit
 		case tea.KeyEnter:
 			switch ui.state {
-			case drawing:
+			case lang:
+				if err := ui.initGame(ui.menu.Selection()); err != nil {
+					return nil, tea.Quit
+				}
+				ui.state = draw
+				return ui, nil
+			case draw:
 				ok := ui.confirm.Value()
 				if ok {
 					log.Println("draw accepted")
 
 					ui.input.Focus()
-					ui.state = playing
+					ui.state = play
 					if ui.opts.timerDuration != 0 {
 						return ui, ui.timer.Start()
 					}
 				} else {
 					ui.insights = 0
-					if err := ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants); err != nil {
-						return nil, tea.Quit
-					}
+					ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants)
+
 					log.Printf("draw rejected, new draw: %s\n", ui.game.draw)
 				}
-			case playing:
+				return ui, nil
+			case play:
 				word := ui.input.Value()
 				if len(word) == 0 {
 					break
@@ -133,14 +183,14 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					ui.game.draw.length(),
 				)
 				// Draw new tiles.
-				if err := ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants); err != nil {
-					return nil, tea.Quit
-				}
+				ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants)
+
 				log.Printf("new draw: %s\n", ui.game.draw)
 
 				ui.insights = 0
-				ui.state = drawing
+				ui.state = draw
 				ui.input.Reset()
+
 				if ui.opts.timerDuration != 0 {
 					ui.timer.Stop()
 					ui.timer.Timeout = ui.opts.timerDuration
@@ -149,27 +199,36 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case tea.KeyCtrlG:
 			ui.insights++
+			return ui, nil
 		}
 	}
 	var cmd tea.Cmd
+
 	switch ui.state {
-	case drawing:
+	case lang:
+		ui.menu, cmd = ui.menu.Update(msg)
+		return ui, cmd
+	case draw:
 		ui.confirm, cmd = ui.confirm.Update(msg)
 		return ui, cmd
-	case playing:
+	case play:
 		ui.input, cmd = ui.input.Update(msg)
 		return ui, cmd
 	}
 	return ui, nil
 }
 
-func (ui *tui) View() string {
+func (ui tui) View() string {
 	var s string
 
-	if ui.game.bag.isEmpty() && ui.game.draw.isEmpty() {
-		s = boldText.Render("Game finished")
+	if ui.state == lang {
+		s = ui.menu.View()
 	} else {
-		s = ui.mainView()
+		if ui.game.bag.isEmpty() && ui.game.draw.isEmpty() {
+			s = boldText.Render("Game finished")
+		} else {
+			s = ui.runningView()
+		}
 	}
 	return lipgloss.Place(
 		ui.width, ui.height,
@@ -178,7 +237,7 @@ func (ui *tui) View() string {
 	)
 }
 
-func (ui *tui) mainView() string {
+func (ui tui) runningView() string {
 	sb := strings.Builder{}
 
 	sb.WriteString(fmt.Sprintf(boldText.Render("Draw %d.%d"),
@@ -221,12 +280,12 @@ func (ui *tui) mainView() string {
 		sb.WriteString(strings.Repeat("\n", 3))
 	}
 	switch ui.state {
-	case drawing:
+	case draw:
 		sb.WriteString(ui.confirm.View())
-	case playing:
+	case play:
 		sb.WriteString(ui.input.View())
 
-		if ui.state == playing && ui.opts.timerDuration != 0 {
+		if ui.state == play && ui.opts.timerDuration != 0 {
 			sb.WriteString(strings.Repeat("\n", 2))
 
 			ts := formatDuration(ui.timer.Timeout)
@@ -251,6 +310,21 @@ func formatDuration(d time.Duration) string {
 		return fmt.Sprintf("%02d:%02d:%02d", h, m, s)
 	}
 	return fmt.Sprintf("%02d:%02d", m, s)
+}
+
+func distribChoices() []gridmenu.Choice {
+	c := make([]gridmenu.Choice, 0, len(distributions))
+
+	for k, v := range distributions {
+		c = append(c, gridmenu.Choice{
+			Name: k,
+			Desc: v.name,
+		})
+	}
+	sort.Slice(c, func(i, j int) bool {
+		return c[i].Name < c[j].Name
+	})
+	return c
 }
 
 func scrabbleListView(words []string, maxWidth int) string {

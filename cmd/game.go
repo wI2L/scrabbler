@@ -54,7 +54,7 @@ func newBag(d distribution) *tiles {
 	return bag.shuffle()
 }
 
-func (g *game) drawTiles(minVowels, minConsonants int) error {
+func (g *game) drawTiles(minVowels, minConsonants int) {
 	g.resetDraw(false)
 	g.drawCount++
 
@@ -75,15 +75,13 @@ func (g *game) drawTiles(minVowels, minConsonants int) error {
 		g.draw.consonants.add(c...)
 	}
 	if g.draw.length() == g.wordLen {
-		return nil
+		return
 	}
 	r := g.bag.drawRandom(g.wordLen-g.draw.length(), nil)
 	v, c := r.splitByKind()
 
 	g.draw.vowels.add(v...)
 	g.draw.consonants.add(c...)
-
-	return nil
 }
 
 // playWord withdraws the tiles required to play the given

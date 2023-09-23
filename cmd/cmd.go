@@ -8,6 +8,7 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
@@ -36,26 +37,8 @@ func run(cmd *cobra.Command, _ []string) error {
 	cmd.SilenceUsage = true
 
 	dn := cmd.Flag("distribution").Value.String()
-	dv, ok := distributions[dn]
-	if !ok {
-		return fmt.Errorf("unknown distribution: %s", dn)
-	}
-	var (
-		err  error
-		dict indexedDict
-	)
 	dp := cmd.Flag("dictionary").Value.String()
-	if dp == "" {
-		dict, err = dv.dictionary()
-		if err != nil {
-			return fmt.Errorf("failed to load dictionary: %s", err)
-		}
-	} else {
-		dict, err = loadDictionaryFile(dp, dv.lang)
-		if err != nil {
-			return fmt.Errorf("failed to read dictionary file %q: %s", dp, err)
-		}
-	}
+
 	tw, th, err := term.GetSize(int(os.Stdin.Fd()))
 	if err != nil {
 		return fmt.Errorf("cannot get term size: %s", err)
@@ -69,13 +52,17 @@ func run(cmd *cobra.Command, _ []string) error {
 	out := termenv.NewOutput(os.Stdout)
 	out.SetWindowTitle("scrabbler")
 
-	tui := newTUI(dv, dict, tw, th, options{
+	tui, err := newTUI(dn, tw, th, options{
+		dictPath:      dp,
 		wordLength:    int(wordLength),
 		minVowels:     int(vowels),
 		minConsonants: int(consonants),
 		showPoints:    showPoints,
 		timerDuration: timerDuration,
 	})
+	if err != nil {
+		return err
+	}
 	prg := tea.NewProgram(
 		tui,
 		tea.WithAltScreen(),
@@ -92,9 +79,11 @@ func run(cmd *cobra.Command, _ []string) error {
 	} else {
 		log.SetOutput(io.Discard)
 	}
-	log.Printf("Starting new game with %q distribution...\n", dn)
+	// See https://github.com/charmbracelet/lipgloss/issues/73
+	lipgloss.SetHasDarkBackground(termenv.HasDarkBackground())
 
 	_, err = prg.Run()
+
 	return err
 }
 
@@ -110,7 +99,7 @@ func setupFlags() {
 	f.StringP(
 		"distribution",
 		"l",
-		defaultDistrib,
+		"",
 		"letter distribution language",
 	)
 	f.Uint8VarP(

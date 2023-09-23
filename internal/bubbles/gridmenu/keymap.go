@@ -1,13 +1,14 @@
-package confirm
+package gridmenu
 
 import "github.com/charmbracelet/bubbles/key"
 
 type keyMap struct {
-	Yes    key.Binding
-	No     key.Binding
-	Toggle key.Binding
-	Quit   key.Binding
-	Help   key.Binding
+	Up    key.Binding
+	Down  key.Binding
+	Left  key.Binding
+	Right key.Binding
+	Quit  key.Binding
+	Help  key.Binding
 }
 
 // ShortHelp returns keybindings to be shown in the short help view.
@@ -18,23 +19,27 @@ func (k keyMap) ShortHelp() []key.Binding {
 // FullHelp returns keybindings for the expanded help view.
 func (k keyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.Yes, k.No, k.Toggle}, // first column
-		{k.Help, k.Quit},        // second column
+		{k.Up, k.Down, k.Left, k.Right}, // first column
+		{k.Help, k.Quit},                // second column
 	}
 }
 
 var keys = keyMap{
-	Yes: key.NewBinding(
-		key.WithKeys("y", "Y", "left"),
-		key.WithHelp("←/y", "yes"),
+	Up: key.NewBinding(
+		key.WithKeys("up"),
+		key.WithHelp("↑", "up"),
 	),
-	No: key.NewBinding(
-		key.WithKeys("n", "N", "right"),
-		key.WithHelp("→/n", "no"),
+	Down: key.NewBinding(
+		key.WithKeys("down"),
+		key.WithHelp("↓", "down"),
 	),
-	Toggle: key.NewBinding(
-		key.WithKeys("tab"),
-		key.WithHelp("tab", "toggle"),
+	Left: key.NewBinding(
+		key.WithKeys("left"),
+		key.WithHelp("←", "left"),
+	),
+	Right: key.NewBinding(
+		key.WithKeys("right"),
+		key.WithHelp("→", "right"),
 	),
 	Help: key.NewBinding(
 		key.WithKeys("?"),

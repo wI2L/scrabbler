@@ -84,14 +84,14 @@ Usage:
   scrabbler [flags]
 
 Flags:
-      --consonants uint8      number of required consonants tiles
+      --consonants uint8      number of required consonant letters
   -v, --debug                 enable debug logging
   -d, --dictionary string     custom dictionary file path
-  -l, --distribution string   letter distribution language (default "french")
+  -l, --distribution string   letter distribution language
   -h, --help                  help for scrabbler
   -p, --show-points           show letter points
   -t, --timer duration[=5m]   enable play timer (default 5m)
-      --vowels uint8          number of required vowel tiles
+      --vowels uint8          number of required vowel letters
   -w, --word-length uint8     the number of tiles to draw (default 7)
 ```
 
@@ -166,31 +166,31 @@ scrabbler --distribution=english
 
 Below is the list of official distributions that are supported:
 
-- `afrikaans`
-- `bulgarian`
-- `czech`
-- `danish`
-- `dutch`
-- `english`
-- `estonian`
-- `finnish`
-- `french`
-- `german`
-- `greek`
-- `icelandic`
-- `indonesian`
-- `italian`
-- `latvian`
-- `lithuanian`
-- `malay`
-- `norwegian`
-- `polish`
-- `portuguese`
-- `romanian`
-- `slovak`
-- `slovenian`
-- `swedish`
-- `ukrainian`
+- `afrikaans` — *Afrikaans*
+- `bulgarian` — *Български*
+- `czech` — *Čeština*
+- `danish` — *Dansk*
+- `dutch` — *Nederlands*
+- `english` — *English*
+- `estonian` — *Eesti*
+- `finnish` — *suomi*
+- `french` — *Français*
+- `german` — *Deutsch*
+- `greek` — *Ελληνικά*
+- `icelandic` — *Íslenska*
+- `indonesian` — *Bahasa Indonesia*
+- `italian` — *Italiano*
+- `latvian` — *Latviešu*
+- `lithuanian` — *Lietuvių*
+- `malay` — *Bahasa Melayu*
+- `norwegian` — *Norsk*
+- `polish` —  *Polski*
+- `portuguese` — *Português*
+- `romanian` — *Română*
+- `slovak` — *Slovenčina*
+- `slovenian` — *Slovenščina*
+- `swedish` — *Svenska*
+- `ukrainian` — *Українська*
 
 Alternate distributions are also available:
 

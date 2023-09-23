@@ -11,10 +11,7 @@ import (
 	fr "github.com/wI2L/scrabbler/dictionaries/french"
 )
 
-const (
-	blank          = "?"
-	defaultDistrib = "french" // 🇫🇷
-)
+const blank = "?"
 
 // letter represents a Scrabble letter.
 // It can either be a single rune or a sequence of
@@ -29,6 +26,7 @@ type letter struct {
 // a particular language to their frequency and points.
 type distribution struct {
 	lang      language.Tag
+	name      string
 	dict      []byte
 	letters   []letter
 	tileCount int
@@ -74,6 +72,7 @@ func (d distribution) alphabet() []string {
 // +----+-----------+---------+-----+----+-------------+----+----+-----+
 var french = distribution{
 	lang: language.French,
+	name: "Français",
 	dict: fr.ODS8,
 	letters: []letter{
 		{blank, 2, 0},
@@ -124,6 +123,7 @@ var french = distribution{
 // +----+-----+-----------+----+-------+-------+----+-----+-----+
 var english = distribution{
 	lang: language.English,
+	name: "English",
 	dict: en.SOWPODS,
 	letters: []letter{
 		{blank, 2, 0},
@@ -174,6 +174,7 @@ var english = distribution{
 // +----+---------+---------+-------+----+----+---------+----+----+-----+
 var german = distribution{
 	lang: language.German,
+	name: "Deutsch",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 5, 1},
@@ -225,6 +226,7 @@ var german = distribution{
 // +----+----+---------+-----------+---------+---------+-----+-----+-----+-----+
 var italian = distribution{
 	lang: language.Italian,
+	name: "Italiano",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 14, 1},
@@ -270,6 +272,7 @@ var italian = distribution{
 
 var dutch = distribution{
 	lang: language.Dutch,
+	name: "Nederlands",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 6, 1},
@@ -321,6 +324,7 @@ var dutch = distribution{
 // +----+-------+---------+-----------+---------+-------+----+
 var czech = distribution{
 	lang: language.Czech,
+	name: "Čeština",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 5, 1},
@@ -385,6 +389,7 @@ var czech = distribution{
 // +----+-----------+-------------+-----+-------+----+-------+----+-----+-----+
 var icelandic = distribution{
 	lang: language.Icelandic,
+	name: "Íslenska",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 10, 1},
@@ -441,6 +446,7 @@ var icelandic = distribution{
 // +----+-------------+---------+-------+-----+----+-----+-------+----+-----+
 var krafla = distribution{
 	lang: language.Icelandic,
+	name: "Íslenska (Krafla)",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 11, 1},
@@ -496,6 +502,7 @@ var krafla = distribution{
 // +----+-----+---------+-----+----+-----------+-----+----+-----+
 var afrikaans = distribution{
 	lang: language.Afrikaans,
+	name: "Afrikaans",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 9, 1},
@@ -541,6 +548,7 @@ var afrikaans = distribution{
 // +----+-------+---------+-------+---------+----+-----+-----+
 var bulgarian = distribution{
 	lang: language.Bulgarian,
+	name: "Български",
 	letters: []letter{
 		{blank, 2, 0},
 		{"А", 9, 1},
@@ -592,6 +600,7 @@ var bulgarian = distribution{
 // +---+-----+---------------+-----------+-------+-----------+-----+----+----+
 var danish = distribution{
 	lang: language.Danish,
+	name: "Dansk",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 7, 1},
@@ -643,6 +652,7 @@ var danish = distribution{
 // +----+-------+---------+-------+---------+----+----+-----+-----+
 var estonian = distribution{
 	lang: language.Estonian,
+	name: "Eesti",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 10, 1},
@@ -693,6 +703,7 @@ var estonian = distribution{
 // +----+---------+-------------+----+----+---------+----+----+-----+-----+
 var finnish = distribution{
 	lang: language.Finnish,
+	name: "suomi",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 10, 1},
@@ -740,6 +751,7 @@ var finnish = distribution{
 // +----+---------+---------+-------+-------+----+----+-----+-------+----+-----+
 var greek = distribution{
 	lang: language.Greek,
+	name: "Ελληνικά",
 	letters: []letter{
 		{blank, 2, 0},
 		{"Α", 12, 1},
@@ -787,6 +799,7 @@ var greek = distribution{
 // +----+-----+---------+-----+----+-----+-----+----+-----+
 var indonesian = distribution{
 	lang: language.Indonesian,
+	name: "Bahasa Indonesia",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 19, 1},
@@ -835,6 +848,7 @@ var indonesian = distribution{
 // +----+-----------+---------+-------+---------+-----+-----+----+----+-----+
 var latvian = distribution{
 	lang: language.Latvian,
+	name: "Latviešu",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 11, 1},
@@ -892,6 +906,7 @@ var latvian = distribution{
 // +----+-----------+---------+-------+-----+-------+-----+----+-----+-----+
 var lithuanian = distribution{
 	lang: language.Lithuanian,
+	name: "Lietuvių",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 12, 1},
@@ -947,6 +962,7 @@ var lithuanian = distribution{
 // +----+-----+---------+-----+-----+-------+-----+-----+----+-----+
 var malay = distribution{
 	lang: language.Malay,
+	name: "Bahasa Melayu",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 19, 1},
@@ -994,6 +1010,7 @@ var malay = distribution{
 // +----+-----+---------+-------+---------+-------+---------+----+----+
 var norwegian = distribution{
 	lang: language.Norwegian,
+	name: "Norsk",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 7, 1},
@@ -1043,6 +1060,7 @@ var norwegian = distribution{
 // +---+-------------+-------------+---------------+-------+-----+----+----+----+----+
 var polish = distribution{
 	lang: language.Polish,
+	name: "Polski",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 9, 1},
@@ -1098,6 +1116,7 @@ var polish = distribution{
 // +---+-----+---------+---------+-----+-----+-----+----+----+-----+-----+-----+
 var portuguese = distribution{
 	lang: language.Portuguese,
+	name: "Português",
 	letters: []letter{
 		{blank, 3, 0},
 		{"A", 14, 1},
@@ -1146,6 +1165,7 @@ var portuguese = distribution{
 // +----+-----+---------+----+----+-------+-------+----+----+-----+-----+
 var romanian = distribution{
 	lang: language.Romanian,
+	name: "Română",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 10, 1},
@@ -1192,6 +1212,7 @@ var romanian = distribution{
 // +----+-----------+---------+---------+---------+-----+----+-----+
 var slovak = distribution{
 	lang: language.Slovak,
+	name: "Slovenčina",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 9, 1},
@@ -1257,6 +1278,7 @@ var slovak = distribution{
 // +----+-----+---------+----+-------+-----+----+----+----+-----+-----+
 var slovenian = distribution{
 	lang: language.Slovenian,
+	name: "Slovenščina",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 10, 1},
@@ -1305,6 +1327,7 @@ var slovenian = distribution{
 // +----+-----+---------+-------+-------+----+----+---------+
 var swedish = distribution{
 	lang: language.Swedish,
+	name: "Svenska",
 	letters: []letter{
 		{blank, 2, 0},
 		{"A", 8, 1},
@@ -1357,6 +1380,7 @@ var swedish = distribution{
 // +----+---------+---------+-------+-------+---------+-----+----+-----+
 var ukrainian = distribution{
 	lang: language.Ukrainian,
+	name: "Українська",
 	letters: []letter{
 		{blank, 2, 0},
 		{"'", 1, 10},

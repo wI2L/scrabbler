@@ -20,19 +20,16 @@ type Model struct {
 	help   help.Model
 }
 
-func New(prompt string) Model {
-	m := Model{
-		value:  true,
+func New(prompt string, defaultValue bool) Model {
+	h := help.New()
+	h.FullSeparator = strings.Repeat(" ", 3)
+
+	return Model{
+		value:  defaultValue,
 		prompt: prompt,
 		keys:   keys,
-		help:   help.New(),
+		help:   h,
 	}
-	m.help.FullSeparator = strings.Repeat(" ", 3)
-	return m
-}
-
-func (m Model) Init() tea.Cmd {
-	return nil
 }
 
 func (m Model) Value() bool {
@@ -42,7 +39,7 @@ func (m Model) Value() bool {
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		// If we set a width on the help menu it can
+		// Set a width on the help menu so that it can
 		// gracefully truncate its view as needed.
 		m.help.Width = msg.Width
 	case tea.KeyMsg:
