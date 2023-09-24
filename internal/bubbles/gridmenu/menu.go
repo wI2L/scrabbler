@@ -11,14 +11,14 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-var (
-	itemStyle      = lipgloss.NewStyle().Faint(true)
-	selectionStyle = lipgloss.NewStyle().Underline(true)
-)
-
 type Choice struct {
-	Name string
-	Desc string
+	Name        string
+	Description string
+}
+
+type Styles struct {
+	Choice    lipgloss.Style
+	Selection lipgloss.Style
 }
 
 type matrix struct {
@@ -42,6 +42,7 @@ type Model struct {
 	keys      keyMap
 	help      help.Model
 	margins   margins
+	styles    Styles
 	limit     int
 	rows      int
 	cols      int
@@ -59,6 +60,10 @@ func New(choices []Choice, maxColumns int) Model {
 		limit:     maxColumns,
 		keys:      keys,
 		help:      h,
+		styles: Styles{
+			Choice:    lipgloss.NewStyle().Faint(true),
+			Selection: lipgloss.NewStyle().Underline(true),
+		},
 	}
 }
 
@@ -145,9 +150,9 @@ func (m Model) View() string {
 			}
 			var s string
 			if c == m.selection {
-				s = selectionStyle.Render(c.Desc)
+				s = m.styles.Selection.Render(c.Description)
 			} else {
-				s = itemStyle.Render(c.Desc)
+				s = m.styles.Choice.Render(c.Description)
 			}
 			items = append(items, s)
 		}
@@ -221,7 +226,7 @@ func (m *Model) initMatrixes() {
 				if c == nil {
 					continue
 				}
-				if w := lipgloss.Width(c.Desc); w > colWidth {
+				if w := lipgloss.Width(c.Description); w > colWidth {
 					colWidth = w
 				}
 			}

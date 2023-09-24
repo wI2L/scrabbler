@@ -9,26 +9,34 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-const arrowRight = "▸"
-
-var selectionStyle = lipgloss.NewStyle().Bold(true)
-
 type Model struct {
 	value  bool
 	prompt string
 	keys   keyMap
 	help   help.Model
+	styles Styles
+}
+
+type Styles struct {
+	Accept lipgloss.Style
+	Reject lipgloss.Style
 }
 
 func New(prompt string, defaultValue bool) Model {
 	h := help.New()
 	h.FullSeparator = strings.Repeat(" ", 3)
 
+	baseStyle := lipgloss.NewStyle().Bold(true)
+
 	return Model{
 		value:  defaultValue,
 		prompt: prompt,
 		keys:   keys,
 		help:   h,
+		styles: Styles{
+			Accept: baseStyle.Copy().Foreground(lipgloss.Color("#76E083")),
+			Reject: baseStyle.Copy().Foreground(lipgloss.Color("#f9746a")),
+		},
 	}
 }
 
@@ -65,16 +73,18 @@ func (m Model) View() string {
 	sb.WriteString(m.prompt)
 	sb.WriteString(" ") // spacer
 
+	const arrow = "▸"
+
 	if m.value {
-		sb.WriteString(arrowRight)
-		sb.WriteString(selectionStyle.Copy().Foreground(lipgloss.Color("#76E083")).Render("Yes"))
+		sb.WriteString(arrow)
+		sb.WriteString(m.styles.Accept.Render("Yes"))
 		sb.WriteString(" ")
 		sb.WriteString("No")
 	} else {
 		sb.WriteString("Yes")
 		sb.WriteString(" ")
-		sb.WriteString(arrowRight)
-		sb.WriteString(selectionStyle.Copy().Foreground(lipgloss.Color("#f9746a")).Render("No"))
+		sb.WriteString(arrow)
+		sb.WriteString(m.styles.Reject.Render("No"))
 	}
 	var hv string
 

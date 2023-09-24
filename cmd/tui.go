@@ -317,8 +317,8 @@ func distribChoices() []gridmenu.Choice {
 
 	for k, v := range distributions {
 		c = append(c, gridmenu.Choice{
-			Name: k,
-			Desc: v.name,
+			Name:        k,
+			Description: v.name,
 		})
 	}
 	sort.Slice(c, func(i, j int) bool {
