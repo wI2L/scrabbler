@@ -24,7 +24,7 @@ builds:
       - CGO_ENABLED=0
       - GO111MODULE=on
     flags:
-      - trimpath
+      - -trimpath
     ldflags:
       - -s # disable symbol table
       - -w # disable DWARF generation
