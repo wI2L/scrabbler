@@ -222,7 +222,9 @@ func (ui tui) View() string {
 	var s string
 
 	if ui.state == lang {
-		s = ui.menu.View()
+		s += lipgloss.NewStyle().Bold(true).Render("Choose a language")
+		s += strings.Repeat("\n", 3)
+		s += ui.menu.View()
 	} else {
 		if ui.game.bag.isEmpty() && ui.game.draw.isEmpty() {
 			s = boldText.Render("Game finished")
