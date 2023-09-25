@@ -15,12 +15,13 @@ import (
 )
 
 var (
-	debug         bool
-	wordLength    uint8
 	vowels        uint8
 	consonants    uint8
+	wordLength    uint8
 	showPoints    bool
+	debug         bool
 	timerDuration time.Duration
+	predicates    predicateList
 
 	Root = &cobra.Command{
 		Use:  "scrabbler",
@@ -59,6 +60,7 @@ func run(cmd *cobra.Command, _ []string) error {
 		minConsonants: int(consonants),
 		showPoints:    showPoints,
 		timerDuration: timerDuration,
+		predicates:    predicates.value,
 	})
 	if err != nil {
 		return err
@@ -79,6 +81,7 @@ func run(cmd *cobra.Command, _ []string) error {
 	} else {
 		log.SetOutput(io.Discard)
 	}
+	// Set whether the term use a dark background.
 	// See https://github.com/charmbracelet/lipgloss/issues/73
 	lipgloss.SetHasDarkBackground(termenv.HasDarkBackground())
 
@@ -90,59 +93,34 @@ func run(cmd *cobra.Command, _ []string) error {
 func setupFlags() {
 	f := Root.Flags()
 
-	f.StringP(
-		"dictionary",
-		"d",
-		"",
+	f.StringP("dictionary", "d", "",
 		"custom dictionary file path",
 	)
-	f.StringP(
-		"distribution",
-		"l",
-		"",
+	f.StringP("distribution", "l", "",
 		"letter distribution language",
 	)
-	f.Uint8VarP(
-		&wordLength,
-		"word-length",
-		"w",
-		7,
-		"the number of tiles to draw",
-	)
-	f.Uint8Var(
-		&vowels,
-		"vowels",
-		0,
+	f.Uint8Var(&vowels, "vowels", 0,
 		"number of required vowel letters",
 	)
-	f.Uint8Var(
-		&consonants,
-		"consonants",
-		0,
+	f.Uint8Var(&consonants, "consonants", 0,
 		"number of required consonant letters",
 	)
-	f.BoolVarP(
-		&debug,
-		"debug",
-		"v",
-		false,
-		"enable debug logging",
+	f.Uint8VarP(&wordLength, "word-length", "w", 7,
+		"the number of tiles to draw",
 	)
-	f.BoolVarP(
-		&showPoints,
-		"show-points",
-		"p",
-		false,
+	f.BoolVarP(&showPoints, "show-points", "p", false,
 		"show letter points",
 	)
-	f.DurationVarP(
-		&timerDuration,
-		"timer",
-		"t",
-		0,
+	f.BoolVar(&debug, "debug", false,
+		"enable debug mode",
+	)
+	f.Var(&predicates, "predicates",
+		"list of draw predicates",
+	)
+	f.DurationVarP(&timerDuration, "timer", "t", 0,
 		"enable play timer (default 5m)",
 	)
-	// Set a default value for the timer duration
-	// if the flag is passed without a value.
+	// Set a default duration for the timer
+	// if the flag is given without a value.
 	f.Lookup("timer").NoOptDefVal = "5m"
 }

@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"bufio"
-	"bytes"
 	"compress/gzip"
 	"io"
 	"os"
@@ -10,6 +9,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"unicode/utf8"
 
 	"golang.org/x/text/language"
 )
@@ -46,7 +46,7 @@ func Test_loadDictionaryFile(t *testing.T) {
 		filename := filepath.Base(path)
 
 		t.Run(filename, func(t *testing.T) {
-			dict, err := loadDictionaryFile(path, language.Und)
+			dict, err := loadDictionaryFile(path, language.Und, 7)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -63,7 +63,7 @@ func Test_loadDictionaryFile(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			linesCount, err := wc(r)
+			linesCount, err := wcl(r, 7)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -86,9 +86,9 @@ func Test_indexedDict_findWords_french(t *testing.T) {
 		words []string
 	}{
 		{
-			draw: "OCBWYO",
+			draw: "OCBSWYO",
 			words: []string{
-				"COWBOY",
+				"COWBOYS",
 			},
 		},
 		{
@@ -108,9 +108,8 @@ func Test_indexedDict_findWords_french(t *testing.T) {
 		words := dict.findWords(tiles, french)
 
 		if want, got := len(tt.words), len(words); want != got {
-			t.Errorf("expected %d words, got %d", want, got)
+			t.Fatalf("expected %d words, got %d", want, got)
 		}
-
 		for i, w := range tt.words {
 			if !strings.EqualFold(w, words[i]) {
 				t.Errorf("expected word #%d to be %q", i, w)
@@ -275,7 +274,7 @@ func frenchDict(t *testing.T) indexedDict {
 	}
 	path := filepath.Join(dictDir, "french/ods8.txt.gz")
 
-	dict, err := loadDictionaryFile(path, language.French)
+	dict, err := loadDictionaryFile(path, language.French, 7)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -297,28 +296,22 @@ func tilesFromWord(word string, d distribution) rack {
 	return tiles
 }
 
-func wc(r io.Reader) (uint, error) {
-	const nl = '\n'
+func wcl(r io.Reader, wordLen int) (uint, error) {
+	var (
+		c    uint
+		scan = bufio.NewScanner(r)
+	)
+	scan.Split(bufio.ScanLines)
 
-	var c uint
-	buf := make([]byte, bufio.MaxScanTokenSize)
-	for {
-		n, err := r.Read(buf)
-		if err != nil && err != io.EOF {
-			return 0, err
+	for scan.Scan() {
+		line := scan.Bytes()
+		if wordLen > 0 && utf8.RuneCount(line) != wordLen {
+			continue
 		}
-		var pos int
-		for {
-			i := bytes.IndexByte(buf[pos:], nl)
-			if i == -1 || n == pos {
-				break
-			}
-			pos += i + 1
-			c++
-		}
-		if err == io.EOF {
-			break
-		}
+		c++
+	}
+	if err := scan.Err(); err != nil {
+		return 0, err
 	}
 	return c, nil
 }

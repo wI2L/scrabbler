@@ -10,7 +10,6 @@ import (
 
 func main() {
 	log.SetFlags(0)
-
 	cmd.Root.SilenceErrors = true
 
 	if err := cmd.Root.Execute(); err != nil {

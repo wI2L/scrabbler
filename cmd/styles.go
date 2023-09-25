@@ -11,7 +11,7 @@ var (
 			Foreground(lipgloss.Color("#FBE7D1")).
 			BorderForeground(lipgloss.Color("#DFC6A0"))
 
-	leftoverTileStyle = tileStyle.Copy().BorderForeground(lipgloss.Color("#FFFFFF"))
+	inuseTileStyle = tileStyle.Copy().BorderForeground(lipgloss.Color("#FFFFFF"))
 
 	boldText     = lipgloss.NewStyle().Bold(true)
 	italicText   = lipgloss.NewStyle().Italic(true)

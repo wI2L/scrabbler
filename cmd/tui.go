@@ -44,6 +44,7 @@ type options struct {
 	minVowels     int
 	minConsonants int
 	timerDuration time.Duration
+	predicates    []drawPredicate
 }
 
 var _ tea.Model = &tui{}
@@ -73,12 +74,12 @@ func (ui *tui) initGame(dn string) error {
 		dict indexedDict
 	)
 	if ui.opts.dictPath == "" {
-		dict, err = distrib.dictionary()
+		dict, err = distrib.dictionary(ui.opts.wordLength)
 		if err != nil {
 			return fmt.Errorf("failed to load dictionary: %s", err)
 		}
 	} else {
-		dict, err = loadDictionaryFile(ui.opts.dictPath, distrib.lang)
+		dict, err = loadDictionaryFile(ui.opts.dictPath, distrib.lang, ui.opts.wordLength)
 		if err != nil {
 			return fmt.Errorf("failed to read dictionary file %q: %s", ui.opts.dictPath, err)
 		}
@@ -93,6 +94,7 @@ func (ui *tui) initGame(dn string) error {
 	ui.game.drawTiles(
 		ui.opts.minVowels,
 		ui.opts.minConsonants,
+		ui.opts.predicates...,
 	)
 	log.Printf("Starting new game with %q distribution...\n", dn)
 	log.Printf("Initial draw is: %s\n", ui.game.draw)
@@ -119,9 +121,7 @@ func (ui *tui) Init() tea.Cmd {
 	if ui.opts.timerDuration != 0 {
 		ui.timer = timer.NewWithInterval(ui.opts.timerDuration, time.Second)
 	}
-	return tea.Batch(
-		ui.menu.Init(),
-	)
+	return nil
 }
 
 func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -164,7 +164,7 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					}
 				} else {
 					ui.insights = 0
-					ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants)
+					ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants, ui.opts.predicates...)
 
 					log.Printf("draw rejected, new draw: %s\n", ui.game.draw)
 				}
@@ -183,7 +183,7 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					ui.game.draw.length(),
 				)
 				// Draw new tiles.
-				ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants)
+				ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants, ui.opts.predicates...)
 
 				log.Printf("new draw: %s\n", ui.game.draw)
 
@@ -272,7 +272,7 @@ func (ui tui) runningView() string {
 
 					sb.WriteByte('\n')
 					sb.WriteString(lipgloss.NewStyle().Width(width).Align(lipgloss.Center).Render(
-						scrabbleListView(ui.game.scrabbles, width),
+						ui.wordListView(width),
 					))
 				}
 			}
@@ -300,36 +300,7 @@ func (ui tui) runningView() string {
 	return sb.String()
 }
 
-func formatDuration(d time.Duration) string {
-	d = d.Round(time.Second)
-	h := d / time.Hour
-	d -= h * time.Hour
-	m := d / time.Minute
-	d -= m * time.Minute
-	s := d / time.Second
-
-	if h > 0 {
-		return fmt.Sprintf("%02d:%02d:%02d", h, m, s)
-	}
-	return fmt.Sprintf("%02d:%02d", m, s)
-}
-
-func distribChoices() []gridmenu.Choice {
-	c := make([]gridmenu.Choice, 0, len(distributions))
-
-	for k, v := range distributions {
-		c = append(c, gridmenu.Choice{
-			Name:        k,
-			Description: v.name,
-		})
-	}
-	sort.Slice(c, func(i, j int) bool {
-		return c[i].Name < c[j].Name
-	})
-	return c
-}
-
-func scrabbleListView(words []string, maxWidth int) string {
+func (ui tui) wordListView(maxWidth int) string {
 	const wordSep = " ■ "
 
 	var (
@@ -337,7 +308,7 @@ func scrabbleListView(words []string, maxWidth int) string {
 		lineWidth int
 		builder   strings.Builder
 	)
-	for _, w := range words {
+	for _, w := range ui.game.scrabbles {
 		width := 0
 
 		// Compute the rendered width of the word
@@ -368,4 +339,33 @@ func scrabbleListView(words []string, maxWidth int) string {
 		lines = append(lines, scrabbleList.Render(strings.Clone(builder.String())))
 	}
 	return lipgloss.JoinVertical(lipgloss.Top, lines...)
+}
+
+func formatDuration(d time.Duration) string {
+	d = d.Round(time.Second)
+	h := d / time.Hour
+	d -= h * time.Hour
+	m := d / time.Minute
+	d -= m * time.Minute
+	s := d / time.Second
+
+	if h > 0 {
+		return fmt.Sprintf("%02d:%02d:%02d", h, m, s)
+	}
+	return fmt.Sprintf("%02d:%02d", m, s)
+}
+
+func distribChoices() []gridmenu.Choice {
+	c := make([]gridmenu.Choice, 0, len(distributions))
+
+	for k, v := range distributions {
+		c = append(c, gridmenu.Choice{
+			Name:        k,
+			Description: v.name,
+		})
+	}
+	sort.Slice(c, func(i, j int) bool {
+		return c[i].Name < c[j].Name
+	})
+	return c
 }

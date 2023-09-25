@@ -2,7 +2,6 @@
 
 <h3 align=center>Pick tiles, but not yourself!</h3>
 <p align=center>Automatic draw TUI for your <i>duplicate</i> Scrabble games</p>
-<br/>
 <p align=center>
     <img alt="French" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/FR.svg">
     <img alt="English (US)" src="https://raw.githubusercontent.com/Yummygum/flagpack-core/main/svg/m/US.svg">
@@ -85,15 +84,16 @@ Usage:
   scrabbler [flags]
 
 Flags:
-      --consonants uint8      number of required consonant letters
-  -v, --debug                 enable debug logging
-  -d, --dictionary string     custom dictionary file path
-  -l, --distribution string   letter distribution language
-  -h, --help                  help for scrabbler
-  -p, --show-points           show letter points
-  -t, --timer duration[=5m]   enable play timer (default 5m)
-      --vowels uint8          number of required vowel letters
-  -w, --word-length uint8     the number of tiles to draw (default 7)
+      --consonants uint8           number of required consonant letters
+      --debug                      enable debug mode
+  -d, --dictionary string          custom dictionary file path
+  -l, --distribution string        letter distribution language
+  -h, --help                       help for scrabbler
+      --predicates key=[val],...   list of draw predicates
+  -p, --show-points                show letter points
+  -t, --timer duration[=5m]        enable play timer (default 5m)
+      --vowels uint8               number of required vowel letters
+  -w, --word-length uint8          the number of tiles to draw (default 7)
 ```
 
 #### Word length
@@ -116,6 +116,18 @@ scrabbler --vowels=1 --consonants=1
 
 > [!IMPORTANT]
 > The sum of required vowels and consonants cannot exceed the configured word length.
+
+#### Predicates
+
+Draw predicates are builtin conditions that can alter or influence the outcome of a draw. Each predicate has a "maximum number of tries", after which it is ignored if it cannot fulfill its condition, to prevent the draw from never succeeding.
+
+##### Duplicates vowels
+
+The `dup-vowels` predicate caps duplicate vowel letters to a defined threshold. The threshold doesn't apply per-letter (2 `A`, 3 `B`) but for all letters at once (max 2 `A` or 2 `B`:
+
+```shell
+scrabbler --predicates="dup-vowels=2"
+```
 
 #### Tile points
 
@@ -157,7 +169,7 @@ scrabbler --timer=3m
 >
 > &mdash;&mdash; [Wikipedia](https://en.wikipedia.org/wiki/Scrabble_letter_distributions)
 
-By default, the application loads the [French](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#French) letter distribution.
+*By default, if no distribution is chosen with a flag at startup, the application will display a selection menu.*
 
 You can change it with the `-l`/`--distribution` flags:
 
@@ -223,24 +235,34 @@ The file can optionally be *gzipped* (the file extension doesn't matter, the det
 
 Browse the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/dictionaries) directory, which already contains some official and non-official dictionaries for several languages:
 
-- :fr: [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble): The 8th version of the official dictionary for Francophone Scrabble.
-- :uk: [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words): Official word list used in English-language tournament Scrabble in most countries except the US, Thailand and Canada.
-- :us: [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List): Official word authority for tournament Scrabble in the USA and Canada.
-- :it: [listediparole](https://www.listediparole.it/tutteleparole.txt): Unofficial word list extracted from the [listediparole.it](https://www.listediparole.it) website.
-- :de: [hippler/german-wordlist](https://github.com/hippler/german-wordlist): Unofficial word list compiled by [Stefan Hippler](https://github.com/hippler).
-- :iceland: [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl): Unofficial word list compiled by [Vilhjalmur Thorsteinsson](https://github.com/vthorsteinsson) from the *Database of Icelandic Morphology* (DIM, BÍN) for the Icelandic crossword game [Netskrafl](https://github.com/mideind/Netskrafl).
+| **Language** &nbsp; &nbsp; &nbsp; | **Name**                                                              | **Description**                                                                                                                                                                                                                          | **Count** |
+|-----------------------------------|-----------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| :fr: French                       | [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble)    | The 8th version of the official dictionary for Francophone Scrabble                                                                                                                                                                      | 411430    |
+| :uk: English                      | [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words)       | Official word list used in English-language tournament Scrabble in most countries except the US, Thailand and Canada                                                                                                                     | 267753    |
+| :us: :canada: English             | [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List)                | Official word authority for tournament Scrabble in the USA and Canada.                                                                                                                                                                   | 178691    |
+| :it: Italian                      | [listediparole](https://www.listediparole.it/tutteleparole.txt)       | Unofficial word list extracted from the [listediparole.it](https://www.listediparole.it) website.                                                                                                                                        | 664005    |
+| :de: Deutsch                      | [hippler/german-wordlist](https://github.com/hippler/german-wordlist) | Unofficial word list compiled by [Stefan Hippler](https://github.com/hippler)                                                                                                                                                            | 685486    |
+| :iceland: Icelandic               | [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl)     | Unofficial word list compiled by [Vilhjalmur Thorsteinsson](https://github.com/vthorsteinsson) from the *Database of Icelandic Morphology* (DIM, BÍN) for the Icelandic crossword game [Netskrafl](https://github.com/mideind/Netskrafl) | 2543753   |
+| :romania: Romanian                | [listedecuvinte](https://www.listedecuvinte.com/toatecuvintele.txt)   | Unofficial word list extracted from the [listedecuvinte.com](https://www.listedecuvinte.com) website                                                                                                                                     | 610767    |
 
 ### Key bindings
 
-| Keys                                      | Description                                                                                                                                          |
-|:------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| <kbd>Control+C</kbd> or <kbd>Escape</kbd> | Exit the application *without confirmation*                                                                                                          |
-| <kbd>?</kbd>                              | Toggle help view (switch between short and extended)                                                                                                 |
-| <kbd>Enter</kbd>                          | Validate selection or play word                                                                                                                      |
-| <kbd>←</kbd>/<kbd>y</kbd>                 | Select the *yes* option                                                                                                                              |
-| <kbd>→</kbd>/<kbd>n</kbd>                 | Select the *no* option                                                                                                                               |
-| <kbd>Tab</kbd>                            | Toggle option selection                                                                                                                              |
-| <kbd>Control+G</kbd>                      | Press once to show word insights (whether one or more *scrabble(s)* have been found with the tiles of the draw), press twice to show the words found |
+- <kbd>Control+C</kbd> or <kbd>Escape</kbd>: Exit the application *without confirmation*
+- <kbd>?</kbd>: Toggle help view (switch between short and extended)
+- <kbd>Enter</kbd>: Validate selection or play word
+- <kbd>←</kbd>/<kbd>y</kbd>: Select the *yes* option or move left in language selection menu
+- <kbd>→</kbd>/<kbd>n</kbd>: Select the *no* option or move right in the language selection menu
+- <kbd>↑</kbd>: Move up in the language selection menu
+- <kbd>↓</kbd>: Move down in the language selection menu
+- <kbd>Tab</kbd>: Toggle option selection
+- <kbd>Control+G</kbd>:
+  - Press once to show word insights (whether one or more *scrabble*/*bingo*/*bonus* have been found with the tiles of the draw)
+  - Press twice to show the words found
+
+## Credits
+
+- 🧋 [Bubbletea](https://github.com/charmbracelet/bubbletea)
+- 👄 [Lipgloss](https://github.com/charmbracelet/lipgloss)
 
 ## License
 

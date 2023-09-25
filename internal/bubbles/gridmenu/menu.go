@@ -51,27 +51,22 @@ type Model struct {
 }
 
 func New(choices []Choice, maxColumns int) Model {
-	h := help.New()
-	h.FullSeparator = strings.Repeat(" ", 3)
-
-	return Model{
+	m := Model{
 		choices:   choices,
 		selection: &choices[0],
 		limit:     maxColumns,
 		keys:      keys,
-		help:      h,
+		help:      help.New(),
 		styles: Styles{
 			Choice:    lipgloss.NewStyle().Faint(true),
 			Selection: lipgloss.NewStyle().Underline(true),
 		},
 	}
-}
-
-func (m *Model) Init() tea.Cmd {
+	m.help.FullSeparator = strings.Repeat(" ", 3)
 	m.initMatrixes()
 	m.setActiveGrid()
 
-	return nil
+	return m
 }
 
 func (m Model) Selection() string {

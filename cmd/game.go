@@ -8,8 +8,6 @@ import (
 	"golang.org/x/text/unicode/norm"
 )
 
-const maxPredicateRetries = 50
-
 // game represents a Scrabble game.
 type game struct {
 	bag       *tiles
@@ -20,10 +18,6 @@ type game struct {
 	playCount int
 	wordLen   int
 	scrabbles []string
-}
-
-type drawPredicate interface {
-	Take(t tile, drawCount int) bool
 }
 
 // newBag returns a new full splitTiles filled with the
@@ -54,10 +48,13 @@ func newBag(d distribution) *tiles {
 	return bag.shuffle()
 }
 
-func (g *game) drawTiles(minVowels, minConsonants int) {
+func (g *game) drawTiles(minVowels, minConsonants int, predicates ...drawPredicate) {
 	g.resetDraw(false)
 	g.drawCount++
 
+	for _, p := range predicates {
+		p.Reset(g.draw.tiles())
+	}
 	defer func() {
 		g.scrabbles = g.dict.findWords(g.draw.tiles(), g.distrib)
 	}()
@@ -67,17 +64,17 @@ func (g *game) drawTiles(minVowels, minConsonants int) {
 	// previous draw, and eventually complete with
 	// random tiles.
 	if minVowels > 0 {
-		v := g.bag.drawByKind(kindVowel, minVowels-len(g.draw.vowels), nil)
+		v := g.bag.drawByKind(kindVowel, minVowels-len(g.draw.vowels), predicates)
 		g.draw.vowels.add(v...)
 	}
 	if minConsonants > 0 {
-		c := g.bag.drawByKind(kindConsonant, minConsonants-len(g.draw.consonants), nil)
+		c := g.bag.drawByKind(kindConsonant, minConsonants-len(g.draw.consonants), predicates)
 		g.draw.consonants.add(c...)
 	}
 	if g.draw.length() == g.wordLen {
 		return
 	}
-	r := g.bag.drawRandom(g.wordLen-g.draw.length(), nil)
+	r := g.bag.drawRandom(g.wordLen-g.draw.length(), predicates)
 	v, c := r.splitByKind()
 
 	g.draw.vowels.add(v...)
@@ -108,7 +105,7 @@ func (g *game) playWord(word string, check bool) error {
 	}
 	if !check {
 		for i := range rack {
-			rack[i].leftover = true
+			rack[i].inuse = true
 		}
 		g.draw.vowels, g.draw.consonants = rack.splitByKind()
 		g.playCount++
@@ -123,38 +120,14 @@ func (g *game) playWord(word string, check bool) error {
 func (g *game) resetDraw(full bool) {
 	for i := len(g.draw.vowels) - 1; i >= 0; i-- {
 		t := g.draw.vowels[i]
-		if !t.leftover || full {
+		if !t.inuse || full {
 			g.bag.vowels.add(g.draw.vowels.pickAt(i))
 		}
 	}
 	for i := len(g.draw.consonants) - 1; i >= 0; i-- {
 		t := g.draw.consonants[i]
-		if !t.leftover || full {
+		if !t.inuse || full {
 			g.bag.consonants.add(g.draw.consonants.pickAt(i))
 		}
 	}
-}
-
-// repetitiveVowelsPredicate is a predicate that
-// prevent repetitive vowels during a draw.
-type repetitiveVowelsPredicate struct {
-	draw      []tile
-	threshold int
-}
-
-func (p *repetitiveVowelsPredicate) Take(t tile, _ int) bool {
-	if t.kind() == kindVowel {
-		n := 0
-		for _, v := range p.draw {
-			if v.L == t.L {
-				n++
-			}
-		}
-		if n > p.threshold {
-			return false
-		}
-	}
-	p.draw = append(p.draw, t)
-
-	return true
 }

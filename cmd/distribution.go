@@ -32,7 +32,7 @@ type distribution struct {
 	tileCount int
 }
 
-func (d distribution) dictionary() (indexedDict, error) {
+func (d distribution) dictionary(wordLen int) (indexedDict, error) {
 	if d.dict == nil {
 		return nil, nil
 	}
@@ -40,7 +40,7 @@ func (d distribution) dictionary() (indexedDict, error) {
 	if err != nil {
 		return nil, err
 	}
-	return parseDictionary(r, d.lang)
+	return parseDictionary(r, d.lang, wordLen)
 }
 
 func (d distribution) alphabet() []string {

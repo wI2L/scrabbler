@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -55,7 +56,7 @@ func (id indexedDict) findWordsWithBlanks(r []string, d distribution, n int) []s
 	return words
 }
 
-func loadDictionaryFile(path string, tag language.Tag) (indexedDict, error) {
+func loadDictionaryFile(path string, tag language.Tag, wordLen int) (indexedDict, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -78,14 +79,14 @@ func loadDictionaryFile(path string, tag language.Tag) (indexedDict, error) {
 			return nil, err
 		}
 	}
-	d, err := parseDictionary(reader, tag)
+	d, err := parseDictionary(reader, tag, wordLen)
 	if err != nil {
 		return nil, err
 	}
 	return d, nil
 }
 
-func parseDictionary(r io.ReadCloser, tag language.Tag) (indexedDict, error) {
+func parseDictionary(r io.ReadCloser, tag language.Tag, wordLen int) (indexedDict, error) {
 	var (
 		dict  = make(indexedDict)
 		scan  = bufio.NewScanner(r)
@@ -95,15 +96,19 @@ func parseDictionary(r io.ReadCloser, tag language.Tag) (indexedDict, error) {
 
 	for i := 1; scan.Scan(); i++ {
 		line := scan.Text()
-		line = strings.TrimSpace(line)
-		if err := checkWord(line); err != nil {
-			return nil, fmt.Errorf("found invalid word %q at line %d: %s", line, i, err)
+
+		if err := checkWord(line, tag); err != nil {
+			return nil, fmt.Errorf("invalid word %q at line %d: %s", line, i, err)
 		}
-		word := caser.String(line)
-		r := []rune(word)
+		if wordLen > 0 && utf8.RuneCountInString(line) != wordLen {
+			continue
+		}
+		w := caser.String(line)
+		r := []rune(w)
 		slices.Sort(r)
+
 		s := string(r)
-		dict[s] = append(dict[s], word)
+		dict[s] = append(dict[s], w)
 	}
 	if err := scan.Err(); err != nil {
 		return nil, err
@@ -164,7 +169,7 @@ func isGzipCompressed(r io.ReadCloser) (bool, error) {
 	return false, nil
 }
 
-func checkWord(w string) error {
+func checkWord(w string, _ language.Tag) error {
 	for _, r := range w {
 		if !unicode.IsLetter(r) {
 			return fmt.Errorf("'%c' is not a letter", r)

@@ -23,7 +23,7 @@ const (
 // tile represents a Scrabble tile.
 type tile struct {
 	letter
-	leftover bool
+	inuse bool
 }
 
 type rack []tile
@@ -135,8 +135,8 @@ func (r rack) view(withPoints bool) string {
 
 	for _, t := range r {
 		var style lipgloss.Style
-		if t.leftover {
-			style = leftoverTileStyle
+		if t.inuse {
+			style = inuseTileStyle
 		} else {
 			style = tileStyle
 		}
@@ -146,14 +146,6 @@ func (r rack) view(withPoints bool) string {
 		strs = append(strs, style.Render(t.view(withPoints)))
 	}
 	return lipgloss.JoinHorizontal(lipgloss.Top, strs...)
-}
-
-func mergeRacks(r1, r2 rack) rack {
-	r := make(rack, 0, len(r1)+len(r2))
-	r = append(r, r1...)
-	r = append(r, r2...)
-
-	return r
 }
 
 func (s tiles) String() string {
@@ -271,6 +263,14 @@ L:
 		draw.add(ts.pickAt(idx))
 	}
 	return draw
+}
+
+func mergeRacks(r1, r2 rack) rack {
+	r := make(rack, 0, len(r1)+len(r2))
+	r = append(r, r1...)
+	r = append(r, r2...)
+
+	return r
 }
 
 func subscriptPoints(i uint) string {
