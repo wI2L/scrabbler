@@ -41,20 +41,22 @@ type Model struct {
 	grid      [][]*Choice
 	keys      keyMap
 	help      help.Model
-	margins   margins
 	styles    Styles
-	limit     int
+	margins   margins
+	maxCols   int
+	maxRows   int
 	rows      int
 	cols      int
 	posX      int
 	posY      int
 }
 
-func New(choices []Choice, maxColumns int) Model {
+func New(choices []Choice, maxColumns, maxRows int) Model {
 	m := Model{
 		choices:   choices,
 		selection: &choices[0],
-		limit:     maxColumns,
+		maxCols:   maxColumns,
+		maxRows:   maxRows,
 		keys:      keys,
 		help:      help.New(),
 		styles: Styles{
@@ -108,8 +110,19 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 		case key.Matches(msg, m.keys.Down):
 			// If we aren't in the bottom row, and
 			// the item below isn't nil, move down.
-			if m.posY < m.rows-1 && m.grid[m.posY+1][m.posX] != nil {
-				m.posY++
+			if m.posY < m.rows-1 {
+				if m.grid[m.posY+1][m.posX] != nil {
+					m.posY++
+				} else {
+					// Take the last element of the last line.
+					m.posY++
+					for i, e := range m.grid[m.rows-1] {
+						if e == nil {
+							break
+						}
+						m.posX = i
+					}
+				}
 			}
 		case key.Matches(msg, m.keys.Left):
 			// If we aren't in the leftmost column, move left.
@@ -134,11 +147,12 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 
 func (m Model) View() string {
 	cols := make([]string, 0, m.cols)
+	rs, re := m.getRowBounds()
 
 	for x := 0; x < m.cols; x++ {
 		var items []string
 
-		for y := 0; y < m.rows; y++ {
+		for y := rs; y < re; y++ {
 			c := m.grid[y][x]
 			if c == nil {
 				continue
@@ -151,12 +165,17 @@ func (m Model) View() string {
 			}
 			items = append(items, s)
 		}
+		if len(items) == 0 {
+			continue
+		}
 		// Join the items vertically with newlines.
-		s := strings.Join(
-			items,
+		s := strings.Join(items,
 			strings.Repeat("\n", m.margins.vertical),
 		)
-		if x != m.cols-1 {
+		// If we're not rendering the last column and the next column
+		// cell isn't empty (if we render the last row and the number
+		// of non-nil elems of that row is less than the max columns).
+		if x != m.cols-1 && !(re-rs == 1 && m.grid[max(re-1, 0)][x+1] == nil) {
 			// Calculate inner column padding equal to
 			// the length of the longest item minus the
 			// length of the last item.
@@ -186,10 +205,8 @@ func (m Model) View() string {
 }
 
 func (m *Model) initMatrixes() {
-	cols := m.limit
-	if cols < 1 {
-		cols = 1
-	}
+	cols := max(m.maxCols, 1)
+
 	m.matrixes = make([]matrix, 0, cols)
 
 	// Create N matrixes from 1 column to max
@@ -251,6 +268,15 @@ func (m *Model) setActiveGrid() {
 		m.grid = v.grid
 	}
 	m.posX, m.posY = m.getCurrentCoords()
+}
+
+func (m Model) getRowBounds() (int, int) {
+	if m.maxRows > 0 {
+		start := max(m.posY-m.maxRows+1, 0)
+		end := min(start+m.maxRows, m.rows)
+		return start, end
+	}
+	return 0, m.rows
 }
 
 func (m Model) getCurrentCoords() (int, int) {

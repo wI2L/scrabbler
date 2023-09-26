@@ -106,17 +106,20 @@ func (ui *tui) initGame(dn string) error {
 
 func (ui *tui) Init() tea.Cmd {
 	ui.input = textinput.New()
-	ui.input.CharLimit = 0
-	ui.input.Prompt = "Enter tiles played: "
-	ui.input.Placeholder = "word"
-	ui.input.Validate = func(w string) error {
-		return ui.game.playWord(w, true)
+	{
+		ui.input.CharLimit = 0
+		ui.input.Prompt = "Enter tiles played: "
+		ui.input.Placeholder = "word"
+		ui.input.Validate = func(w string) error {
+			return ui.game.playWord(w, true)
+		}
+	}
+	ui.menu = gridmenu.New(distribChoices(), 4, 7)
+	{
+		ui.menu.Width = ui.width
+		ui.menu.Margin(6, 2)
 	}
 	ui.confirm = confirm.New("Accept draw?", true)
-
-	ui.menu = gridmenu.New(distribChoices(), 4)
-	ui.menu.Width = ui.width
-	ui.menu.Margin(6, 2)
 
 	if ui.opts.timerDuration != 0 {
 		ui.timer = timer.NewWithInterval(ui.opts.timerDuration, time.Second)
