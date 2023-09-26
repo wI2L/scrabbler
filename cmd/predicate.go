@@ -53,11 +53,10 @@ func (pl *predicateList) Set(val string) error {
 	if !pl.changed {
 		pl.value = ps
 	} else {
-		for _, p := range ps {
-			pl.value = append(pl.value, p)
-		}
+		pl.value = append(pl.value, ps...)
 	}
 	pl.changed = true
+
 	return nil
 }
 

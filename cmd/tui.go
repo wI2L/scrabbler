@@ -144,6 +144,12 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch m.Type {
 		case tea.KeyCtrlC, tea.KeyEsc:
 			return ui, tea.Quit
+		case tea.KeyCtrlR:
+			if ui.state == draw {
+				ui.game.resetDraw(true)
+				ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants, ui.opts.predicates...)
+			}
+			return ui, nil
 		case tea.KeyEnter:
 			switch ui.state {
 			case lang:

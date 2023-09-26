@@ -255,6 +255,7 @@ Browse the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/dictiona
 - <kbd>↑</kbd>: Move up in the language selection menu
 - <kbd>↓</kbd>: Move down in the language selection menu
 - <kbd>Tab</kbd>: Toggle option selection
+- <kbd>Control+R</kbd>: Full draw reset (put all tiles in bag and pick new ones)
 - <kbd>Control+G</kbd>:
   - Press once to show word insights (whether one or more *scrabble*/*bingo*/*bonus* have been found with the tiles of the draw)
   - Press twice to show the words found

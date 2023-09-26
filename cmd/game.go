@@ -121,13 +121,17 @@ func (g *game) resetDraw(full bool) {
 	for i := len(g.draw.vowels) - 1; i >= 0; i-- {
 		t := g.draw.vowels[i]
 		if !t.inuse || full {
-			g.bag.vowels.add(g.draw.vowels.pickAt(i))
+			t = g.draw.vowels.pickAt(i)
+			t.inuse = false
+			g.bag.vowels.add(t)
 		}
 	}
 	for i := len(g.draw.consonants) - 1; i >= 0; i-- {
 		t := g.draw.consonants[i]
 		if !t.inuse || full {
-			g.bag.consonants.add(g.draw.consonants.pickAt(i))
+			t = g.draw.consonants.pickAt(i)
+			t.inuse = false
+			g.bag.consonants.add(t)
 		}
 	}
 }
