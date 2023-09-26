@@ -84,16 +84,16 @@ Usage:
   scrabbler [flags]
 
 Flags:
-      --consonants uint8           number of required consonant letters
-      --debug                      enable debug mode
-  -d, --dictionary string          custom dictionary file path
-  -l, --distribution string        letter distribution language
-  -h, --help                       help for scrabbler
-      --predicates key=[val],...   list of draw predicates
-  -p, --show-points                show letter points
-  -t, --timer duration[=5m]        enable play timer (default 5m)
-      --vowels uint8               number of required vowel letters
-  -w, --word-length uint8          the number of tiles to draw (default 7)
+  -d, --dictionary string            custom dictionary file path
+  -l, --distribution string          letter distribution language
+      --vowels uint8                 number of required vowel letters
+      --consonants uint8             number of required consonant letters
+  -w, --word-length uint8            the number of tiles to draw (default 7)
+  -p, --show-points                  show letter points in tiles
+      --predicates key=[val],...     list of draw predicates
+  -t, --timer duration[=5m]          enable play timer (default 5m)
+      --debug string[="debug.log"]   enable debug mode
+  -h, --help                         help for scrabbler
 ```
 
 #### Word length
@@ -123,7 +123,7 @@ Draw predicates are builtin conditions that can alter or influence the outcome o
 
 ##### Duplicates vowels
 
-The `dup-vowels` predicate caps duplicate vowel letters to a defined threshold. The threshold doesn't apply per-letter (2 `A`, 3 `B`) but for all letters at once (max 2 `A` or 2 `B`:
+The `dup-vowels` predicate caps duplicate vowel letters to a defined threshold. The threshold doesn't apply per-letter (2 `A`, 3 `E`) but for all letters at once (max 2 `A` and 2 `E`):
 
 ```shell
 scrabbler --predicates="dup-vowels=2"
@@ -235,15 +235,15 @@ The file can optionally be *gzipped* (the file extension doesn't matter, the det
 
 Browse the [dictionaries](https://github.com/wI2L/scrabbler/tree/master/dictionaries) directory, which already contains some official and non-official dictionaries for several languages:
 
-| **Language**                            | **Name**                                                              | **Description**                                                                                                                                                                                                                          | **Word count** |
-|:----------------------------------------|:----------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------|
-| :fr: French                             | [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble)    | The 8th version of the official dictionary for Francophone Scrabble                                                                                                                                                                      | 411430         |
-| :uk: English                            | [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words)       | Official word list used in English-language tournament Scrabble in most countries except the US, Thailand and Canada                                                                                                                     | 267753         |
-| :us: :canada: English                   | [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List)                | Official word authority for tournament Scrabble in the USA and Canada.                                                                                                                                                                   | 178691         |
-| :it: Italian                            | [listediparole](https://www.listediparole.it/tutteleparole.txt)       | Unofficial word list extracted from the [listediparole.it](https://www.listediparole.it) website.                                                                                                                                        | 664005         |
-| :de: Deutsch                            | [hippler/german-wordlist](https://github.com/hippler/german-wordlist) | Unofficial word list compiled by [Stefan Hippler](https://github.com/hippler)                                                                                                                                                            | 685486         |
-| :iceland: Icelandic                     | [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl)     | Unofficial word list compiled by [Vilhjalmur Thorsteinsson](https://github.com/vthorsteinsson) from the *Database of Icelandic Morphology* (DIM, BÍN) for the Icelandic crossword game [Netskrafl](https://github.com/mideind/Netskrafl) | 2543753        |
-| :romania: Romanian                      | [listedecuvinte](https://www.listedecuvinte.com/toatecuvintele.txt)   | Unofficial word list extracted from the [listedecuvinte.com](https://www.listedecuvinte.com) website                                                                                                                                     | 610767         |
+| **Language**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | **Name**                                                              | **Description**                                                                                                                                                                                                                | **Word count** |
+|:-------------------------------------------------------|:----------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------|
+| :fr: French                                            | [ODS8](https://en.wikipedia.org/wiki/L%27Officiel_du_jeu_Scrabble)    | The 8th version of the official dictionary for Francophone Scrabble                                                                                                                                                            | 411430         |
+| :uk: English                                           | [SOPWODS](https://en.wikipedia.org/wiki/Collins_Scrabble_Words)       | Official word list used in English-language tournament Scrabble in most countries except the US, Thailand and Canada                                                                                                           | 267753         |
+| :us: :canada: English                                  | [TWL06](https://en.wikipedia.org/wiki/NASPA_Word_List)                | Official word authority for tournament Scrabble in the USA and Canada.                                                                                                                                                         | 178691         |
+| :it: Italian                                           | [listediparole](https://www.listediparole.it/tutteleparole.txt)       | Unofficial word list extracted from the [listediparole.it](https://www.listediparole.it) website.                                                                                                                              | 664005         |
+| :de: Deutsch                                           | [hippler/german-wordlist](https://github.com/hippler/german-wordlist) | Unofficial word list compiled by [Stefan Hippler](https://github.com/hippler)                                                                                                                                                  | 685486         |
+| :iceland: Icelandic                                    | [vthorsteinsson/Skrafl](https://github.com/vthorsteinsson/Skrafl)     | Unofficial word list compiled by [Vilhjalmur Thorsteinsson](https://github.com/vthorsteinsson) from the *Database of Icelandic Morphology* (DIM, BÍN) for the crossword game [Netskrafl](https://github.com/mideind/Netskrafl) | 2543753        |
+| :romania: Romanian                                     | [listedecuvinte](https://www.listedecuvinte.com/toatecuvintele.txt)   | Unofficial word list extracted from the [listedecuvinte.com](https://www.listedecuvinte.com) website                                                                                                                           | 610767         |
 
 ### Key bindings
 

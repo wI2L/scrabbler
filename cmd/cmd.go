@@ -19,7 +19,7 @@ var (
 	consonants    uint8
 	wordLength    uint8
 	showPoints    bool
-	debug         bool
+	debugLogFile  string
 	timerDuration time.Duration
 	predicates    predicateList
 
@@ -70,8 +70,8 @@ func run(cmd *cobra.Command, _ []string) error {
 		tea.WithAltScreen(),
 		tea.WithOutput(out),
 	)
-	if debug {
-		f, err := tea.LogToFile("debug.log", "debug")
+	if debugLogFile != "" {
+		f, err := tea.LogToFile(debugLogFile, "debug")
 		if err != nil {
 			return fmt.Errorf("cannot open log file: %s", err)
 		}
@@ -92,6 +92,7 @@ func run(cmd *cobra.Command, _ []string) error {
 
 func setupFlags() {
 	f := Root.Flags()
+	f.SortFlags = false
 
 	f.StringP("dictionary", "d", "",
 		"custom dictionary file path",
@@ -109,10 +110,7 @@ func setupFlags() {
 		"the number of tiles to draw",
 	)
 	f.BoolVarP(&showPoints, "show-points", "p", false,
-		"show letter points",
-	)
-	f.BoolVar(&debug, "debug", false,
-		"enable debug mode",
+		"show letter points in tiles",
 	)
 	f.Var(&predicates, "predicates",
 		"list of draw predicates",
@@ -120,7 +118,10 @@ func setupFlags() {
 	f.DurationVarP(&timerDuration, "timer", "t", 0,
 		"enable play timer (default 5m)",
 	)
-	// Set a default duration for the timer
-	// if the flag is given without a value.
+	f.StringVar(&debugLogFile, "debug", "",
+		"enable debug mode",
+	)
+	// Set default value for flags used without option.
+	f.Lookup("debug").NoOptDefVal = "debug.log"
 	f.Lookup("timer").NoOptDefVal = "5m"
 }
