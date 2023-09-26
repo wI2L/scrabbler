@@ -149,6 +149,7 @@ func (ui *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return ui, tea.Quit
 		case tea.KeyCtrlR:
 			if ui.state == draw {
+				ui.insights = 0
 				ui.game.resetDraw(true)
 				ui.game.drawTiles(ui.opts.minVowels, ui.opts.minConsonants, ui.opts.predicates...)
 			}
