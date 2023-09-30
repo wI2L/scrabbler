@@ -33,7 +33,7 @@
 </p>
 <br/>
 <p align=center>
-    <img alt="GitHub Release (latest SemVer)" src="https://img.shields.io/github/v/release/wI2L/scrabbler?logo=semver&color=%238F00FF">
+    <img alt="GitHub Release (latest SemVer)" src="https://img.shields.io/github/v/release/wI2L/scrabbler?color=%238F00FF">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/wI2L/scrabbler/test.yml?logo=github&logoColor=white">
     <img alt="License" src="https://img.shields.io/github/license/wI2L/scrabbler?color=blue">
 </p>
