@@ -9,7 +9,7 @@ require (
 	github.com/muesli/termenv v0.15.2
 	github.com/spf13/cobra v1.7.0
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
-	golang.org/x/term v0.12.0
+	golang.org/x/term v0.14.0
 	golang.org/x/text v0.13.0
 )
 
@@ -28,5 +28,5 @@ require (
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/sys v0.14.0 // indirect
 )
