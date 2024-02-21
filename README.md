@@ -70,18 +70,29 @@ Download pre-compiled binaries from the [Releases](https://github.com/wI2L/scrab
 
 ## Usage
 
-### User interface
+### Interface
 
-The application presents itself as a terminal user-interface with two *views*:
+The application presents itself as a terminal user-interface (TUI) which has two views:
 
 - **Draw view**: displays the tiles that are randomly drawn from the selected distribution. You can either accept the draw or refuse it to generate a new one. *Note that tiles that were not played in the previous round are kept and are not drawn again.*
 - **Play view**: allows you to enter the tiles that were played (the order you type them in doesn't matter). You cannot enter unavailable tiles.
 
 ### Options
 
+**Table of contents**
+
+- [Word length](#word-length)
+- [Draw requirements](#draw-requirements)
+- [Predicates](#predicates)
+- [Tile points](#tile-points)
+- [Game timer](#game-timer)
+- [Letter distribution](#letter-distribution)
+- [Custom dictionary](#custom-dictionary)
+
+#### CLI Usage
+
 ```text
-Usage:
-  scrabbler [flags]
+scrabbler [flags]
 
 Flags:
   -d, --dictionary string            custom dictionary file path
@@ -161,7 +172,7 @@ scrabbler --timer=3m
 > - *1 minute*: `1m`
 > - *3 minutes and 20 seconds*: `3m20s`
 
-#### Letter distributions
+#### Letter distribution
 
 > Editions of the word board game Scrabble in different languages have differing letter distributions of the tiles, because the frequency of each letter of the alphabet is different for every language. As a general rule, the rarer the letter, the more points it is worth.
 >
@@ -210,7 +221,7 @@ Alternate distributions are also available:
 - `krafla`: Alternate Icelandic distribution, sanctioned by Iceland's Scrabble clubs for their tournaments and for the national championship
 
 > [!NOTE]
-> All information are compiled from the [Scrabble letter distributions](https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Indonesian) Wikipedia page.
+> All information are compiled from the [Scrabble letter distributions](https://en.wikipedia.org/wiki/Scrabble_letter_distributions) Wikipedia page.
 
 See the [distribution.go](https://github.com/wI2L/scrabbler/blob/master/cmd/distribution.go) file, which define the letter distribution for each language.
 
