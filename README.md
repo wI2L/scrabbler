@@ -45,7 +45,7 @@
 - 🎲 **Retryable draw** — redo the draw if you are not satisfied with the picks
 - 📏 **Custom word length** — play with standard 7 tiles or for any variant
 - ⚙️ **Custom draw configuration** — minimum number of vowels and/or consonants per draw
-- 🌐 [**Letter distributions**](#letter-distributions) — play in the language of your choice
+- 🌐 [**25+ letter distributions**](#letter-distribution) — play in the language of your choice
 - 💡 [**Word insights from dictionaries**](#custom-dictionary) — reveal the number of *scrabble*/*bonus*/*bingo* and the words
 - ⏱️ **Game timer** — thinking time per play
 
